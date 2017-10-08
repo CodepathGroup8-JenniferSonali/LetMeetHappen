@@ -9,13 +9,14 @@ The following **required** functionality is completed:
 * [ ] The user should be able to login /signup for the app 
 * [ ] The user should be able to create groups and add friends to them.  
 * [ ] Logged in User should be able to create meeting request for a group.
-  * [ ] User who generates a meeting request will enter the event name , event date's(max 2) , group to invite , location , minimum yes needed from the group (max group size , min 2) , deadline to respond to the invite 
+  * [ ] User who generates a meeting request will enter the event name, event dates(max 2), group to invite, location, minimum yes needed from the group (min: 2, max: group size), deadline to respond to the invite 
   * [ ] All member of the group should receive a push notification and email invite to repond to the meeting request
 * [ ] User should be able to respond to the meeting request
-* [ ] User can view all upcoming and past meetings on their home page.User can infinitely paginate both past and upcoming meetings
+* [ ] User can view all upcoming and past meetings on their home page.
+  * [ ] User can infinitely paginate both past and upcoming meetings
   * [ ] Upcoming meeting will be color coded to differentiate Confirmed or Ongoing.
-* [ ] User can see their profile, group info ,setting from the Navigation Drawer.
-* [ ] User's get notifications when meeting is confirmed , cancelled or deadline approching.
+* [ ] User can see their profile, group info, setting from the Navigation Drawer.
+* [ ] User's get notifications when meeting is confirmed, cancelled or deadline approching.
 
 The following **optional** features are implemented:
 
