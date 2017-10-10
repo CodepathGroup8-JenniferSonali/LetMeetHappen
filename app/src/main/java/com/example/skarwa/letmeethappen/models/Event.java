@@ -1,4 +1,4 @@
-package com.example.skarwa.letmeethappen;
+package com.example.skarwa.letmeethappen.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,10 +15,10 @@ public class Event {
     
 
     public static Event fromJSON(JSONObject jsonObject) throws JSONException {
-        Event tweet = new Event();
+        Event event = new Event();
 
 
-        return tweet;
+        return event;
 
     }
 }

@@ -1,8 +1,10 @@
-package com.example.skarwa.letmeethappen;
+package com.example.skarwa.letmeethappen.adapters;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+
+import com.example.skarwa.letmeethappen.fragments.HomeTimelineFragment;
 
 /**
  * Created by jennifergodinez on 10/9/17.

@@ -1,4 +1,4 @@
-package com.example.skarwa.letmeethappen;
+package com.example.skarwa.letmeethappen.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.skarwa.letmeethappen.models.Event;
+import com.example.skarwa.letmeethappen.R;
+import com.example.skarwa.letmeethappen.adapters.EventAdapter;
 
 import org.json.JSONArray;
 

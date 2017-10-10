@@ -1,4 +1,4 @@
-package com.example.skarwa.letmeethappen;
+package com.example.skarwa.letmeethappen.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.skarwa.letmeethappen.models.Event;
+import com.example.skarwa.letmeethappen.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -1,4 +1,4 @@
-package com.example.skarwa.letmeethappen;
+package com.example.skarwa.letmeethappen.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

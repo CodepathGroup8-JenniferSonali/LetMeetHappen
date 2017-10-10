@@ -1,4 +1,4 @@
-package com.example.skarwa.letmeethappen;
+package com.example.skarwa.letmeethappen.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.example.skarwa.letmeethappen.R;
 
 import io.fabric.sdk.android.Fabric;
 
