@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LetMeetHappen</string>
+    <string name="login_label">LOGIN</string>
 </resources>
