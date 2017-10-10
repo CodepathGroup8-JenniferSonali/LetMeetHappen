@@ -16,6 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".TimelineActivity"></activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="53564889f405babd67506fa8c1fe48c8d9b20740"
