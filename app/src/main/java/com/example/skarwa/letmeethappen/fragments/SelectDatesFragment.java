@@ -23,9 +23,19 @@ import java.util.List;
 public class SelectDatesFragment extends DialogFragment {
 
     List<Date> dates;
+    boolean isRange;
 
     public interface OnDatePass {
-        void onDatePass(List<Date> dates);
+        void onDatePass(boolean isRange, List<Date> dates);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle dateBundle = this.getArguments();
+        isRange = dateBundle.getBoolean(NewEventFragment.ISRANGE);
+
     }
 
     @Override
@@ -50,7 +60,8 @@ public class SelectDatesFragment extends DialogFragment {
 
 //add one year to calendar from todays date
         calendar_view.init(today, nextYear.getTime())
-                .inMode(CalendarPickerView.SelectionMode.MULTIPLE);
+                .inMode(isRange ? CalendarPickerView.SelectionMode.MULTIPLE
+                        : CalendarPickerView.SelectionMode.SINGLE);
 
         //Displaying all selected dates while clicking on a button
         Button btn_show_dates = (Button) view.findViewById(R.id.btn_show_dates);
@@ -62,7 +73,7 @@ public class SelectDatesFragment extends DialogFragment {
                 dates = calendar_view.getSelectedDates();
 
                 NewEventFragment parentFrag = (NewEventFragment) getTargetFragment();
-                parentFrag.onDatePass(dates);
+                parentFrag.onDatePass(isRange, dates);
 
                 dismiss();
             }

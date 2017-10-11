@@ -24,8 +24,11 @@ import java.util.List;
 
 public class NewEventFragment extends DialogFragment implements SelectDatesFragment.OnDatePass{
 
+    final static String ISRANGE = "IS_RANGE";
+
     EditText etEventName;
     EditText etDates;
+    EditText etRSVPDate;
 
 
     public NewEventFragment() {
@@ -71,6 +74,25 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                 SelectDatesFragment newFragment = new SelectDatesFragment();
 
                 newFragment.setTargetFragment(NewEventFragment.this, 300);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(ISRANGE, true);
+                newFragment.setArguments(bundle);
+                newFragment.show(getFragmentManager(), "datePicker");
+
+            }
+        });
+
+        etRSVPDate = (EditText)view.findViewById(R.id.etRSVPDate);
+        etRSVPDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SelectDatesFragment newFragment = new SelectDatesFragment();
+
+                newFragment.setTargetFragment(NewEventFragment.this, 300);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(ISRANGE, false);
+                newFragment.setArguments(bundle);
                 newFragment.show(getFragmentManager(), "datePicker");
 
             }
@@ -91,14 +113,15 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     }
 
     @Override
-    public void onDatePass(List<Date> dates) {
+    public void onDatePass(boolean isRange, List<Date> dates) {
         String str = "";
 
         for (Date date : dates) {
-            str += new SimpleDateFormat("E yyyy.MM.dd").format(date.getTime()) +"\n";
+            str += new SimpleDateFormat("E   yyyy.MM.dd").format(date.getTime()) +"\n";
         }
 
-        etDates.setText(str);
+        EditText et = (isRange) ? etDates : etRSVPDate;
+        et.setText(str);
     }
 }
 
