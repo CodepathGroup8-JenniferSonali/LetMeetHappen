@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "152102331855",
+    "firebase_url": "https://let-meet-happen.firebaseio.com",
+    "project_id": "let-meet-happen",
+    "storage_bucket": "let-meet-happen.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152102331855:android:64e6ac8cd68a764e",
+        "android_client_info": {
+          "package_name": "com.example.skarwa.letmeethappen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152102331855-squr1kvjrobp2kc5s47jkf2be47jmpm2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArplTnrCqcMSC5pf-1_Jb6c1AjYC6rKeI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
