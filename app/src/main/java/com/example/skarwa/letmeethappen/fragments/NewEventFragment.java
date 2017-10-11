@@ -13,13 +13,19 @@ import android.widget.EditText;
 
 import com.example.skarwa.letmeethappen.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 
 /**
  * Created by jennifergodinez on 9/27/17.
  */
 
-public class NewEventFragment extends DialogFragment {
+public class NewEventFragment extends DialogFragment implements SelectDatesFragment.OnDatePass{
 
+    EditText etEventName;
+    EditText etDates;
 
 
     public NewEventFragment() {
@@ -49,12 +55,26 @@ public class NewEventFragment extends DialogFragment {
 
         //getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-        EditText etEventName = (EditText) view.findViewById(R.id.etEventName);
+        etEventName = (EditText) view.findViewById(R.id.etEventName);
 
         // Show soft keyboard automatically and request focus to field
         etEventName.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        etDates = (EditText)view.findViewById(R.id.etDates);
+
+        etDates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SelectDatesFragment newFragment = new SelectDatesFragment();
+
+                newFragment.setTargetFragment(NewEventFragment.this, 300);
+                newFragment.show(getFragmentManager(), "datePicker");
+
+            }
+        });
 
 
         Button btn = (Button)view.findViewById(R.id.btn_send);
@@ -68,6 +88,17 @@ public class NewEventFragment extends DialogFragment {
             }
         });
 
+    }
+
+    @Override
+    public void onDatePass(List<Date> dates) {
+        String str = "";
+
+        for (Date date : dates) {
+            str += new SimpleDateFormat("E yyyy.MM.dd").format(date.getTime()) +"\n";
+        }
+
+        etDates.setText(str);
     }
 }
 

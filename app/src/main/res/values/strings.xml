@@ -9,4 +9,5 @@
     <string name="message">Message to the group</string>
     <string name="send_invite">CREATE</string>
     <string name="when">When?</string>
+    <string name="select_done">DONE</string>
 </resources>
