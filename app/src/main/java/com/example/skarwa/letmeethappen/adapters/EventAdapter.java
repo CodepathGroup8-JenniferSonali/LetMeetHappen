@@ -6,11 +6,14 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.skarwa.letmeethappen.models.Event;
+import com.bumptech.glide.Glide;
 import com.example.skarwa.letmeethappen.R;
+import com.example.skarwa.letmeethappen.models.Event;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,11 +26,11 @@ import java.util.Locale;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
-    private List<Event> mTweets;
+    private List<Event> mEvents;
     private Context context;
 
-    public EventAdapter(List<Event> mTweets) {
-        this.mTweets = mTweets;
+    public EventAdapter(List<Event> events) {
+        this.mEvents = events;
     }
 
     @Override
@@ -43,22 +46,31 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Event tweet = mTweets.get(position);
+        Event event = mEvents.get(position);
+        
+        //holder.tvUserName.setText(tweet.user.profileImg); // profile image
+
+
+        holder.tvEventName.setText(event.mEventName);
+        holder.tvDate.setText(event.mDate);
+
+        Glide.with(context)
+                .load(event.hostProfileImage)
+                .placeholder(R.drawable.ic_host_placeholder)
+                .into(holder.ivProfileImage);
+
+
+        if (event.mStatus == Event.EventStatus.NEW) {
+            holder.imgAlert.setVisibility(View.VISIBLE);
+
+        } else {
+            holder.imgAlert.setVisibility(View.GONE);
+        }
 
 
     }
 
-    private String changeHashTagColor(String s) {
-        String colorCodeStart = "<font color='#2DB7EF'>";  // use any color as  your want
-        String colorCodeEnd = "</font>";
-
-        // change color of tags, this was before I found out API has offset values
-
-        int start = s.indexOf("#") + 1;
-        String prefix = s.substring(0, start);
-        String suffix = s.substring(start);
-        return prefix.replace("#", colorCodeStart+"#") + suffix.replaceFirst(" ", colorCodeEnd+" ");
-    }
+    
 
     private String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
@@ -92,20 +104,25 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return mTweets.size();
+        return mEvents.size();
     }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivProfileImage;
-        public TextView tvUserName;
-        public TextView tvBody;
-        public TextView tvTimeStamp;
-        public TextView tvScreenName;
-        public ImageView ivDisplay;
+        public TextView tvDate;
+        public TextView tvEventName;
+        public ImageButton imgAlert;
+        public ProgressBar pbStatus;
 
 
         public ViewHolder (View itemView) {
             super(itemView);
+            ivProfileImage = (ImageView)itemView.findViewById(R.id.ivProfileImage);
+            tvDate = (TextView)itemView.findViewById(R.id.tvDate);
+            tvEventName = (TextView)itemView.findViewById(R.id.tvEventName);
+            imgAlert = (ImageButton)itemView.findViewById(R.id.imgAlert);
+           // pbStatus = itemView.findViewById(R.id.pbStatus);
 
             
         }

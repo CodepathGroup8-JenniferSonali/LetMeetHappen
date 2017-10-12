@@ -12,12 +12,13 @@ public class HomeTimelineFragment extends EventsListFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //populateTimeline();
+        populateTimeline();
 
     }
 
 
     private void populateTimeline () {
+        //addItems(null);
     }
 
 

@@ -10,11 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.adapters.EventAdapter;
+import com.example.skarwa.letmeethappen.models.Event;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -23,8 +24,8 @@ import java.util.ArrayList;
  */
 
 public class EventsListFragment extends Fragment {
-    private EventAdapter tweetAdapter;
-    private ArrayList<Event> tweets;
+    private EventAdapter eventAdapter;
+    private ArrayList<Event> events;
     private RecyclerView rvEvents;
 
 
@@ -35,24 +36,42 @@ public class EventsListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_meetup_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_events_list, container, false);
 
-        rvEvents = (RecyclerView) view.findViewById(R.id.rvMeetup);
+        rvEvents = (RecyclerView) view.findViewById(R.id.rvEvents);
         RecyclerView.ItemDecoration itemDecoration = new
                 DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         rvEvents.addItemDecoration(itemDecoration);
 
-        tweets = new ArrayList<>();
-        tweetAdapter = new EventAdapter(tweets);
+        events = new ArrayList<Event>();
+
+        eventAdapter = new EventAdapter(events);
+
+        //temporary
+        addItems(null);
+
 
         rvEvents.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvEvents.setAdapter(tweetAdapter);
+        rvEvents.setAdapter(eventAdapter);
 
         return view;
 
     }
 
     public void addItems(JSONArray response) {
+        //for (int i = 0; i < response.length(); i++) {
+        for (int i = 0; i < 2; i++) {
+            Event event = null;
+            try {
+                //event = Event.fromJSON(response.getJSONObject(i));
+                event = Event.fromJSON(null);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            events.add(event);
+            eventAdapter.notifyItemInserted(events.size()-1);
+        }
  
     }
 
