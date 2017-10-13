@@ -56,8 +56,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
-                signIn();
-                onLoginSuccess(); //TODO : added this to check Navigation Drawer
+                // TODO: If can't login to gmail, temporarily set this to false to test other functionalities.
+                // Please set it back to true when done and before pushing back the changes.
+                boolean GMAIL_WORKS = true;
+
+                if (GMAIL_WORKS) {
+                    signIn();
+                } else {
+                    onLoginSuccess();
+                }
                 break;
             // ...
         }
@@ -84,6 +91,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
+            Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
             onLoginSuccess();
 
         } else {
@@ -99,7 +107,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     // i.e Display application "homepage"
     //@Override
     public void onLoginSuccess() {
-        Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(this, TimelineActivity.class);
         startActivity(i);
     }

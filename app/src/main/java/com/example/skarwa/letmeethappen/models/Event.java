@@ -3,10 +3,6 @@ package com.example.skarwa.letmeethappen.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-import java.util.Calendar;
-
-import static java.lang.Thread.sleep;
 import java.util.Date;
 import java.util.List;
 
@@ -40,13 +36,8 @@ public class Event {
         Event event = new Event();
 
         event.mEventCreatedDate = new Date(); //this will be today ...please change it as needed,
-        event.mEventName = "Tea Party" +Calendar.getInstance().getTimeInMillis();
+        event.mEventName = "Tea Party";
 
-        try {
-            sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         event.mEventStatus = EventStatus.NEW;
         return event;
     }
