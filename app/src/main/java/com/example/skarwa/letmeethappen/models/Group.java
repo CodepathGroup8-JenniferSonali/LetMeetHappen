@@ -8,34 +8,34 @@ import java.util.List;
  */
 
 public class Group {
-    long uid;
-    String name;
-    Date createdDate;
-    Date expiredDate;
-    UserGroupStatus groupStatus;
-    List<User> members;
+    long mid;
+    String mName;
+    Date mCreatedDate;
+    Date mExpiredDate;
+    UserGroupStatus mGroupStatus;
+    List<User> mMembers;
 
-    public long getUid() {
-        return uid;
+    public long getId() {
+        return mid;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public Date getCreatedDate() {
-        return createdDate;
+        return mCreatedDate;
     }
 
     public Date getExpiredDate() {
-        return expiredDate;
+        return mExpiredDate;
     }
 
     public UserGroupStatus getGroupStatus() {
-        return groupStatus;
+        return mGroupStatus;
     }
 
     public List<User> getMembers() {
-        return members;
+        return mMembers;
     }
 }

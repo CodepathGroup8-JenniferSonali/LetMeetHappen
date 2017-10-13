@@ -5,14 +5,14 @@ package com.example.skarwa.letmeethappen.models;
  */
 
 public class Settings {
-    long uid;
-    String name;
+    long mId;
+    String mName;
 
     public long getUid() {
-        return uid;
+        return mId;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 }

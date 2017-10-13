@@ -11,19 +11,19 @@ import java.util.Map;
  */
 
 public class UserMeetingPreferences {
-    User user;
-    Event event;
-    Map<Date,UserResponse> datePreferenceMap;
+    User mUser;
+    Event mEvent;
+    Map<Date,UserResponse> mDatePreferenceMap;
 
     public User getUser() {
-        return user;
+        return mUser;
     }
 
     public Event getEvent() {
-        return event;
+        return mEvent;
     }
 
     public Map<Date, UserResponse> getDatePreferenceMap() {
-        return datePreferenceMap;
+        return mDatePreferenceMap;
     }
 }

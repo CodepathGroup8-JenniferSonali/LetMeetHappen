@@ -5,19 +5,19 @@ package com.example.skarwa.letmeethappen.models;
  */
 
 public class Location {
-    float latitude;
-    float longitude;
-    String userFriendlyName;
+    float mLatitude;
+    float mLongitude;
+    String mUserFriendlyName;
 
     public float getLatitude() {
-        return latitude;
+        return mLatitude;
     }
 
     public float getLongitude() {
-        return longitude;
+        return mLongitude;
     }
 
     public String getUserFriendlyName() {
-        return userFriendlyName;
+        return mUserFriendlyName;
     }
 }

@@ -15,26 +15,25 @@ import java.util.List;
  */
 
 public class Event {
-    long uid;
+    long mId;
     String mEventName;
     Date mEventFinalDate;  //date the event is planned for after responses.
     Date mEventCreatedDate;  //date the event was created
-    EventStatus mStatus;
-    Group group;
-    User planner;
-    Location location;
-    int minAcceptance;
-    Date acceptByDate;
-    EventStatus eventStatus;
-    String plannerMsgToGroup;
-    List<User> attendedUser;
-    String hostProfileImage;  //TODO We should get the profile image from the user object ...but its fine for now.
+    Group mGroup;
+    User mPlanner;
+    Location mLocation;
+    int mMinAcceptance;
+    Date mAcceptByDate;
+    EventStatus mEventStatus;
+    String mPlannerMsgToGroup;
+    List<User> mAttendedUser;
+    String mHostProfileImage;  //TODO We should get the profile image from the user object ...but its fine for now.
 
 
     public void Event (Date date, String eventName) {
         mEventCreatedDate = date;
         mEventName = eventName;
-        mStatus = EventStatus.NEW;
+        mEventStatus = EventStatus.NEW;
     }
 
     public static Event fromJSON(JSONObject jsonObject) throws JSONException {
@@ -48,12 +47,12 @@ public class Event {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        event.mStatus = EventStatus.NEW;
+        event.mEventStatus = EventStatus.NEW;
         return event;
     }
 
-    public long getUid() {
-        return uid;
+    public long getId() {
+        return mId;
     }
 
     public String getEventName() {
@@ -69,38 +68,38 @@ public class Event {
     }
 
     public Group getGroup() {
-        return group;
+        return mGroup;
     }
 
     public User getPlanner() {
-        return planner;
+        return mPlanner;
     }
 
     public Location getLocation() {
-        return location;
+        return mLocation;
     }
 
     public int getMinAcceptance() {
-        return minAcceptance;
+        return mMinAcceptance;
     }
 
     public Date getAcceptByDate() {
-        return acceptByDate;
+        return mAcceptByDate;
     }
 
     public EventStatus getEventStatus() {
-        return eventStatus;
+        return mEventStatus;
     }
 
     public String getPlannerMsgToGroup() {
-        return plannerMsgToGroup;
+        return mPlannerMsgToGroup;
     }
 
     public List<User> getAttendedUser() {
-        return attendedUser;
+        return mAttendedUser;
     }
 
     public String getHostProfileImage() {
-        return hostProfileImage;
+        return mHostProfileImage;
     }
 }

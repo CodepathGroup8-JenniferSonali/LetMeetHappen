@@ -8,54 +8,54 @@ import java.util.List;
  */
 
 public class User {
-    long uid;
-    String firstName;
-    String lastName;
-    String email;
-    String phoneNum;
-    String encryptedPwd;  //TODO encrypt password
-    Date joinedDate;
-    UserGroupStatus userStatus;
-    String profilePicUrl;
-    List<Settings> userSettings;
+    long mId;
+    String mFirstName;
+    String mLastName;
+    String mEmail;
+    String mPhoneNum;
+    String mEncryptedPwd;  //TODO encrypt password
+    Date mJoinedDate;
+    UserGroupStatus mUserStatus;
+    String mProfilePicUrl;
+    List<Settings> mUserSettings;
 
-    public long getUid() {
-        return uid;
+    public long getId() {
+        return mId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getmFirstName() {
+        return mFirstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return mLastName;
     }
 
     public String getEmail() {
-        return email;
+        return mEmail;
     }
 
     public String getPhoneNum() {
-        return phoneNum;
+        return mPhoneNum;
     }
 
     public String getEncryptedPwd() {
-        return encryptedPwd;
+        return mEncryptedPwd;
     }
 
     public Date getJoinedDate() {
-        return joinedDate;
+        return mJoinedDate;
     }
 
     public UserGroupStatus getUserStatus() {
-        return userStatus;
+        return mUserStatus;
     }
 
     public String getProfilePicUrl() {
-        return profilePicUrl;
+        return mProfilePicUrl;
     }
 
     public List<Settings> getUserSettings() {
-        return userSettings;
+        return mUserSettings;
     }
 }

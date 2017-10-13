@@ -67,8 +67,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         } else {
             holder.imgAlert.setVisibility(View.GONE);
         }
-
-
     }
 
     
