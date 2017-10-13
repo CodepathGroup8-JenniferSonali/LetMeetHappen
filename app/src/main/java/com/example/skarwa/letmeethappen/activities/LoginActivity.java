@@ -17,13 +17,23 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import io.fabric.sdk.android.Fabric;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static int RC_SIGN_IN = 88;
+    private FirebaseAuth mAuth;
+    FirebaseUser fbaseUser;
     GoogleApiClient mGoogleApiClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -47,6 +58,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        mAuth = FirebaseAuth.getInstance();
 
 
     }
@@ -91,8 +104,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
-            onLoginSuccess();
+            firebaseAuthWithGoogle(acct);
 
         } else {
             //TODO display message
@@ -101,6 +113,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //updateUI(false);
         }
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        fbaseUser = mAuth.getCurrentUser();
+
+        //updateUI(currentUser);
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d("DEBUG", "firebaseAuthWithGoogle:" + acct.getId());
+
+        if (fbaseUser != null) {
+            onLoginSuccess();
+        } else {
+
+            AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+            mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d("DEBUG", "signInWithCredential:success");
+                                fbaseUser = mAuth.getCurrentUser();
+                                Toast.makeText(getBaseContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                                onLoginSuccess();  // onLoginSuccess(fbaseUser);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w("DEBUG", "signInWithCredential:failure", task.getException());
+                                Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                                //updateUI(null);
+                            }
+
+                            // ...
+                        }
+                    });
+        }
+    }
+
 
 
     // OAuth authenticated successfully, launch primary authenticated activity
