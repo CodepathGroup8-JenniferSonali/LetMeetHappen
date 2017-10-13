@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.Event;
+import com.example.skarwa.letmeethappen.models.EventStatus;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,16 +52,16 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         //holder.tvUserName.setText(tweet.user.profileImg); // profile image
 
 
-        holder.tvEventName.setText(event.mEventName);
-        holder.tvDate.setText(event.mDate);
+        holder.tvEventName.setText(event.getEventName());
+        holder.tvDate.setText(event.getEventCreatedDate().toString());
 
         Glide.with(context)
-                .load(event.hostProfileImage)
+                .load(event.getHostProfileImage())
                 .placeholder(R.drawable.ic_host_placeholder)
                 .into(holder.ivProfileImage);
 
 
-        if (event.mStatus == Event.EventStatus.NEW) {
+        if (event.getEventStatus().equals(EventStatus.NEW)) {
             holder.imgAlert.setVisibility(View.VISIBLE);
 
         } else {
