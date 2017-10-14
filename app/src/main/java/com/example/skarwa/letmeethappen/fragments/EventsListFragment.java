@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.adapters.EventAdapter;
 import com.example.skarwa.letmeethappen.models.Event;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +30,8 @@ public abstract class EventsListFragment extends Fragment {
     private ArrayList<Event> events;
     private RecyclerView rvEvents;
 
+    private DatabaseReference mEventsReference;
+
 
     abstract void showEventDetail(Event event);
 
@@ -39,6 +43,11 @@ public abstract class EventsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_events_list, container, false);
+
+
+        // Initialize Database
+        mEventsReference = FirebaseDatabase.getInstance().getReference()
+                .child("events");
 
         rvEvents = (RecyclerView) view.findViewById(R.id.rvEvents);
         RecyclerView.ItemDecoration itemDecoration = new

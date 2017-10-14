@@ -10,6 +10,9 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.example.skarwa.letmeethappen.R;
+import com.example.skarwa.letmeethappen.models.User;
+import com.example.skarwa.letmeethappen.models.UserGroupStatus;
+import com.example.skarwa.letmeethappen.utils.Constants;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -24,6 +27,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import org.parceler.Parcels;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -71,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.sign_in_button:
                 // TODO: If can't login to gmail, temporarily set this to false to test other functionalities.
                 // Please set it back to true when done and before pushing back the changes.
-                boolean GMAIL_WORKS = false;
+                boolean GMAIL_WORKS = true;
 
                 if (GMAIL_WORKS) {
                     signIn();
@@ -162,11 +167,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //@Override
     public void onLoginSuccess() {
         Intent i = new Intent(this, TimelineActivity.class);
+        //send user details to the next activity to fetch groups and events
+        i.putExtra(Constants.USER_OBJ, Parcels.wrap(createUserFromFirebaseAuthUser(fbaseUser)));
         startActivity(i);
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         new Throwable().printStackTrace();
+    }
+
+
+    public User createUserFromFirebaseAuthUser(FirebaseUser fbaseUser){
+        User user = new User();
+        user.setDisplayName(fbaseUser.getDisplayName());
+        user.setEmail(fbaseUser.getEmail());
+        user.setId(fbaseUser.getUid());
+        user.setPhoneNum(fbaseUser.getPhoneNumber());
+        user.setUserStatus(UserGroupStatus.ACTIVE);
+        user.setProfilePicUrl(fbaseUser.getPhotoUrl().toString());
+        user.setUserSettings(null); //setting settings null for now.
+
+        return user;
     }
 }

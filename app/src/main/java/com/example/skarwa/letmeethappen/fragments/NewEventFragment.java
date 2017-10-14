@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.skarwa.letmeethappen.R;
+import com.example.skarwa.letmeethappen.models.Event;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,7 +32,15 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     EditText etRSVPDate;
     String mTitle; //group name
 
+    // listener will the activity instance containing fragment
+    private OnCreateEventClickListener listener;
 
+
+    // Define the events that the fragment will use to communicate
+    public interface OnCreateEventClickListener {
+        // This can be any number of events to be sent to the activity
+        public void onCreateEvent(Event event);
+    }
     public NewEventFragment() {
     }
 
@@ -114,6 +123,17 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
 
             @Override
             public void onClick(View view) {
+
+                Event event = new Event();
+                event.setEventName(etEventName.getText().toString());
+                event.setAcceptByDate(etRSVPDate.getText().toString());
+
+                listener = (OnCreateEventClickListener)getActivity();
+                listener.onCreateEvent(event);
+
+                //TODO
+               /* event.addEventDateOptions(); //set dates
+                event.setMinAcceptance();*/
 
                 Log.d("DEBUG", "button clicked in new event fragment");
                 dismiss();

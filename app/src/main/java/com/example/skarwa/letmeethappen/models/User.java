@@ -1,34 +1,67 @@
 package com.example.skarwa.letmeethappen.models;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+
+import org.parceler.Parcel;
+
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by skarwa on 10/12/17.
  */
 
+@Parcel
 public class User {
-    long mId;
-    String mFirstName;
-    String mLastName;
+    String mId;
+    String mDisplayName;
     String mEmail;
     String mPhoneNum;
-    String mEncryptedPwd;  //TODO encrypt password
-    Date mJoinedDate;
     UserGroupStatus mUserStatus;
     String mProfilePicUrl;
     List<Settings> mUserSettings;
 
-    public long getId() {
+    public User() {
+        //default constructor needed by firebase
+    }
+
+    public String getId() {
         return mId;
     }
 
-    public String getmFirstName() {
-        return mFirstName;
+    public void setId(String mId) {
+        this.mId = mId;
     }
 
-    public String getLastName() {
-        return mLastName;
+    public void setDisplayName(String mDisplayName) {
+        this.mDisplayName = mDisplayName;
+    }
+
+    public void setEmail(String mEmail) {
+        this.mEmail = mEmail;
+    }
+
+    public void setPhoneNum(String mPhoneNum) {
+        this.mPhoneNum = mPhoneNum;
+    }
+
+    public void setUserStatus(UserGroupStatus mUserStatus) {
+        this.mUserStatus = mUserStatus;
+    }
+
+    public void setProfilePicUrl(String mProfilePicUrl) {
+        this.mProfilePicUrl = mProfilePicUrl;
+    }
+
+    public void setUserSettings(List<Settings> mUserSettings) {
+        this.mUserSettings = mUserSettings;
+    }
+
+    public String getDisplayName() {
+        return mDisplayName;
     }
 
     public String getEmail() {
@@ -37,14 +70,6 @@ public class User {
 
     public String getPhoneNum() {
         return mPhoneNum;
-    }
-
-    public String getEncryptedPwd() {
-        return mEncryptedPwd;
-    }
-
-    public Date getJoinedDate() {
-        return mJoinedDate;
     }
 
     public UserGroupStatus getUserStatus() {
@@ -59,3 +84,5 @@ public class User {
         return mUserSettings;
     }
 }
+
+

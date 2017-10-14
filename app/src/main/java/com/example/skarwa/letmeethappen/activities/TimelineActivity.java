@@ -11,30 +11,58 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.adapters.EventsPagerAdapter;
+import com.example.skarwa.letmeethappen.fragments.NewEventFragment;
 import com.example.skarwa.letmeethappen.fragments.NewGroupFragment;
 import com.example.skarwa.letmeethappen.fragments.ViewGroupFragment;
+import com.example.skarwa.letmeethappen.models.Event;
+import com.example.skarwa.letmeethappen.models.User;
+import com.example.skarwa.letmeethappen.utils.Constants;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.parceler.Parcels;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by jennifergodinez on 10/9/17.
  */
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements NewEventFragment.OnCreateEventClickListener{
     EventsPagerAdapter pagerAdapter;
     ViewPager viewPager;
     DrawerLayout mDrawer;
     NavigationView nvDrawer;
     ActionBarDrawerToggle drawerToggle;
     Toolbar toolbar;
+    User loggedInUser;
+
+    // [START declare_database_ref]
+    private DatabaseReference mDatabase;
+    // [END declare_database_ref]
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+
+        loggedInUser = Parcels.unwrap(getIntent().getParcelableExtra(Constants.USER_OBJ));
+
+        // [START initialize_database_ref]
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        // [END initialize_database_ref]
 
         // Find the toolbar view inside the activity layout
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -157,5 +185,19 @@ public class TimelineActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+
+    @Override
+    public void onCreateEvent(Event event) {
+
+        Toast.makeText(this, "Saving Event...", Toast.LENGTH_SHORT).show();
+
+        String key = mDatabase.child("events").push().getKey();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/events/" + key, event);
+
+        mDatabase.updateChildren(childUpdates);
     }
 }

@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "152102331855-pfc07c77u8kpdff591pvq6ohtdbl9833.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.skarwa.letmeethappen",
+            "certificate_hash": "ef0c64db705db9368f134f56b532cb40e56a562e"
+          }
+        },
+        {
+          "client_id": "152102331855-oiorn73mu5m8er9t2e8s642nso0it7i6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.skarwa.letmeethappen",
+            "certificate_hash": "37a3e503edd5246f5bc8e8bab2b28867e0681e10"
+          }
+        },
+        {
           "client_id": "152102331855-squr1kvjrobp2kc5s47jkf2be47jmpm2.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +45,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152102331855-squr1kvjrobp2kc5s47jkf2be47jmpm2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
