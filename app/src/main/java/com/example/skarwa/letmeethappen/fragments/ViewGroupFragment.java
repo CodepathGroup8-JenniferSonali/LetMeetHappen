@@ -19,7 +19,7 @@ public class ViewGroupFragment extends DialogFragment {
 
     TextView tvGroupName;
     ListView lvMembers;
-    Button btn;
+    Button btnCreateEvent;
     String groupName;
 
     public static ViewGroupFragment newInstance(String name) {
@@ -68,6 +68,18 @@ public class ViewGroupFragment extends DialogFragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, values);
         lvMembers.setAdapter(adapter);
+
+        btnCreateEvent = (Button)view.findViewById(R.id.btnCreateEvent);
+        btnCreateEvent.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                //FragmentManager fm = getSupportFragmentManager();
+                NewEventFragment eventFragment = NewEventFragment.newInstance("Some Title");
+                eventFragment.show(getFragmentManager(), "fragment_new_event");
+                dismiss();
+            }
+        });
 
 
     }

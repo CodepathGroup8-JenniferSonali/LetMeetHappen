@@ -16,7 +16,6 @@ import android.view.MenuItem;
 
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.adapters.EventsPagerAdapter;
-import com.example.skarwa.letmeethappen.fragments.NewEventFragment;
 import com.example.skarwa.letmeethappen.fragments.NewGroupFragment;
 import com.example.skarwa.letmeethappen.fragments.ViewGroupFragment;
 
@@ -136,12 +135,6 @@ public class TimelineActivity extends AppCompatActivity {
                 if (drawerToggle.onOptionsItemSelected(item)) {
                     return true;
                 }
-
-            case R.id.new_event:
-                FragmentManager fm = getSupportFragmentManager();
-                NewEventFragment eventFragment = NewEventFragment.newInstance("Some Title");
-                eventFragment.show(fm, "fragment_new_event");
-                return true;
 
             default:
                 return super.onOptionsItemSelected(item);

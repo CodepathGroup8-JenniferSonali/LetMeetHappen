@@ -33,6 +33,13 @@
     <ListView
         android:id="@+id/lvMembers"
         android:layout_width="match_parent"
+        android:clickable="false"
         android:layout_height="350dp" />
+
+    <Button
+        android:id="@+id/btnCreateEvent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/create_invite" />
 
 </LinearLayout>

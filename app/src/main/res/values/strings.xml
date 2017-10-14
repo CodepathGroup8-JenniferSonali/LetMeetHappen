@@ -19,5 +19,6 @@
     <string name="addNewGroup">Add Group</string>
     <string name="group_name">Group Name</string>
     <string name="members">Members</string>
+    <string name="create_invite">New Event</string>
 
 </resources>
