@@ -61,7 +61,9 @@ public class ViewEventFragment extends DialogFragment {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         tvEventName = (TextView) view.findViewById(R.id.tvEventName);
-        tvEventName.setText(mEvent.getEventName());
+
+        final String eventName = mEvent.getEventName();
+        tvEventName.setText(eventName);
 
 
         btnRespond = (Button)view.findViewById(R.id.btnRespond);
@@ -69,13 +71,11 @@ public class ViewEventFragment extends DialogFragment {
 
             @Override
             public void onClick(View view) {
-                //TODO display Respond dialog
-                /*
-                //FragmentManager fm = getSupportFragmentManager();
-                NewEventFragment eventFragment = NewEventFragment.newInstance(groupName);
-                eventFragment.show(getFragmentManager(), "fragment_new_event");
+
+                RespondFragment respondFragment = RespondFragment.newInstance(eventName);
+                respondFragment.show(getFragmentManager(), "fragment_respond");
                 dismiss();
-                */
+
                 Log.d("DEBUG", "display Respond dialog here");
             }
         });

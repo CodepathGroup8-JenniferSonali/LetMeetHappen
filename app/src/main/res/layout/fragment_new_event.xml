@@ -15,7 +15,8 @@
             android:id="@+id/tvEventName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/event_name" />
+            android:text="@string/event_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <EditText
             android:id="@+id/etEventName"
@@ -38,10 +39,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:text="@string/dates" />
+            android:text="@string/location"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <EditText
             android:id="@+id/etDates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:ems="10"
+            android:hint="@string/location"
+            android:inputType="text"
+            android:maxLines="2"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text="@string/dates"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <EditText
+            android:id="@+id/etLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -62,7 +89,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:text="@string/rsvp_date" />
+            android:text="@string/rsvp_date"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <EditText
             android:id="@+id/etRSVPDate"
@@ -79,10 +107,11 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tvMinYes"
+            android:id="@+id/tvYesCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/min_attendee" />
+            android:text="@string/min_attendee"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <Spinner
             android:id="@+id/spMinYes"
@@ -90,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="71dp"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/tvMinYes" />
+            android:layout_toEndOf="@+id/tvYesCount" />
 
     </RelativeLayout>
     <Button

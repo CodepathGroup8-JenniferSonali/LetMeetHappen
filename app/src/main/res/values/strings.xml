@@ -4,7 +4,7 @@
     <string name="event_name">Event Name</string>
     <string name="select_group">Select Group</string>
     <string name="dates">Dates</string>
-    <string name="rsvp_date">Accept before</string>
+    <string name="rsvp_date">Please respond by</string>
     <string name="min_attendee">Minimum Attendees</string>
     <string name="message">Message to the group</string>
     <string name="send_invite">CREATE</string>
@@ -21,6 +21,14 @@
     <string name="members">Members</string>
     <string name="create_invite">Create new event for this group</string>
     <string name="rsvp">Respond to Invite</string>
-    <string name="current_response">Current Response</string>
+    <string name="current_response">Your current response</string>
+    <string name="ask">Can you make it?</string>
+    <string name="positive">Yes, looking forward to it</string>
+    <string name="negative">Sorry, I can\'t make it at this time.</string>
+    <string name="maybe">Let me get back to you on this.</string>
+    <string name="availableDates">Select All Available Dates</string>
+    <string name="send">Send</string>
+    <string name="location">Location</string>
+    <string name="nYes">Going so far</string>
 
 </resources>
