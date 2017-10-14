@@ -20,5 +20,7 @@
     <string name="group_name">Group Name</string>
     <string name="members">Members</string>
     <string name="create_invite">Create new event for this group</string>
+    <string name="rsvp">Respond to Invite</string>
+    <string name="current_response">Current Response</string>
 
 </resources>

@@ -29,9 +29,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
     private List<Event> mEvents;
     private Context context;
+    OnItemClickListener listener;
 
-    public EventAdapter(List<Event> events) {
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, int position);
+    }
+
+    public EventAdapter(List<Event> events, OnItemClickListener listener) {
         this.mEvents = events;
+        this.listener = listener;
     }
 
     @Override
@@ -41,7 +47,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
         View tweetView = inflater.inflate(R.layout.item_event, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(tweetView);
+        ViewHolder viewHolder = new ViewHolder(tweetView, listener);
         return viewHolder;
     }
 
@@ -115,13 +121,24 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         public ProgressBar pbStatus;
 
 
-        public ViewHolder (View itemView) {
+        public ViewHolder (final View itemView, final OnItemClickListener listener) {
             super(itemView);
             ivProfileImage = (ImageView)itemView.findViewById(R.id.ivProfileImage);
             tvDate = (TextView)itemView.findViewById(R.id.tvDate);
             tvEventName = (TextView)itemView.findViewById(R.id.tvEventName);
             imgAlert = (ImageButton)itemView.findViewById(R.id.imgAlert);
            // pbStatus = itemView.findViewById(R.id.pbStatus);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(itemView, position);
+                        //Log.d("DEBUG", "itemClicked");
+
+                    }
+                }
+            });
 
             
         }

@@ -43,9 +43,26 @@ public class EventsListFragment extends Fragment {
                 DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         rvEvents.addItemDecoration(itemDecoration);
 
+
+        EventAdapter.OnItemClickListener listener = new EventAdapter.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(View view, int position) {
+                Event event = events.get(position);
+
+                //Toast.makeText(getContext(), "onItemClicked", Toast.LENGTH_LONG);
+
+                ViewEventFragment eventFragment = ViewEventFragment.newInstance(event);
+                eventFragment.show(getFragmentManager(), "fragment_new_event");
+
+            }
+        };
+
+
+
         events = new ArrayList<Event>();
 
-        eventAdapter = new EventAdapter(events);
+        eventAdapter = new EventAdapter(events, listener);
 
         //temporary
         addItems(null);
