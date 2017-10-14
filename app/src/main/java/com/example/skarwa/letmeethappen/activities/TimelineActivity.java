@@ -84,7 +84,7 @@ public class TimelineActivity extends AppCompatActivity {
                                 break;
 
                             case R.id.group1:  //TODO, we need to dynamically get the ID
-                                ViewGroupFragment viewgroupFragment = ViewGroupFragment.newInstance("Group Name");
+                                ViewGroupFragment viewgroupFragment = ViewGroupFragment.newInstance("Close Friends");
                                 viewgroupFragment.show(fm, "fragment_view_group");
 
                                 break;

@@ -26,8 +26,8 @@
             android:layout_marginTop="17dp"
             android:layout_toEndOf="@+id/textView4"
             android:ems="10"
-            android:inputType="text"
-            android:text="Name" />
+            android:hint="@string/group_name"
+            android:inputType="text" />
 
 
     </RelativeLayout>

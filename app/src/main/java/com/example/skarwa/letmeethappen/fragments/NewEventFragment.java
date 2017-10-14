@@ -29,6 +29,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     EditText etEventName;
     EditText etDates;
     EditText etRSVPDate;
+    String mTitle; //group name
 
 
     public NewEventFragment() {
@@ -44,6 +45,14 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        mTitle = args.getString("title");
+    }
+
+
 
 
     @Override
@@ -57,6 +66,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         super.onViewCreated(view, savedInstanceState);
 
         //getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        getDialog().getWindow().setTitle(mTitle);
 
         etEventName = (EditText) view.findViewById(R.id.etEventName);
 

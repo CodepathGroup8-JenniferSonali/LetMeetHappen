@@ -75,7 +75,7 @@ public class ViewGroupFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 //FragmentManager fm = getSupportFragmentManager();
-                NewEventFragment eventFragment = NewEventFragment.newInstance("Some Title");
+                NewEventFragment eventFragment = NewEventFragment.newInstance(groupName);
                 eventFragment.show(getFragmentManager(), "fragment_new_event");
                 dismiss();
             }
