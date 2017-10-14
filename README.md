@@ -6,12 +6,12 @@ Time Spent : XX hours spent in total
 ## User Stories
 
 The following **required** functionality is completed:
-* [ ] The user should be able to login /signup for the app 
+* [ ] The user should be able to login /signup for the app using google
 * [ ] The user should be able to create groups and add friends to them.  
 * [ ] Logged in User should be able to create meeting request for a group.
   * [ ] User who generates a meeting request will enter the event name, event dates(max 2), group to invite, location, minimum yes needed from the group (min: 2, max: group size), deadline to respond to the invite 
   * [ ] All member of the group should receive a push notification and email invite to repond to the meeting request
-* [ ] User should be able to respond to the meeting request
+* [ ] User should be able to respond(Yes/No/Maybe) to the meeting request
 * [ ] User can view all upcoming and past meetings on their home page.
   * [ ] User can infinitely paginate both past and upcoming meetings
   * [ ] Upcoming meeting will be color coded to differentiate Confirmed or Ongoing.
@@ -20,6 +20,8 @@ The following **required** functionality is completed:
 
 The following **optional** features are implemented:
 
+* [ ] User can save draft event invites and send them later. 
+* [ ] User can login/sign up using facebook.
 * [ ] Implements robust error handling, [check if internet is available](http://guides.codepath.com/android/Sending-and-Managing-Network-Requests#checking-for-network-connectivity), handle error cases, network failures
 * [ ] User can add **multiple location suggestions** to the meeting request
 * [ ] User can **search for meeting matching a particular query** and see results
@@ -59,8 +61,13 @@ Wireframe images are in PLAN/wireframes subfolder.
 Describe any challenges encountered while building the app.
 
 ## Open-source libraries used
+ 
+- Parceler 
+- Firebase Database 
+- Google / Firebase Auth 
+- Retrolambda 
+- Glide
 
-- [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing 
 
 ## License
 
