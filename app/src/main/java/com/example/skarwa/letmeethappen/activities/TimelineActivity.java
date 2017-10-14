@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +17,8 @@ import android.view.MenuItem;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.adapters.EventsPagerAdapter;
 import com.example.skarwa.letmeethappen.fragments.NewEventFragment;
+import com.example.skarwa.letmeethappen.fragments.NewGroupFragment;
+import com.example.skarwa.letmeethappen.fragments.ViewGroupFragment;
 
 /**
  * Created by jennifergodinez on 10/9/17.
@@ -66,12 +69,46 @@ public class TimelineActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        //TODO  if group selected
-                       // launchGroupDetail(menuItem);
+                        DialogFragment fragment = null;
+                        Class fragmentClass = null;
+                        FragmentManager fm = getSupportFragmentManager();
 
-                        //TODO else if settings selects
-                        //launch settings page
-                        //launchSettingsDialog/ Activity
+
+                        switch(menuItem.getItemId()) {
+
+                            case R.id.addGroup:
+                                fragmentClass = NewGroupFragment.class;
+
+                                NewGroupFragment groupFragment = NewGroupFragment.newInstance("Some Title");
+                                groupFragment.show(fm, "fragment_new_group");
+
+                                break;
+
+                            case R.id.group1:  //TODO, we need to dynamically get the ID
+                                ViewGroupFragment viewgroupFragment = ViewGroupFragment.newInstance("Group Name");
+                                viewgroupFragment.show(fm, "fragment_view_group");
+
+                                break;
+
+                            //case
+
+                                //TODO else if settings selects
+                                //launch settings page
+                                //launchSettingsDialog/ Activity
+
+                            default:
+                                break;
+
+
+                        }
+
+
+                        // Highlight the selected item has been done by NavigationView
+                        menuItem.setChecked(true);
+                        // Set action bar title
+                        setTitle(menuItem.getTitle());
+                        // Close the navigation drawer
+                        mDrawer.closeDrawers();
                         return true;
                     }
                 });

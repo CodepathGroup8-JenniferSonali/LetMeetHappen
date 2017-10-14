@@ -16,5 +16,8 @@
     <string name="group2">IUB Friends</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="addNewGroup">Add Group</string>
+    <string name="group_name">Group Name</string>
+    <string name="members">Members</string>
 
 </resources>
