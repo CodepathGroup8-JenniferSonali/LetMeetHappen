@@ -9,12 +9,12 @@ import com.example.skarwa.letmeethappen.models.Event;
  * Created by jennifergodinez on 10/2/17.
  */
 
-public class HomeTimelineFragment extends EventsListFragment {
+public class PastTimelineFragment extends EventsListFragment {
 
     @Override
     void showEventDetail(Event event) {
-        ViewEventFragment eventFragment = ViewEventFragment.newInstance(event);
-        eventFragment.show(getFragmentManager(), "fragment_new_event");
+        ViewPastEventFragment eventFragment = ViewPastEventFragment.newInstance(event);
+        eventFragment.show(getFragmentManager(), "fragment_view_pastevent");
     }
 
     @Override

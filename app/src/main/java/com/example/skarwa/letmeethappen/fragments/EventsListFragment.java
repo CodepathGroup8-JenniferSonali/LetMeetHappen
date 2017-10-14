@@ -23,11 +23,13 @@ import java.util.ArrayList;
  * Created by jennifergodinez on 10/2/17.
  */
 
-public class EventsListFragment extends Fragment {
+public abstract class EventsListFragment extends Fragment {
     private EventAdapter eventAdapter;
     private ArrayList<Event> events;
     private RecyclerView rvEvents;
 
+
+    abstract void showEventDetail(Event event);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,12 +51,11 @@ public class EventsListFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 Event event = events.get(position);
-
-                //Toast.makeText(getContext(), "onItemClicked", Toast.LENGTH_LONG);
-
+                showEventDetail(event);
+                /*
                 ViewEventFragment eventFragment = ViewEventFragment.newInstance(event);
                 eventFragment.show(getFragmentManager(), "fragment_new_event");
-
+*/
             }
         };
 

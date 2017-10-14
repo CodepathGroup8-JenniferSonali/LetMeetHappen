@@ -30,5 +30,6 @@
     <string name="send">Send</string>
     <string name="location">Location</string>
     <string name="nYes">Going so far</string>
+    <string name="attendees">Attendees</string>
 
 </resources>
