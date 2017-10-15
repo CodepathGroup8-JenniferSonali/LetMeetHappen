@@ -137,11 +137,12 @@
 
         <EditText
             android:id="@+id/etMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="80dp"
             android:layout_alignParentTop="true"
             android:layout_marginStart="30dp"
             android:layout_toEndOf="@+id/tvMessage"
+            android:background="@drawable/rectangle"
             android:ems="10"
             android:inputType="textMultiLine"
             android:maxLines="4"

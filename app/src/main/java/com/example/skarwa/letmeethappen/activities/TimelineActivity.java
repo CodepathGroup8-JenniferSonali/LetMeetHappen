@@ -11,8 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -25,11 +23,8 @@ import com.example.skarwa.letmeethappen.fragments.ViewGroupFragment;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
@@ -133,7 +128,7 @@ public class TimelineActivity extends AppCompatActivity implements NewEventFragm
                         // Highlight the selected item has been done by NavigationView
                         menuItem.setChecked(true);
                         // Set action bar title
-                        setTitle(menuItem.getTitle());
+                        //setTitle(menuItem.getTitle());
                         // Close the navigation drawer
                         mDrawer.closeDrawers();
                         return true;

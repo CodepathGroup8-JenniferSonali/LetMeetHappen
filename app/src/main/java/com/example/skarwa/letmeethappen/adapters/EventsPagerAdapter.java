@@ -13,7 +13,7 @@ import com.example.skarwa.letmeethappen.fragments.PastTimelineFragment;
  */
 
 public class EventsPagerAdapter extends SmartFragmentStatePagerAdapter {
-    private String[] tabTitles = {"UPCOMING", "Created", "Past"};
+    private String[] tabTitles = {"UPCOMING", "Past", "Created"};
     private Context context;
 
     public EventsPagerAdapter(FragmentManager fm, Context context) {
@@ -26,11 +26,9 @@ public class EventsPagerAdapter extends SmartFragmentStatePagerAdapter {
         if (position == 0) {
             return new HomeTimelineFragment();
         } else if (position == 1) {
-            //return new PastTimelineFragment();
-            return new CreatedTimelineFragment(); //temporary
+            return new PastTimelineFragment();
         } else if (position == 2) {
-            //return new PastTimelineFragment();
-            return new PastTimelineFragment(); //temporary
+            return new CreatedTimelineFragment();
         } else {
             return null;
         }
@@ -43,7 +41,7 @@ public class EventsPagerAdapter extends SmartFragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2; //3 if we support Draft/Saved New Event
     }
 
 }
