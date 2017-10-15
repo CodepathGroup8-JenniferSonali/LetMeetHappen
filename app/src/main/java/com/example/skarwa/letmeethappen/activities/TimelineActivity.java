@@ -195,4 +195,9 @@ public class TimelineActivity extends AppCompatActivity implements NewEventFragm
 
         mDatabase.updateChildren(childUpdates);
     }
+
+
+    public void getEventList(Event event) {
+
+    }
 }

@@ -13,6 +13,9 @@ import android.widget.EditText;
 
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.Event;
+import com.example.skarwa.letmeethappen.models.EventStatus;
+import com.example.skarwa.letmeethappen.utils.Constants;
+import com.example.skarwa.letmeethappen.utils.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,6 +34,8 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     EditText etDates;
     EditText etRSVPDate;
     String mTitle; //group name
+    Event event;
+
 
     // listener will the activity instance containing fragment
     private OnCreateEventClickListener listener;
@@ -45,12 +50,10 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     }
 
     public static NewEventFragment newInstance(String title) {
-
         NewEventFragment fragment = new NewEventFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -60,9 +63,6 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         Bundle args = getArguments();
         mTitle = args.getString("title");
     }
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -123,17 +123,13 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
 
             @Override
             public void onClick(View view) {
-
-                Event event = new Event();
                 event.setEventName(etEventName.getText().toString());
                 event.setAcceptByDate(etRSVPDate.getText().toString());
+                event.setEventStatus(EventStatus.NEW);
+                event.setMinAcceptance(2); //default to 2 for now
 
                 listener = (OnCreateEventClickListener)getActivity();
                 listener.onCreateEvent(event);
-
-                //TODO
-               /* event.addEventDateOptions(); //set dates
-                event.setMinAcceptance();*/
 
                 Log.d("DEBUG", "button clicked in new event fragment");
                 dismiss();
@@ -147,9 +143,9 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         String str = "";
 
         for (Date date : dates) {
-            str += new SimpleDateFormat("E   yyyy.MM.dd").format(date.getTime()) +"\n";
+            event.addEventDateOptions(DateUtils.formatDateToString(date));
+            str += new SimpleDateFormat(Constants.DATE_PATTERN).format(date.getTime()) +"\n";
         }
-
         EditText et = (isRange) ? etDates : etRSVPDate;
         et.setText(str);
     }

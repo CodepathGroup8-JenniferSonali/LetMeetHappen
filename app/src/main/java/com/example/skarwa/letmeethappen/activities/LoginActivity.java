@@ -27,6 +27,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
 
 import org.parceler.Parcels;
 
@@ -35,9 +36,10 @@ import io.fabric.sdk.android.Fabric;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static int RC_SIGN_IN = 88;
-    private FirebaseAuth mAuth;
+    FirebaseAuth mAuth;
     FirebaseUser fbaseUser;
     GoogleApiClient mGoogleApiClient;
+    DatabaseReference mDatabase;
 
 
     @Override
@@ -65,8 +67,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .build();
 
         mAuth = FirebaseAuth.getInstance();
-
-
     }
 
 
@@ -124,7 +124,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         fbaseUser = mAuth.getCurrentUser();
-
         //updateUI(currentUser);
     }
 
@@ -190,4 +189,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         return user;
     }
+
+    // [START basic_write]
+    private void saveNewUser(User user) {
+        mDatabase.child("users").child(user.getId()).setValue(user);
+    }
+    // [END basic_write]
+
 }

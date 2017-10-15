@@ -6,5 +6,5 @@ package com.example.skarwa.letmeethappen.utils;
 
 public interface Constants {
     public static final String USER_OBJ = "User";
-    public static final String DATE_PATTERN = "MM-dd-yyyy";
+    public static final String DATE_PATTERN = "E MM-dd-yyyy";
 }

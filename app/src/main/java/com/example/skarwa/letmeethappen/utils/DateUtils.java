@@ -14,7 +14,7 @@ import static com.example.skarwa.letmeethappen.utils.Constants.DATE_PATTERN;
 
 public class DateUtils {
 
-    public String formatDateToString(Date date){
+    public static final String formatDateToString(Date date){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_PATTERN);
 
         String stringDate = simpleDateFormat.format(date);
@@ -23,7 +23,7 @@ public class DateUtils {
         return stringDate;
     }
 
-    public Date parseDatefromString(String stringDate){
+    public static final Date parseDatefromString(String stringDate){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_PATTERN);
 
         Date date = null;
