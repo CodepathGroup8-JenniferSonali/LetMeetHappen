@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.skarwa.letmeethappen.R;
+import com.example.skarwa.letmeethappen.utils.Constants;
 
 
 public class ViewGroupFragment extends DialogFragment {
@@ -26,7 +27,7 @@ public class ViewGroupFragment extends DialogFragment {
 
         ViewGroupFragment fragment = new ViewGroupFragment();
         Bundle args = new Bundle();
-        args.putString("name", name);
+        args.putString(Constants.GROUP_NAME, name);
         fragment.setArguments(args);
 
         return fragment;
@@ -36,7 +37,7 @@ public class ViewGroupFragment extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        groupName = args.getString("name");
+        groupName = args.getString(Constants.GROUP_NAME);
     }
 
     @Override

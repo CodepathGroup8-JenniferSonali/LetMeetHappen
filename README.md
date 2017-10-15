@@ -60,6 +60,11 @@ Wireframe images are in PLAN/wireframes subfolder.
 
 Describe any challenges encountered while building the app.
 
+Using Enums with  Model objects was not supported in Firebase.
+
+
+
+
 ## Open-source libraries used
  
 - Parceler 
@@ -67,6 +72,7 @@ Describe any challenges encountered while building the app.
 - Google / Firebase Auth 
 - Retrolambda 
 - Glide
+- Butterknife
 
 
 ## License

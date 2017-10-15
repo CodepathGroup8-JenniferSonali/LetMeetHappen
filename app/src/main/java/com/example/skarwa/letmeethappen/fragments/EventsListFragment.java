@@ -25,16 +25,21 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import com.google.firebase.database.Query;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by jennifergodinez on 10/2/17.
  */
 
 public abstract class EventsListFragment extends Fragment {
-    private RecyclerView rvEvents;
-    private LinearLayoutManager mManager;
 
-    private DatabaseReference mDatabase;
-    private FirebaseRecyclerAdapter<Event,EventViewHolder> mAdapter;
+    @BindView(R.id.rvEvents)
+    RecyclerView rvEvents;
+    LinearLayoutManager mManager;
+
+    DatabaseReference mDatabase;
+    FirebaseRecyclerAdapter<Event,EventViewHolder> mAdapter;
 
     public EventsListFragment() {
 
@@ -43,6 +48,8 @@ public abstract class EventsListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -51,7 +58,8 @@ public abstract class EventsListFragment extends Fragment {
         // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // [END create_database_reference]
-        rvEvents = (RecyclerView) view.findViewById(R.id.rvEvents);
+
+        ButterKnife.bind(this,view);
         return view;
     }
 

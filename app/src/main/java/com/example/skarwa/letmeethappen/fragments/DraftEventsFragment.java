@@ -25,9 +25,4 @@ public class DraftEventsFragment extends EventsListFragment {
                 .equalTo("DRAFT");
         return query;
     }
-
-
-
-
-
 }

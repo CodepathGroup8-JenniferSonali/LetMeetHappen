@@ -27,14 +27,24 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import io.fabric.sdk.android.Fabric;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener ,Constants{
 
+    private static final String TAG = "LoginActivity";
     private static int RC_SIGN_IN = 88;
     FirebaseAuth mAuth;
     FirebaseUser fbaseUser;
@@ -47,6 +57,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login);
+
+        // [START initialize_database_ref]
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        // [END initialize_database_ref]
 
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
@@ -105,7 +119,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d("DEBUG", "handleSignInResult:" + result.isSuccess());
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
@@ -114,7 +128,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else {
             //TODO display message
             // Signed out, show unauthenticated UI.
-            Log.d("DEBUG", "unauthenticated google:" + result.isSuccess());
+            Log.d(TAG, "unauthenticated google:" + result.isSuccess());
             //updateUI(false);
         }
     }
@@ -128,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d("DEBUG", "firebaseAuthWithGoogle:" + acct.getId());
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
         if (fbaseUser != null) {
             onLoginSuccess();
@@ -141,13 +155,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-                                Log.d("DEBUG", "signInWithCredential:success");
+                                Log.d(TAG, "signInWithCredential:success");
                                 fbaseUser = mAuth.getCurrentUser();
                                 Toast.makeText(getBaseContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                                 onLoginSuccess();  // onLoginSuccess(fbaseUser);
                             } else {
                                 // If sign in fails, display a message to the user.
-                                Log.w("DEBUG", "signInWithCredential:failure", task.getException());
+                                Log.w(TAG, "signInWithCredential:failure", task.getException());
                                 Toast.makeText(LoginActivity.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
                                 //updateUI(null);
@@ -167,6 +181,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onLoginSuccess() {
         Intent i = new Intent(this, TimelineActivity.class);
         //send user details to the next activity to fetch groups and events
+
         i.putExtra(Constants.USER_OBJ, Parcels.wrap(createUserFromFirebaseAuthUser(fbaseUser)));
         startActivity(i);
     }
@@ -183,17 +198,58 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         user.setEmail(fbaseUser.getEmail());
         user.setId(fbaseUser.getUid());
         user.setPhoneNum(fbaseUser.getPhoneNumber());
-        user.setUserStatus(UserGroupStatus.ACTIVE);
+        user.setUserStatus(UserGroupStatus.ACTIVE.name());
         user.setProfilePicUrl(fbaseUser.getPhotoUrl().toString());
         user.setUserSettings(null); //setting settings null for now.
+
+
+        saveUser(user);
+
+
 
         return user;
     }
 
-    // [START basic_write]
-    private void saveNewUser(User user) {
-        mDatabase.child("users").child(user.getId()).setValue(user);
+    private void saveUser(final User userToSave) {
+
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // run some code
+                if (dataSnapshot.hasChild(USERS_ENDPOINT)) {
+                    //if users already exists
+                    mDatabase.child(USERS_ENDPOINT).child(userToSave.getId()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                // code if user exists
+                                User user = dataSnapshot.getValue(User.class);
+                                Log.d(TAG,"User exist !!");
+                            } else {
+                                // user not found
+                                Log.d(TAG,"User does not exist !!");
+                                mDatabase.child(USERS_ENDPOINT).child(userToSave.getId()).setValue(userToSave);
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            System.out.println("The read failed: " + databaseError.getCode());
+                        }
+                    });
+                } else {  // if "users" child doesnt exist ..create the child and then add
+                    DatabaseReference mUserDBReference = mDatabase.child(USERS_ENDPOINT).push();
+                    mUserDBReference.child(userToSave.getId()).setValue(userToSave);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
-    // [END basic_write]
 
 }

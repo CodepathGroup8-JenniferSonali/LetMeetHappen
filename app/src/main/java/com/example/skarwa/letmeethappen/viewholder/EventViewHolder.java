@@ -39,7 +39,13 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
 
     public void bindToEvent(Event event, Context context) {
         tvEventName.setText(event.getEventName());
-        tvDate.setText(event.getAcceptByDate().toString());
+
+        String dateOptions = event.getEventDateOptions().toString();
+        if(event.getEventFinalDate() ==  null){
+            tvDate.setText(dateOptions);
+        } else {
+            tvDate.setText(event.getEventFinalDate().toString()); //TODO change this to confirmed date
+        }
 
         Glide.with(context)
                 .load(event.getHostProfileImage())
@@ -47,11 +53,11 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
                 .into(ivProfileImage);
 
 
-        /*if (event.getEventStatus().equals(EventStatus.NEW)) {
+        if (event.getEventStatus().equals(EventStatus.NEW)) {
             imgAlert.setVisibility(View.VISIBLE);
 
         } else {
             imgAlert.setVisibility(View.GONE);
-        }*/
+        }
     }
 }

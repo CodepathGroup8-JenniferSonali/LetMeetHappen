@@ -10,16 +10,22 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.EventStatus;
+import com.example.skarwa.letmeethappen.models.Location;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.example.skarwa.letmeethappen.utils.DateUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -28,11 +34,22 @@ import java.util.List;
 
 public class NewEventFragment extends DialogFragment implements SelectDatesFragment.OnDatePass{
 
+    private static final String TAG = "NewEventFragment";
     final static String ISRANGE = "IS_RANGE";
+    final static String DATE_PICKER = "datePicker";
 
+    @BindView(R.id.etEventName)
     EditText etEventName;
+
+    @BindView(R.id.etDates)
     EditText etDates;
+
+    @BindView(R.id.etRSVPDate)
     EditText etRSVPDate;
+
+    @BindView(R.id.etLocation)
+    EditText etLocation;
+
     String mTitle; //group name
     Event event;
 
@@ -52,7 +69,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     public static NewEventFragment newInstance(String title) {
         NewEventFragment fragment = new NewEventFragment();
         Bundle args = new Bundle();
-        args.putString("title", title);
+        args.putString(Constants.TITLE, title);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,13 +78,16 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        mTitle = args.getString("title");
+        mTitle = args.getString(Constants.TITLE);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_new_event, container);
+        View view =  inflater.inflate(R.layout.fragment_new_event, container);
+        event = new Event();
+        ButterKnife.bind(this,view);
+        return view;
     }
 
     @Override
@@ -77,14 +97,10 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         //getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setTitle(mTitle);
 
-        etEventName = (EditText) view.findViewById(R.id.etEventName);
-
         // Show soft keyboard automatically and request focus to field
         etEventName.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-        etDates = (EditText)view.findViewById(R.id.etDates);
 
         etDates.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,12 +112,10 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(ISRANGE, true);
                 newFragment.setArguments(bundle);
-                newFragment.show(getFragmentManager(), "datePicker");
-
+                newFragment.show(getFragmentManager(), DATE_PICKER);
             }
         });
 
-        etRSVPDate = (EditText)view.findViewById(R.id.etRSVPDate);
         etRSVPDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,8 +126,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(ISRANGE, false);
                 newFragment.setArguments(bundle);
-                newFragment.show(getFragmentManager(), "datePicker");
-
+                newFragment.show(getFragmentManager(), DATE_PICKER);
             }
         });
 
@@ -123,15 +136,21 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
 
             @Override
             public void onClick(View view) {
+
+                Location location = new Location();
+                location.setUserFriendlyName(etLocation.getText().toString());
+
                 event.setEventName(etEventName.getText().toString());
                 event.setAcceptByDate(etRSVPDate.getText().toString());
-                event.setEventStatus(EventStatus.NEW);
+                event.setEventStatus(EventStatus.NEW.name());
+
+                event.setLocation(location);
                 event.setMinAcceptance(2); //default to 2 for now
 
                 listener = (OnCreateEventClickListener)getActivity();
                 listener.onCreateEvent(event);
 
-                Log.d("DEBUG", "button clicked in new event fragment");
+                Log.d(TAG, "Send Button Clicked");
                 dismiss();
             }
         });

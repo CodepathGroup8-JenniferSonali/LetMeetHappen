@@ -30,7 +30,9 @@ public class UpcomingEventsFragment extends EventsListFragment {
                 .getReference()
                 .child("events")
                 .orderByChild("eventStatus")
-                .equalTo("PENDING", "CONFIRMED");  //TODO : change this to fetch upcoming events
+                .equalTo("NEW");
+              //  .equalTo("CONFIRMED")
+              //  .equalTo("PENDING");  //TODO : change this to fetch upcoming events
         return query;
     }
 }

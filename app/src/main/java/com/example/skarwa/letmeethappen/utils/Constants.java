@@ -5,6 +5,13 @@ package com.example.skarwa.letmeethappen.utils;
  */
 
 public interface Constants {
-    public static final String USER_OBJ = "User";
-    public static final String DATE_PATTERN = "E MM-dd-yyyy";
+    String USER_OBJ = "User";
+    String TITLE = "title";
+    String DATE_PATTERN = "E MM-dd-yyyy";
+    String EVENT_NAME = "event_name";
+    String GROUP_NAME = "group_name";
+
+    //endpoints
+    String USERS_ENDPOINT = "users";
+    String EVENTS_ENDPOINT = "events";
 }

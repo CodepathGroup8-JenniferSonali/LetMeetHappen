@@ -14,6 +14,7 @@ import java.util.Map;
  * Created by skarwa on 10/12/17.
  */
 
+@IgnoreExtraProperties
 @Parcel
 public class User {
     String mId;
@@ -48,10 +49,6 @@ public class User {
         this.mPhoneNum = mPhoneNum;
     }
 
-    public void setUserStatus(UserGroupStatus mUserStatus) {
-        this.mUserStatus = mUserStatus;
-    }
-
     public void setProfilePicUrl(String mProfilePicUrl) {
         this.mProfilePicUrl = mProfilePicUrl;
     }
@@ -72,9 +69,29 @@ public class User {
         return mPhoneNum;
     }
 
-    public UserGroupStatus getUserStatus() {
+    @Exclude
+    public UserGroupStatus getUserStatusAsEnum() {
         return mUserStatus;
     }
+
+    public String getUserStatus() {
+        // Convert enum to string
+        if (mUserStatus == null) {
+            return null;
+        } else {
+            return mUserStatus.name();
+        }
+    }
+
+    public void setUserStatus(String status) {
+        // Get enum from string
+        if (status == null) {
+            this.mUserStatus = null;
+        } else {
+            this.mUserStatus = UserGroupStatus.valueOf(status);
+        }
+    }
+
 
     public String getProfilePicUrl() {
         return mProfilePicUrl;
