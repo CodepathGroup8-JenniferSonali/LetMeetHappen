@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.Event;
 
-import org.json.JSONException;
+import org.parceler.Parcels;
 
 
 public class ViewEventFragment extends DialogFragment {
@@ -27,7 +27,7 @@ public class ViewEventFragment extends DialogFragment {
 
         ViewEventFragment fragment = new ViewEventFragment();
         Bundle args = new Bundle();
-        //args.putParcelable("event", Parcels.wrap(event));
+        args.putParcelable("event", Parcels.wrap(event));
         fragment.setArguments(args);
 
         return fragment;
@@ -37,14 +37,7 @@ public class ViewEventFragment extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        //mEvent = (Event) Parcels.unwrap(args.getParcelable("event"));
-
-        //TODO  below is for testing only
-        try {
-            mEvent = Event.fromJSON(null);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        mEvent = (Event) Parcels.unwrap(args.getParcelable("event"));
     }
 
     @Override
