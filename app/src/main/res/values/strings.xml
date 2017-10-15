@@ -4,7 +4,7 @@
     <string name="event_name">Event Name</string>
     <string name="select_group">Select Group</string>
     <string name="dates">Dates</string>
-    <string name="rsvp_date">Please respond by</string>
+    <string name="rsvp_date">Respond by</string>
     <string name="min_attendee">Minimum Attendees</string>
     <string name="message">Message to the group</string>
     <string name="send_invite">CREATE</string>
@@ -31,5 +31,4 @@
     <string name="location">Location</string>
     <string name="nYes">Going so far</string>
     <string name="attendees">Attendees</string>
-
 </resources>
