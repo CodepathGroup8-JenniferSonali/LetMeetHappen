@@ -85,6 +85,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_new_event, container);
+        getDialog().setTitle(mTitle);
         event = new Event();
         ButterKnife.bind(this,view);
         return view;
@@ -95,7 +96,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         super.onViewCreated(view, savedInstanceState);
 
         //getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        getDialog().getWindow().setTitle(mTitle);
+
 
         // Show soft keyboard automatically and request focus to field
         etEventName.requestFocus();

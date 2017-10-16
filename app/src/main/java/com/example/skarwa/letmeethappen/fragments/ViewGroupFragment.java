@@ -59,11 +59,7 @@ public class ViewGroupFragment extends DialogFragment {
         lvMembers = (ListView) view.findViewById(R.id.lvMembers);
 
         String[] values = new String[]{"Jennifer",
-                "Sonali",
-                "Row 3",
-                "Row 4",
-                "Row 5",
-                "Row 6"
+                "Sonali"
         };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
@@ -77,6 +73,7 @@ public class ViewGroupFragment extends DialogFragment {
             public void onClick(View view) {
                 //FragmentManager fm = getSupportFragmentManager();
                 NewEventFragment eventFragment = NewEventFragment.newInstance(groupName);
+                eventFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
                 eventFragment.show(getFragmentManager(), "fragment_new_event");
                 dismiss();
             }
