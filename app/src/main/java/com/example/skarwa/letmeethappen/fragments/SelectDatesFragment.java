@@ -53,12 +53,12 @@ public class SelectDatesFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         final CalendarPickerView calendar_view = (CalendarPickerView)view.findViewById(R.id.calendar_view);
-//getting current
+        //getting current
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
         Date today = new Date();
 
-//add one year to calendar from todays date
+        //add one year to calendar from todays date
         calendar_view.init(today, nextYear.getTime())
                 .inMode(isRange ? CalendarPickerView.SelectionMode.MULTIPLE
                         : CalendarPickerView.SelectionMode.SINGLE);

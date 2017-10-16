@@ -6,7 +6,7 @@
     <string name="dates">Dates</string>
     <string name="rsvp_date">Respond by</string>
     <string name="min_attendee">Minimum Attendees</string>
-    <string name="message">Message to the group</string>
+    <string name="message">Message</string>
     <string name="send_invite">SEND INVITE</string>
     <string name="when">When?</string>
     <string name="select_done">DONE</string>
@@ -19,7 +19,7 @@
     <string name="addNewGroup">Add Group</string>
     <string name="group_name">Group Name</string>
     <string name="members">Members</string>
-    <string name="create_invite">Create new event for this group</string>
+    <string name="create_invite">New Event</string>
     <string name="rsvp">Respond to Invite</string>
     <string name="current_response">Your current response</string>
     <string name="ask">Can you make it?</string>
@@ -31,4 +31,5 @@
     <string name="location">Location</string>
     <string name="nYes">Going so far</string>
     <string name="attendees">Attendees</string>
+    <string name="let_meet_happen">Let Meet Happen</string>
 </resources>

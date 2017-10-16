@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.skarwa.letmeethappen.R;
+import com.example.skarwa.letmeethappen.utils.Constants;
 
 
 public class ViewGroupFragment extends DialogFragment {
@@ -26,7 +27,7 @@ public class ViewGroupFragment extends DialogFragment {
 
         ViewGroupFragment fragment = new ViewGroupFragment();
         Bundle args = new Bundle();
-        args.putString("name", name);
+        args.putString(Constants.GROUP_NAME, name);
         fragment.setArguments(args);
 
         return fragment;
@@ -36,7 +37,7 @@ public class ViewGroupFragment extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        groupName = args.getString("name");
+        groupName = args.getString(Constants.GROUP_NAME);
     }
 
     @Override
@@ -58,11 +59,7 @@ public class ViewGroupFragment extends DialogFragment {
         lvMembers = (ListView) view.findViewById(R.id.lvMembers);
 
         String[] values = new String[]{"Jennifer",
-                "Sonali",
-                "Row 3",
-                "Row 4",
-                "Row 5",
-                "Row 6"
+                "Sonali"
         };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
@@ -76,6 +73,7 @@ public class ViewGroupFragment extends DialogFragment {
             public void onClick(View view) {
                 //FragmentManager fm = getSupportFragmentManager();
                 NewEventFragment eventFragment = NewEventFragment.newInstance(groupName);
+                eventFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
                 eventFragment.show(getFragmentManager(), "fragment_new_event");
                 dismiss();
             }

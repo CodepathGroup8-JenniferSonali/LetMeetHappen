@@ -1,5 +1,8 @@
 package com.example.skarwa.letmeethappen.models;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
@@ -13,6 +16,7 @@ import java.util.Map;
  * Created by jennifergodinez on 9/25/17.
  */
 
+@IgnoreExtraProperties
 @Parcel
 public class Event {
     long mId;
@@ -27,7 +31,7 @@ public class Event {
     EventStatus mEventStatus;
     String mPlannerMsgToGroup;
     List<User> mAttendedUser;
-    List<String> mDateOptions;
+    List<String> mEventDateOptions;
     String mHostProfileImage;  //TODO We should get the profile image from the user object ...but its fine for now.
 
 
@@ -40,8 +44,8 @@ public class Event {
         mEventName = eventName;
         mEventStatus = EventStatus.NEW;
 
-        mDateOptions = new ArrayList<String>();
-        mAttendedUser = new ArrayList<User>();
+       // mEventDateOptions = new ArrayList<String>();
+       // mAttendedUser = new ArrayList<User>();
     }
 
     public static Event fromJSON(JSONObject jsonObject) throws JSONException {
@@ -90,20 +94,31 @@ public class Event {
         this.mAcceptByDate = mAcceptByDate;
     }
 
-    public void setEventStatus(EventStatus mEventStatus) {
-        this.mEventStatus = mEventStatus;
-    }
-
     public void setPlannerMsgToGroup(String mPlannerMsgToGroup) {
         this.mPlannerMsgToGroup = mPlannerMsgToGroup;
     }
 
-    public void setAttendedUser(List<User> mAttendedUser) {
-        this.mAttendedUser = mAttendedUser;
+    public void addAttendedUser(User user) {
+        if(this.mAttendedUser == null){
+            this.mAttendedUser = new ArrayList<User>();
+        }
+        this.mAttendedUser.add(user);
+    }
+
+    public void setAttendedUser(List<User> users){
+        this.mAttendedUser = users;
     }
 
     public void addEventDateOptions(String eventDateOption) {
-        this.mDateOptions.add(eventDateOption);
+        if(this.mEventDateOptions == null){
+            this.mEventDateOptions =  new ArrayList<String>();
+        }
+        this.mEventDateOptions.add(eventDateOption);
+    }
+
+
+    public void setEventDateOptions(List<String> eventDateOptions){
+        this.mEventDateOptions = eventDateOptions;
     }
 
     public void setHostProfileImage(String mHostProfileImage) {
@@ -143,15 +158,34 @@ public class Event {
     }
 
     public List<String> getEventDateOptions() {
-        return mDateOptions;
+        return mEventDateOptions;
     }
 
     public String getAcceptByDate() {
         return mAcceptByDate;
     }
 
-    public EventStatus getEventStatus() {
+    @Exclude
+    public EventStatus getEventStatusAsEnum() {
         return mEventStatus;
+    }
+
+    public String getEventStatus() {
+        // Convert enum to string
+        if (mEventStatus == null) {
+            return null;
+        } else {
+            return mEventStatus.name();
+        }
+    }
+
+    public void setEventStatus(String event) {
+        // Get enum from string
+        if (event == null) {
+            this.mEventStatus = null;
+        } else {
+            this.mEventStatus = EventStatus.valueOf(event);
+        }
     }
 
     public String getPlannerMsgToGroup() {

@@ -31,18 +31,34 @@ import org.parceler.Parcels;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by jennifergodinez on 10/9/17.
  */
 
-public class TimelineActivity extends AppCompatActivity implements NewEventFragment.OnCreateEventClickListener{
+public class TimelineActivity extends AppCompatActivity implements NewEventFragment.OnCreateEventClickListener,Constants{
+
+    private static final String TAG = "TimelineActivity";
     EventsPagerAdapter pagerAdapter;
-    ViewPager viewPager;
-    DrawerLayout mDrawer;
-    NavigationView nvDrawer;
     ActionBarDrawerToggle drawerToggle;
-    Toolbar toolbar;
     User loggedInUser;
+
+    @BindView(R.id.viewpager)
+    ViewPager viewPager;
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawer;
+
+    @BindView(R.id.nvView)
+    NavigationView nvDrawer;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.sliding_tabs)
+    TabLayout tabLayout;
 
     // [START declare_database_ref]
     private DatabaseReference mDatabase;
@@ -53,37 +69,30 @@ public class TimelineActivity extends AppCompatActivity implements NewEventFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
+        ButterKnife.bind(this);
+
         loggedInUser = Parcels.unwrap(getIntent().getParcelableExtra(Constants.USER_OBJ));
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // [END initialize_database_ref]
 
-        // Find the toolbar view inside the activity layout
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar);
 
         // Find our drawer view
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = setupDrawerToggle();
 
         // Tie DrawerLayout events to the ActionBarToggle
         mDrawer.addDrawerListener(drawerToggle);
 
-        // Find our drawer view
-        nvDrawer = (NavigationView) findViewById(R.id.nvView);
         // Setup drawer view
         setupDrawerContent(nvDrawer);
 
-        viewPager = (ViewPager)findViewById(R.id.viewpager);
         pagerAdapter = new EventsPagerAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(pagerAdapter);
-
-        TabLayout tabLayout = (TabLayout)findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -186,12 +195,13 @@ public class TimelineActivity extends AppCompatActivity implements NewEventFragm
     @Override
     public void onCreateEvent(Event event) {
 
+        event.setPlanner(loggedInUser);
         Toast.makeText(this, "Saving Event...", Toast.LENGTH_SHORT).show();
 
-        String key = mDatabase.child("events").push().getKey();
+        String key = mDatabase.child(EVENTS_ENDPOINT).push().getKey();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/events/" + key, event);
+        childUpdates.put("/"+EVENTS_ENDPOINT+"/" + key, event);
 
         mDatabase.updateChildren(childUpdates);
     }

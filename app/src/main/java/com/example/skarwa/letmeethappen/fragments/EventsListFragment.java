@@ -11,8 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.skarwa.letmeethappen.R;
-import com.example.skarwa.letmeethappen.adapters.EventAdapter;
 import com.example.skarwa.letmeethappen.models.Event;
+import com.example.skarwa.letmeethappen.viewholder.EventViewHolder;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -20,86 +23,118 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import com.google.firebase.database.Query;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by jennifergodinez on 10/2/17.
  */
 
 public abstract class EventsListFragment extends Fragment {
-    private EventAdapter eventAdapter;
-    private ArrayList<Event> events;
-    private RecyclerView rvEvents;
 
-    private DatabaseReference mEventsReference;
+    @BindView(R.id.rvEvents)
+    RecyclerView rvEvents;
+    LinearLayoutManager mManager;
 
+    DatabaseReference mDatabase;
+    FirebaseRecyclerAdapter<Event,EventViewHolder> mAdapter;
 
-    abstract void showEventDetail(Event event);
+    public EventsListFragment() {
+
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_events_list, container, false);
+        // [START create_database_reference]
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        // [END create_database_reference]
 
+        ButterKnife.bind(this,view);
+        return view;
+    }
 
-        // Initialize Database
-        mEventsReference = FirebaseDatabase.getInstance().getReference()
-                .child("events");
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        rvEvents = (RecyclerView) view.findViewById(R.id.rvEvents);
+        // Set up Layout Manager, reverse layout
+        mManager = new LinearLayoutManager(getActivity());
+        mManager.setReverseLayout(true);
+        mManager.setStackFromEnd(true);
+        rvEvents.setLayoutManager(mManager);
         RecyclerView.ItemDecoration itemDecoration = new
                 DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         rvEvents.addItemDecoration(itemDecoration);
 
+        // Set up FirebaseRecyclerAdapter with the Query
+        Query eventsQuery = getQuery(mDatabase);
 
-        EventAdapter.OnItemClickListener listener = new EventAdapter.OnItemClickListener() {
+        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Event>()
+                .setQuery(eventsQuery, Event.class)
+                .build();
+
+        mAdapter = new FirebaseRecyclerAdapter<Event, EventViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(EventViewHolder viewHolder, int position, Event model) {
+                final DatabaseReference eventRef = getRef(position);
+
+                // Set click listener for the whole post view
+                final String postKey = eventRef.getKey();
+
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override public void onClick(View v) {
+                         // handle click of view
+                        //showEventDetail
+                    }
+                });
+
+                // Bind Post to ViewHolder
+                viewHolder.bindToEvent(model,getActivity());
+            }
 
             @Override
-            public void onItemClick(View view, int position) {
-                Event event = events.get(position);
-                showEventDetail(event);
-                /*
-                ViewEventFragment eventFragment = ViewEventFragment.newInstance(event);
-                eventFragment.show(getFragmentManager(), "fragment_new_event");
-*/
+            public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                // Create a new instance of the ViewHolder, in this case we are using a custom
+                // layout called R.layout.message for each item
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_event, parent, false);
+
+                return new EventViewHolder(view);
+
             }
         };
-
-
-
-        events = new ArrayList<Event>();
-
-        eventAdapter = new EventAdapter(events, listener);
-
-        //temporary
-        addItems(null);
-
-
-        rvEvents.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvEvents.setAdapter(eventAdapter);
-
-        return view;
-
+        rvEvents.setAdapter(mAdapter);
     }
 
-    public void addItems(JSONArray response) {
-        //for (int i = 0; i < response.length(); i++) {
-        for (int i = 0; i < 2; i++) {
-            Event event = null;
-            try {
-                //event = Event.fromJSON(response.getJSONObject(i));
-                event = Event.fromJSON(null);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            events.add(event);
-            eventAdapter.notifyItemInserted(events.size()-1);
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (mAdapter != null) {
+            mAdapter.startListening();
         }
- 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAdapter != null) {
+            mAdapter.stopListening();
+        }
+    }
+
+    public String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+    public abstract Query getQuery(DatabaseReference databaseReference);
 }

@@ -49,7 +49,7 @@ Here's a walkthrough of implemented user stories:
 
 Link to [Wireframes](https://imgur.com/a/pIK0D).
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/gSutrSX.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -60,6 +60,11 @@ Wireframe images are in PLAN/wireframes subfolder.
 
 Describe any challenges encountered while building the app.
 
+Using Enums with  Model objects was not supported in Firebase.
+
+
+
+
 ## Open-source libraries used
  
 - Parceler 
@@ -67,6 +72,7 @@ Describe any challenges encountered while building the app.
 - Google / Firebase Auth 
 - Retrolambda 
 - Glide
+- Butterknife
 
 
 ## License

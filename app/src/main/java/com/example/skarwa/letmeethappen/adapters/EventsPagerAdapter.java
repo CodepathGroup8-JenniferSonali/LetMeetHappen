@@ -4,16 +4,17 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import com.example.skarwa.letmeethappen.fragments.CreatedTimelineFragment;
-import com.example.skarwa.letmeethappen.fragments.HomeTimelineFragment;
-import com.example.skarwa.letmeethappen.fragments.PastTimelineFragment;
+import com.example.skarwa.letmeethappen.fragments.DraftEventsFragment;
+import com.example.skarwa.letmeethappen.fragments.PastEventsFragment;
+import com.example.skarwa.letmeethappen.fragments.UpcomingEventsFragment;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
 /**
  * Created by jennifergodinez on 10/9/17.
  */
 
 public class EventsPagerAdapter extends SmartFragmentStatePagerAdapter {
-    private String[] tabTitles = {"UPCOMING", "Past", "Created"};
+    private String[] tabTitles = {"UPCOMING", "PAST", "DRAFT"};
     private Context context;
 
     public EventsPagerAdapter(FragmentManager fm, Context context) {
@@ -24,11 +25,12 @@ public class EventsPagerAdapter extends SmartFragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new HomeTimelineFragment();
+            return new UpcomingEventsFragment();
         } else if (position == 1) {
-            return new PastTimelineFragment();
+            //return new PastEventsFragment();
+            return new PastEventsFragment();
         } else if (position == 2) {
-            return new CreatedTimelineFragment();
+            return new DraftEventsFragment(); //temporary
         } else {
             return null;
         }
