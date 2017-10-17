@@ -1,5 +1,6 @@
 package com.example.skarwa.letmeethappen.activities;
 
+import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,8 +21,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.people.v1.PeopleService;
+import com.google.api.services.people.v1.model.ListConnectionsResponse;
+import com.google.api.services.people.v1.model.Person;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,25 +42,28 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import io.fabric.sdk.android.Fabric;
+import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener ,Constants{
 
     private static final String TAG = "LoginActivity";
     private static int RC_SIGN_IN = 88;
+    private static int RC_REAUTHORIZE = 2;
+    private static int RC_AUTHORIZE_CONTACTS=63;
     FirebaseAuth mAuth;
     FirebaseUser fbaseUser;
     GoogleApiClient mGoogleApiClient;
     DatabaseReference mDatabase;
+    Account mAuthorizedAccount;
 
 
     @Override
@@ -70,6 +84,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
+                .requestScopes(new Scope("https://www.googleapis.com/auth/contacts.readonly"))
                 .requestEmail()
                 .build();
 
@@ -112,18 +127,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN || requestCode == RC_AUTHORIZE_CONTACTS) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
+        } else if (requestCode == RC_REAUTHORIZE) {
+
         }
     }
+
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
+             mAuthorizedAccount = acct.getAccount();
             firebaseAuthWithGoogle(acct);
+            getContacts();
 
         } else {
             //TODO display message
@@ -251,5 +271,110 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
     }
+
+
+
+    private void authorizeContactsAccess() {
+        GoogleSignInOptions gso =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .requestScopes(new Scope("https://www.googleapis.com/auth/contacts.readonly"))
+                        .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_AUTHORIZE_CONTACTS);
+    }
+
+
+
+    //private void getContacts(Account account) {
+    private void getContacts() {
+        GetContactsTask task = new GetContactsTask(mAuthorizedAccount);
+        task.execute();
+    }
+
+    /** Global instance of the HTTP transport. */
+    private static HttpTransport HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport();
+    /** Global instance of the JSON factory. */
+    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+
+    private class GetContactsTask extends AsyncTask<Void, Void, List<Person>> {
+
+        Account mAccount;
+        public GetContactsTask(Account account) {
+            mAccount = account;
+        }
+
+        @Override
+        protected List<Person> doInBackground(Void... params) {
+            List<Person> result = null;
+            try {
+
+                GoogleAccountCredential credential =
+                        GoogleAccountCredential.usingOAuth2(
+                                LoginActivity.this,
+                                Collections.singleton(
+                                        "https://www.googleapis.com/auth/contacts.readonly")
+                        );
+                credential.setSelectedAccount(mAccount);
+                /*
+                People service = new People.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+                        .setApplicationName("Let Meet Happen")
+                        .build();
+                        */
+                PeopleService service = new PeopleService.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+                        .setApplicationName("Let Meet Happen")
+                        .build();
+                ListConnectionsResponse connectionsResponse = service
+                        .people()
+                        .connections()
+                        .list("people/me")
+                        .setPageSize(10)
+                        .setPersonFields("names,emailAddresses")
+                         .execute();
+                result = connectionsResponse.getConnections();
+            } catch (UserRecoverableAuthIOException userRecoverableException) {
+                // Explain to the user again why you need these OAuth permissions
+                // And prompt the resolution to the user again:
+                userRecoverableException.printStackTrace();
+                startActivityForResult(userRecoverableException.getIntent(),RC_REAUTHORIZE);
+            } catch (IOException e) {
+                // Other non-recoverable exceptions.
+                e.printStackTrace();
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onCancelled() {
+        }
+
+        @Override
+        protected void onPostExecute(List<Person> connections) {
+        }
+    }
+
+    /*
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_AUTHORIZE_CONTACTS) {
+            Log.d("DEBUG", "authorize contacts");
+
+        } else if (requestCode == RC_REAUTHORIZE) {
+            if (resultCode == RESULT_OK) {
+                getContacts();
+            }
+        }
+    }
+    */
+
 
 }
