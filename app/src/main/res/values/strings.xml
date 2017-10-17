@@ -31,5 +31,6 @@
     <string name="location">Location</string>
     <string name="nYes">Going so far</string>
     <string name="attendees">Attendees</string>
+    <string name="for_all">Click to select ...</string>
     <string name="let_meet_happen">Let Meet Happen</string>
 </resources>

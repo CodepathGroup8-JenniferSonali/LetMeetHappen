@@ -2,6 +2,7 @@ package com.example.skarwa.letmeethappen.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
@@ -23,11 +24,13 @@ import com.example.skarwa.letmeethappen.fragments.ViewGroupFragment;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
+import com.example.skarwa.letmeethappen.utils.MultiSpinner;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,12 +41,14 @@ import butterknife.ButterKnife;
  * Created by jennifergodinez on 10/9/17.
  */
 
-public class TimelineActivity extends AppCompatActivity implements NewEventFragment.OnCreateEventClickListener,Constants{
+public class TimelineActivity extends AppCompatActivity implements MultiSpinner.MultiSpinnerListener, NewEventFragment.OnCreateEventClickListener,Constants{
 
     private static final String TAG = "TimelineActivity";
     EventsPagerAdapter pagerAdapter;
     ActionBarDrawerToggle drawerToggle;
     User loggedInUser;
+    ArrayList<? extends Parcelable> friends;
+
 
     @BindView(R.id.viewpager)
     ViewPager viewPager;
@@ -72,6 +77,8 @@ public class TimelineActivity extends AppCompatActivity implements NewEventFragm
         ButterKnife.bind(this);
 
         loggedInUser = Parcels.unwrap(getIntent().getParcelableExtra(Constants.USER_OBJ));
+        friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(Constants.FRIENDS_OBJ);
+
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -108,9 +115,9 @@ public class TimelineActivity extends AppCompatActivity implements NewEventFragm
                         switch(menuItem.getItemId()) {
 
                             case R.id.addGroup:
-                                fragmentClass = NewGroupFragment.class;
+                                //fragmentClass = NewGroupFragment.class;
 
-                                NewGroupFragment groupFragment = NewGroupFragment.newInstance("Some Title");
+                                NewGroupFragment groupFragment = NewGroupFragment.newInstance(friends);
                                 groupFragment.show(fm, "fragment_new_group");
 
                                 break;
@@ -204,5 +211,10 @@ public class TimelineActivity extends AppCompatActivity implements NewEventFragm
         childUpdates.put("/"+EVENTS_ENDPOINT+"/" + key, event);
 
         mDatabase.updateChildren(childUpdates);
+    }
+
+    @Override
+    public void onItemsSelected(boolean[] selected) {
+
     }
 }

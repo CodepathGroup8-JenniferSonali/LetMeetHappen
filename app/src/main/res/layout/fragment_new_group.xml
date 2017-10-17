@@ -17,6 +17,7 @@
             android:layout_alignBottom="@+id/etGroupName"
             android:layout_alignParentStart="true" />
 
+
         <EditText
             android:id="@+id/etGroupName"
             android:layout_width="wrap_content"
@@ -45,12 +46,11 @@
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true" />
 
-        <SearchView
-            android:layout_width="@android:dimen/notification_large_icon_width"
-            android:layout_height="@android:dimen/notification_large_icon_height"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/tvMembers"
-            android:layout_marginStart="15dp" />
+        <com.example.skarwa.letmeethappen.utils.MultiSpinner android:id="@+id/multi_spinner"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_toEndOf="@+id/tvMembers" />
+
     </RelativeLayout>
 
     <ListView

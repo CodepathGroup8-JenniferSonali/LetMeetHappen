@@ -6,6 +6,7 @@ package com.example.skarwa.letmeethappen.utils;
 
 public interface Constants {
     String USER_OBJ = "User";
+    String FRIENDS_OBJ = "Friends";
     String TITLE = "title";
     String DATE_PATTERN = "E MM-dd-yyyy";
     String EVENT_NAME = "event_name";

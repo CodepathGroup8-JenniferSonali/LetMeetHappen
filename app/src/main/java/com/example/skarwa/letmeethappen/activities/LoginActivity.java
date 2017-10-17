@@ -3,6 +3,7 @@ package com.example.skarwa.letmeethappen.activities;
 import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -31,8 +32,11 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.people.v1.PeopleService;
+import com.google.api.services.people.v1.model.EmailAddress;
 import com.google.api.services.people.v1.model.ListConnectionsResponse;
+import com.google.api.services.people.v1.model.Name;
 import com.google.api.services.people.v1.model.Person;
+import com.google.api.services.people.v1.model.Photo;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,6 +51,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.parceler.Parcels;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,6 +69,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     GoogleApiClient mGoogleApiClient;
     DatabaseReference mDatabase;
     Account mAuthorizedAccount;
+    private List<Parcelable> friends;
+    private ArrayList<Person> persons;
 
 
     @Override
@@ -131,7 +138,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         } else if (requestCode == RC_REAUTHORIZE) {
-
+            Log.d ("DEBUG", "Reauthorize!! ");
+            getContacts();
         }
     }
 
@@ -164,9 +172,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
-        if (fbaseUser != null) {
-            onLoginSuccess();
-        } else {
+        if (fbaseUser == null) {
 
             AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
             mAuth.signInWithCredential(credential)
@@ -178,7 +184,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 Log.d(TAG, "signInWithCredential:success");
                                 fbaseUser = mAuth.getCurrentUser();
                                 Toast.makeText(getBaseContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                onLoginSuccess();  // onLoginSuccess(fbaseUser);
+                                //onLoginSuccess();  // onLoginSuccess(fbaseUser);
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -203,6 +209,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //send user details to the next activity to fetch groups and events
 
         i.putExtra(Constants.USER_OBJ, Parcels.wrap(createUserFromFirebaseAuthUser(fbaseUser)));
+        i.putParcelableArrayListExtra(Constants.FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
+        //i.putParcelableArrayListExtra("persons", persons);
         startActivity(i);
     }
 
@@ -274,23 +282,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-    private void authorizeContactsAccess() {
-        GoogleSignInOptions gso =
-                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .requestScopes(new Scope("https://www.googleapis.com/auth/contacts.readonly"))
-                        .build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_AUTHORIZE_CONTACTS);
-    }
-
-
-
     //private void getContacts(Account account) {
     private void getContacts() {
         GetContactsTask task = new GetContactsTask(mAuthorizedAccount);
@@ -321,11 +312,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         "https://www.googleapis.com/auth/contacts.readonly")
                         );
                 credential.setSelectedAccount(mAccount);
-                /*
-                People service = new People.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
-                        .setApplicationName("Let Meet Happen")
-                        .build();
-                        */
+
                 PeopleService service = new PeopleService.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
                         .setApplicationName("Let Meet Happen")
                         .build();
@@ -334,7 +321,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         .connections()
                         .list("people/me")
                         .setPageSize(10)
-                        .setPersonFields("names,emailAddresses")
+                        .setPersonFields("names,emailAddresses,coverPhotos")
                          .execute();
                 result = connectionsResponse.getConnections();
             } catch (UserRecoverableAuthIOException userRecoverableException) {
@@ -356,25 +343,36 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         @Override
         protected void onPostExecute(List<Person> connections) {
-        }
-    }
+            super.onPostExecute(connections);
 
-    /*
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+            friends = new ArrayList<Parcelable>();
+            for (Person person : connections) {
+                User user = new User();
+                List<Name> names = person.getNames();
+                if (names != null && names.size() > 0) {
+                    user.setDisplayName(person.getNames().get(0).getDisplayName());
+                    //System.out.println("Name: " + person.getNames().get(0).getDisplayName());
+                } else {
+                    //System.out.println("No names available for connection.");
+                }
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_AUTHORIZE_CONTACTS) {
-            Log.d("DEBUG", "authorize contacts");
+                List<Photo> photos = person.getPhotos();
+                if (photos != null && photos.size() > 0) {
+                    user.setProfilePicUrl(photos.get(0).getUrl());
+                }
 
-        } else if (requestCode == RC_REAUTHORIZE) {
-            if (resultCode == RESULT_OK) {
-                getContacts();
+                List<EmailAddress> emails = person.getEmailAddresses();
+                if (emails != null && emails.size() > 0) {
+                    user.setEmail(emails.get(0).getDisplayName());
+                }
+                friends.add(Parcels.wrap(user));
             }
+
+            onLoginSuccess();
+
+
         }
     }
-    */
 
 
 }
