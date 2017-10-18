@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
     <application
         android:allowBackup="true"
@@ -13,18 +13,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.LoginActivity" android:theme="@style/SplashTheme">
+        <activity
+            android:name=".activities.LoginActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.TimelineActivity"></activity>
+        <activity android:name=".activities.TimelineActivity" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="53564889f405babd67506fa8c1fe48c8d9b20740"
-            />
+            android:value="53564889f405babd67506fa8c1fe48c8d9b20740" />
+
+        <activity android:name=".activities.NewGroup_Activity"></activity>
     </application>
 
 </manifest>

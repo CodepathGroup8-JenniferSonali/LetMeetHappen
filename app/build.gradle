@@ -47,6 +47,12 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    // Google Api Client library and Android extension
+    // Change to the API you want to access:
+// Below is just an example for People REST API access
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
+    }
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:recyclerview-v7:26.1.0'
@@ -59,20 +65,15 @@ dependencies {
     compile 'com.google.firebase:firebase-database:11.4.2'
     compile 'com.firebaseui:firebase-ui-database:3.0.0'
     compile 'com.google.android.gms:play-services-auth:11.4.2'
-// Google Api Client library and Android extension
     compile 'com.google.api-client:google-api-client:1.23.0'
     compile 'com.google.api-client:google-api-client-android:1.23.0'
-// Change to the API you want to access:
-// Below is just an example for People REST API access
     compile 'com.google.apis:google-api-services-people:v1-rev153-1.23.0'
-    annotationProcessor 'org.parceler:parceler:1.1.6'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
-        transitive = true;
-    }
-    testCompile 'junit:junit:4.12'
     compile 'com.google.android.gms:play-services-maps:11.4.2'
     compile 'com.jakewharton:butterknife:8.4.0'
+    testCompile 'junit:junit:4.12'
+    annotationProcessor 'org.parceler:parceler:1.1.6'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }
+
 
 apply plugin: 'com.google.gms.google-services'

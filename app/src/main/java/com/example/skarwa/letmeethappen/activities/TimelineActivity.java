@@ -1,5 +1,6 @@
 package com.example.skarwa.letmeethappen.activities;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -19,7 +20,6 @@ import android.widget.Toast;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.adapters.EventsPagerAdapter;
 import com.example.skarwa.letmeethappen.fragments.NewEventFragment;
-import com.example.skarwa.letmeethappen.fragments.NewGroupFragment;
 import com.example.skarwa.letmeethappen.fragments.ViewGroupFragment;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.User;
@@ -115,10 +115,14 @@ public class TimelineActivity extends AppCompatActivity implements MultiSpinner.
                         switch(menuItem.getItemId()) {
 
                             case R.id.addGroup:
-                                //fragmentClass = NewGroupFragment.class;
+                                Intent i = new Intent(getBaseContext(), NewGroup_Activity.class);
+                                i.putParcelableArrayListExtra(Constants.FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
+                                //send user details to the next activity to fetch groups and events
+                                startActivity(i);
 
-                                NewGroupFragment groupFragment = NewGroupFragment.newInstance(friends);
-                                groupFragment.show(fm, "fragment_new_group");
+
+                                //NewGroupFragment groupFragment = NewGroupFragment.newInstance(friends);
+                                //groupFragment.show(fm, "fragment_new_group");
 
                                 break;
 
