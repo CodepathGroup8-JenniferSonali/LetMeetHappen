@@ -13,15 +13,25 @@ import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.EventStatus;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by skarwa on 10/14/17.
  */
 
 public class EventViewHolder extends RecyclerView.ViewHolder {
 
+    @BindView(R.id.ivProfileImage)
     public ImageView ivProfileImage;
+
+    @BindView(R.id.tvDate)
     public TextView tvDate;
+
+    @BindView(R.id.tvEventName)
     public TextView tvEventName;
+
+    @BindView(R.id.imgAlert)
     public ImageButton imgAlert;
     public ProgressBar pbStatus;
     View view;
@@ -30,11 +40,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     public EventViewHolder(final View itemView) {
         super(itemView);
         view = itemView;
-        ivProfileImage = (ImageView)itemView.findViewById(R.id.ivProfileImage);
-        tvDate = (TextView)itemView.findViewById(R.id.tvDate);
-        tvEventName = (TextView)itemView.findViewById(R.id.tvEventName);
-        imgAlert = (ImageButton)itemView.findViewById(R.id.imgAlert);
-        // pbStatus = itemView.findViewById(R.id.pbStatus);
+        ButterKnife.bind(this,itemView);
     }
 
     public void bindToEvent(Event event, Context context) {
@@ -53,7 +59,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
                 .into(ivProfileImage);
 
 
-        if (event.getEventStatus().equals(EventStatus.NEW)) {
+        if (event.getEventStatus().equals(EventStatus.PENDING)) {
             imgAlert.setVisibility(View.VISIBLE);
 
         } else {

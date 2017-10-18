@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.Event;
+import com.example.skarwa.letmeethappen.utils.Constants;
 import com.example.skarwa.letmeethappen.viewholder.EventViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -32,7 +33,7 @@ import butterknife.ButterKnife;
  * Created by jennifergodinez on 10/2/17.
  */
 
-public abstract class EventsListFragment extends Fragment {
+public abstract class EventsListFragment extends Fragment implements Constants {
 
     @BindView(R.id.rvEvents)
     RecyclerView rvEvents;
@@ -83,9 +84,10 @@ public abstract class EventsListFragment extends Fragment {
                 .setQuery(eventsQuery, Event.class)
                 .build();
 
-        mAdapter = new FirebaseRecyclerAdapter<Event, EventViewHolder>(options) {
+
+       mAdapter = new FirebaseRecyclerAdapter<Event, EventViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(EventViewHolder viewHolder, int position, Event model) {
+            protected void onBindViewHolder(EventViewHolder viewHolder, int position, final Event model) {
                 final DatabaseReference eventRef = getRef(position);
 
                 // Set click listener for the whole post view
@@ -94,7 +96,7 @@ public abstract class EventsListFragment extends Fragment {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override public void onClick(View v) {
                          // handle click of view
-                        //showEventDetail
+                        ((OnEventClickListener)getActivity()).onEventClick(model);
                     }
                 });
 
@@ -137,4 +139,9 @@ public abstract class EventsListFragment extends Fragment {
     }
 
     public abstract Query getQuery(DatabaseReference databaseReference);
+
+    public interface OnEventClickListener {
+        void onEventClick(Event event);
+    }
+
 }

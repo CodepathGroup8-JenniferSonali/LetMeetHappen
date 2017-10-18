@@ -5,8 +5,6 @@ package com.example.skarwa.letmeethappen.models;
  */
 
 public enum EventStatus {
-    NEW,  //newly created event
-    DRAFT,  //draft events
     SUCCESSFUL,  //if event was successful in the past
     CONFIRMED, //if upcoming event is confirmed.
     PENDING, //if event is awaiting response from others

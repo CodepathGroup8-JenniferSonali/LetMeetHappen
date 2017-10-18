@@ -20,9 +20,8 @@ public class DraftEventsFragment extends EventsListFragment {
     public Query getQuery(DatabaseReference databaseReference) {
         Query query = FirebaseDatabase.getInstance()
                 .getReference()
-                .child("events")
-                .orderByChild("eventStatus")
-                .equalTo("DRAFT");
+                .child(USER_EVENTS)
+                .child(getUid());
         return query;
     }
 }

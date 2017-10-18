@@ -20,7 +20,8 @@ public class PastEventsFragment extends EventsListFragment {
     public Query getQuery(DatabaseReference databaseReference) {
         Query query = FirebaseDatabase.getInstance()
                 .getReference()
-                .child("events")
+                .child(USER_EVENTS)
+                .child(getUid())
                 .orderByChild("eventStatus")
                 .equalTo("SUCCESSFUL"); //TODO : change this to fetch past events
 

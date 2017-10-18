@@ -143,7 +143,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
 
                 event.setEventName(etEventName.getText().toString());
                 event.setAcceptByDate(etRSVPDate.getText().toString());
-                event.setEventStatus(EventStatus.NEW.name());
+                event.setEventStatus(EventStatus.PENDING.name());
 
                 event.setLocation(location);
                 event.setMinAcceptance(2); //default to 2 for now

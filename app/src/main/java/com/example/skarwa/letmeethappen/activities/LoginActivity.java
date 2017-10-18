@@ -58,7 +58,8 @@ import java.util.List;
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener ,Constants{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener ,
+        Constants{
 
     private static final String TAG = "LoginActivity";
     private static int RC_SIGN_IN = 88;
@@ -205,7 +206,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     // i.e Display application "homepage"
     //@Override
     public void onLoginSuccess() {
-        Intent i = new Intent(this, TimelineActivity.class);
+        Intent i = new Intent(this, ViewEventsActivity.class);
         //send user details to the next activity to fetch groups and events
 
         i.putExtra(Constants.USER_OBJ, Parcels.wrap(createUserFromFirebaseAuthUser(fbaseUser)));

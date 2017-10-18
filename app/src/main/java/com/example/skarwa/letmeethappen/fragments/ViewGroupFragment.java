@@ -1,7 +1,10 @@
 package com.example.skarwa.letmeethappen.fragments;
 
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,25 +12,46 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.utils.Constants;
 
+import com.example.skarwa.letmeethappen.models.Group;
+import com.example.skarwa.letmeethappen.models.UserGroupStatus;
+import com.example.skarwa.letmeethappen.utils.DateUtils;
 
-public class ViewGroupFragment extends DialogFragment {
+import org.parceler.Parcels;
 
-    TextView tvGroupName;
-    ListView lvMembers;
-    Button btnCreateEvent;
+import java.util.Date;
+import java.util.HashSet;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static com.example.skarwa.letmeethappen.R.string.addNewGroup;
+
+
+public class ViewGroupFragment extends DialogFragment implements Constants {
+
     String groupName;
 
-    public static ViewGroupFragment newInstance(String name) {
+    //@BindView(R.id.etGroupName)
+    //EditText etGroupName;
 
+    @BindView(R.id.lvMembers)
+    ListView lvMembers;
+
+    @BindView(R.id.btnCreateEvent)
+    Button btnCreateEvent;
+    Group group;
+
+    public static ViewGroupFragment newInstance(Parcelable group) {
         ViewGroupFragment fragment = new ViewGroupFragment();
         Bundle args = new Bundle();
-        args.putString(Constants.GROUP_NAME, name);
+        args.putParcelable(Constants.GROUP_OBJ, group);
         fragment.setArguments(args);
 
         return fragment;
@@ -37,29 +61,27 @@ public class ViewGroupFragment extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        groupName = args.getString(Constants.GROUP_NAME);
+        group = Parcels.unwrap(args.getBundle(GROUP_OBJ));
+        groupName = group.getName();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view_group, container, false);
+        View view = inflater.inflate(R.layout.fragment_view_group, container, false);
+        ButterKnife.bind(this,view);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setTitle(groupName);
 
-        tvGroupName = (TextView) view.findViewById(R.id.tvGroupName);
-        tvGroupName.setText(groupName);
 
-        lvMembers = (ListView) view.findViewById(R.id.lvMembers);
-
-        String[] values = new String[]{"Jennifer",
-                "Sonali"
+        String[] values = new String[]{"Jennifer","Sonali"
         };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
@@ -78,9 +100,5 @@ public class ViewGroupFragment extends DialogFragment {
                 dismiss();
             }
         });
-
-
     }
-
-
 }

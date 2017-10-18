@@ -9,8 +9,11 @@ import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static io.fabric.sdk.android.services.network.HttpRequest.put;
 
 /**
  * Created by jennifergodinez on 9/25/17.
@@ -30,7 +33,7 @@ public class Event {
     String mAcceptByDate;
     EventStatus mEventStatus;
     String mPlannerMsgToGroup;
-    List<User> mAttendedUser;
+    Map<String,Boolean> mAttendedUser;
     List<String> mEventDateOptions;
     String mHostProfileImage;  //TODO We should get the profile image from the user object ...but its fine for now.
 
@@ -39,10 +42,25 @@ public class Event {
         //empty constructor needed
     }
 
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("id", mId);
+        result.put("eventName", mEventName);
+        result.put("eventStatus", mEventStatus);
+        result.put("location", mLocation);
+        result.put("acceptByDate", mAcceptByDate);
+        result.put("eventDateOptions", mEventDateOptions);
+        result.put("attendedUser",mAttendedUser);
+
+        return result;
+    }
+
     public void Event (String date, String eventName) {
         mEventCreatedDate = date;
         mEventName = eventName;
-        mEventStatus = EventStatus.NEW;
+        mEventStatus = EventStatus.PENDING;
 
        // mEventDateOptions = new ArrayList<String>();
        // mAttendedUser = new ArrayList<User>();
@@ -54,7 +72,7 @@ public class Event {
         event.mEventCreatedDate = new Date().toString(); //this will be today ...please change it as needed,
         event.mEventName = "Tea Party";
 
-        event.mEventStatus = EventStatus.NEW;
+        event.mEventStatus = EventStatus.PENDING;
         return event;
     }
 
@@ -98,16 +116,7 @@ public class Event {
         this.mPlannerMsgToGroup = mPlannerMsgToGroup;
     }
 
-    public void addAttendedUser(User user) {
-        if(this.mAttendedUser == null){
-            this.mAttendedUser = new ArrayList<User>();
-        }
-        this.mAttendedUser.add(user);
-    }
 
-    public void setAttendedUser(List<User> users){
-        this.mAttendedUser = users;
-    }
 
     public void addEventDateOptions(String eventDateOption) {
         if(this.mEventDateOptions == null){
@@ -191,12 +200,23 @@ public class Event {
     public String getPlannerMsgToGroup() {
         return mPlannerMsgToGroup;
     }
+    public String getHostProfileImage() {
+        return mHostProfileImage;
+    }
 
-    public List<User> getAttendedUser() {
+
+    public Map<String, Boolean> getAttendedUser() {
         return mAttendedUser;
     }
 
-    public String getHostProfileImage() {
-        return mHostProfileImage;
+    public void setAttendedUser(Map<String, Boolean> groups) {
+        this.mAttendedUser = groups;
+    }
+
+    public void addAttendedUser(String userId,boolean IsAttending) {
+        if(this.mAttendedUser == null){
+            this.mAttendedUser = new HashMap<String, Boolean>();
+        }
+        this.mAttendedUser.put(userId,IsAttending);
     }
 }

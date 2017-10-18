@@ -22,13 +22,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.TimelineActivity" />
-
+        <activity android:name=".activities.ViewEventsActivity"></activity>
+        <activity android:name=".activities.ViewEventDetailActivity" android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.skarwa.letmeethappen.activities.ViewEventsActivity"
+                />
+        </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="53564889f405babd67506fa8c1fe48c8d9b20740" />
 
-        <activity android:name=".activities.NewGroup_Activity"></activity>
+        <activity android:name=".activities.NewGroupCreateActivity"></activity>
     </application>
 
 </manifest>

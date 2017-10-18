@@ -13,20 +13,28 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.skarwa.letmeethappen.R;
+import com.example.skarwa.letmeethappen.adapters.EventAdapter;
 import com.example.skarwa.letmeethappen.adapters.EventsPagerAdapter;
+import com.example.skarwa.letmeethappen.fragments.EventsListFragment;
 import com.example.skarwa.letmeethappen.fragments.NewEventFragment;
 import com.example.skarwa.letmeethappen.fragments.ViewGroupFragment;
 import com.example.skarwa.letmeethappen.models.Event;
+import com.example.skarwa.letmeethappen.models.Group;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.example.skarwa.letmeethappen.utils.MultiSpinner;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
@@ -37,13 +45,17 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.skarwa.letmeethappen.R.string.groups;
+
 /**
  * Created by jennifergodinez on 10/9/17.
  */
 
-public class TimelineActivity extends AppCompatActivity implements MultiSpinner.MultiSpinnerListener, NewEventFragment.OnCreateEventClickListener,Constants{
+public class ViewEventsActivity extends AppCompatActivity
+        implements NewEventFragment.OnCreateEventClickListener,Constants,
+        EventsListFragment.OnEventClickListener ,ViewGroupFragment.SendInviteListener{
 
-    private static final String TAG = "TimelineActivity";
+    private static final String TAG = "ViewEventsActivity";
     EventsPagerAdapter pagerAdapter;
     ActionBarDrawerToggle drawerToggle;
     User loggedInUser;
@@ -72,7 +84,7 @@ public class TimelineActivity extends AppCompatActivity implements MultiSpinner.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timeline);
+        setContentView(R.layout.activity_view_events);
 
         ButterKnife.bind(this);
 
@@ -127,8 +139,8 @@ public class TimelineActivity extends AppCompatActivity implements MultiSpinner.
                                 break;
 
                             case R.id.group1:  //TODO, we need to dynamically get the ID
-                                ViewGroupFragment viewgroupFragment = ViewGroupFragment.newInstance("Close Friends");
-                                viewgroupFragment.show(fm, "fragment_view_group");
+                              //  ViewGroupFragment viewgroupFragment = ViewGroupFragment.newInstance("Close Friends");
+                               // viewgroupFragment.show(fm, "fragment_view_group");
 
                                 break;
 
@@ -207,18 +219,93 @@ public class TimelineActivity extends AppCompatActivity implements MultiSpinner.
     public void onCreateEvent(Event event) {
 
         event.setPlanner(loggedInUser);
+        event.addAttendedUser(loggedInUser.getId(),true);
         Toast.makeText(this, "Saving Event...", Toast.LENGTH_SHORT).show();
 
+       // String key = mDatabase.child(EVENTS_ENDPOINT).child(loggedInUser.)
+
         String key = mDatabase.child(EVENTS_ENDPOINT).push().getKey();
+        Map<String, Object> eventValues = event.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/"+EVENTS_ENDPOINT+"/" + key, event);
+        childUpdates.put("/"+USER_EVENTS+"/" + loggedInUser.getId() + "/" + key, eventValues);
+        //TODO add this to sending invites as well.
 
         mDatabase.updateChildren(childUpdates);
     }
 
-    @Override
     public void onItemsSelected(boolean[] selected) {
 
+    }
+
+    public void onEventClick(Event event) {
+        Toast.makeText(this,"Show Event Details",Toast.LENGTH_SHORT).show();
+
+        Intent i = new Intent(getApplicationContext(), ViewEventDetailActivity.class);
+        i.putExtra(Constants.EVENT_OBJ, Parcels.wrap(event));
+        startActivity(i);
+    }
+
+
+    public void onSendInvite(Group group) {
+        //save group in DB
+        mDatabase.child(GROUP_ENDPOINT).child(group.getName()).setValue(group);
+
+        //Add group  to NavDrawer
+
+
+        //open Nav Drawer to show newly added group
+        mDrawer.openDrawer(nvDrawer);
+    }
+
+
+    /**
+     * This will get all the groups belonging to authorized user.
+     */
+    //TODO :test this works
+    public void populateAllUserGroups(){
+        // List the names of all User's groups
+        // fetch a list of User's groups
+        mDatabase.child("users/"+loggedInUser.getId()+"/groups").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                // for each group, fetch the name and print it
+                String groupKey = snapshot.getKey();
+                Log.d(TAG,"onChildAdded:"+snapshot.getKey());
+
+                //TODO get all groups and attach it to navigation drawer
+                mDatabase.child("groups/" + groupKey + "/name").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        Log.d(TAG,loggedInUser + " is a member of this group: " + snapshot.getValue());
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError firebaseError) {
+                        // ignore
+                    }
+                });
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

@@ -1,72 +1,102 @@
 package com.example.skarwa.letmeethappen.models;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by skarwa on 10/12/17.
  */
 
+@IgnoreExtraProperties
 @Parcel
 public class Group {
-    long mid;
+    String mid;
     String mName;
-    Date mCreatedDate;
-    Date mExpiredDate;
+    String mCreatedDate;
+    String mExpiredDate;
     UserGroupStatus mGroupStatus;
-    List<User> mMembers;
+    Map<String,Boolean> mMembers;
 
     public Group() {
         //empty constructor needed
     }
 
-    public void setId(long mid) {
+    public void setId(String mid) {
         this.mid = mid;
+    } public String getId() {
+        return mid;
     }
 
     public void setName(String mName) {
         this.mName = mName;
     }
 
-    public void setCreatedDate(Date mCreatedDate) {
+    public void setCreatedDate(String mCreatedDate) {
         this.mCreatedDate = mCreatedDate;
     }
 
-    public void setExpiredDate(Date mExpiredDate) {
+    public void setExpiredDate(String mExpiredDate) {
         this.mExpiredDate = mExpiredDate;
     }
 
-    public void setGroupStatus(UserGroupStatus mGroupStatus) {
-        this.mGroupStatus = mGroupStatus;
-    }
 
-    public void setMembers(List<User> mMembers) {
-        this.mMembers = mMembers;
-    }
-
-    public long getId() {
-        return mid;
-    }
 
     public String getName() {
         return mName;
     }
 
-    public Date getCreatedDate() {
+    public String getCreatedDate() {
         return mCreatedDate;
     }
 
-    public Date getExpiredDate() {
+    public String getExpiredDate() {
         return mExpiredDate;
     }
 
-    public UserGroupStatus getGroupStatus() {
+    @Exclude
+    public UserGroupStatus getGroupStatusAsEnum() {
         return mGroupStatus;
     }
 
-    public List<User> getMembers() {
+    public String getGroupStatus() {
+        // Convert enum to string
+        if (mGroupStatus == null) {
+            return null;
+        } else {
+            return mGroupStatus.name();
+        }
+    }
+
+    public void setGroupStatus(String status) {
+        // Get enum from string
+        if (status == null) {
+            this.mGroupStatus = null;
+        } else {
+            this.mGroupStatus = UserGroupStatus.valueOf(status);
+        }
+    }
+
+    public Map<String, Boolean> getMembers() {
         return mMembers;
+    }
+
+    public void setMembers(Map<String, Boolean> groups) {
+        this.mMembers = groups;
+    }
+
+    public void addMember(String userId,boolean isMember) {
+        if(this.mMembers == null){
+            this.mMembers = new HashMap<>();
+        }
+        this.mMembers.put(userId,isMember);
     }
 }

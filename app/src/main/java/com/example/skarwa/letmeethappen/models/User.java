@@ -24,6 +24,7 @@ public class User {
     UserGroupStatus mUserStatus;
     String mProfilePicUrl;
     List<Settings> mUserSettings;
+    Map<String,Boolean> mGroups;
 
     public User() {
         //default constructor needed by firebase
@@ -100,6 +101,23 @@ public class User {
     public List<Settings> getUserSettings() {
         return mUserSettings;
     }
+
+    public Map<String, Boolean> getGroups() {
+        return mGroups;
+    }
+
+    public void setGroups(Map<String, Boolean> groups) {
+        this.mGroups = groups;
+    }
+
+    public void addGroup(String groupName,boolean isMember){
+        if(this.mGroups == null){
+            this.mGroups = new HashMap<>();
+        }
+        this.mGroups.put(groupName,isMember);
+    }
+
+
 }
 
 
