@@ -48,10 +48,12 @@ public class ViewGroupFragment extends DialogFragment implements Constants {
     Button btnCreateEvent;
     Group group;
 
-    public static ViewGroupFragment newInstance(Parcelable group) {
+    public static ViewGroupFragment newInstance(String groupName) {
         ViewGroupFragment fragment = new ViewGroupFragment();
         Bundle args = new Bundle();
-        args.putParcelable(Constants.GROUP_OBJ, group);
+        //args.putParcelable(Constants.GROUP_OBJ, group);
+
+        args.putString(GROUP_NAME, groupName);
         fragment.setArguments(args);
 
         return fragment;
@@ -61,8 +63,8 @@ public class ViewGroupFragment extends DialogFragment implements Constants {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        group = Parcels.unwrap(args.getBundle(GROUP_OBJ));
-        groupName = group.getName();
+       // group = Parcels.unwrap(args.getBundle(GROUP_OBJ));
+        groupName = args.getString(GROUP_NAME);
     }
 
     @Override

@@ -53,7 +53,7 @@ import static com.example.skarwa.letmeethappen.R.string.groups;
 
 public class ViewEventsActivity extends AppCompatActivity
         implements NewEventFragment.OnCreateEventClickListener,Constants,
-        EventsListFragment.OnEventClickListener ,ViewGroupFragment.SendInviteListener{
+        EventsListFragment.OnEventClickListener {
 
     private static final String TAG = "ViewEventsActivity";
     EventsPagerAdapter pagerAdapter;
@@ -127,7 +127,8 @@ public class ViewEventsActivity extends AppCompatActivity
                         switch(menuItem.getItemId()) {
 
                             case R.id.addGroup:
-                                Intent i = new Intent(getBaseContext(), NewGroup_Activity.class);
+                                Intent i = new Intent(getBaseContext(), NewGroupCreateActivity.class);
+                                i.putExtra(USER_OBJ,Parcels.wrap(loggedInUser));
                                 i.putParcelableArrayListExtra(Constants.FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
                                 //send user details to the next activity to fetch groups and events
                                 startActivity(i);
@@ -139,12 +140,12 @@ public class ViewEventsActivity extends AppCompatActivity
                                 break;
 
                             case R.id.group1:  //TODO, we need to dynamically get the ID
-                              //  ViewGroupFragment viewgroupFragment = ViewGroupFragment.newInstance("Close Friends");
-                               // viewgroupFragment.show(fm, "fragment_view_group");
+                                ViewGroupFragment viewgroupFragment = ViewGroupFragment.newInstance("Close Friends");
+                                viewgroupFragment.show(fm, "fragment_view_group");
 
                                 break;
 
-                            //case
+                                //case
 
                                 //TODO else if settings selects
                                 //launch settings page
@@ -245,18 +246,6 @@ public class ViewEventsActivity extends AppCompatActivity
         Intent i = new Intent(getApplicationContext(), ViewEventDetailActivity.class);
         i.putExtra(Constants.EVENT_OBJ, Parcels.wrap(event));
         startActivity(i);
-    }
-
-
-    public void onSendInvite(Group group) {
-        //save group in DB
-        mDatabase.child(GROUP_ENDPOINT).child(group.getName()).setValue(group);
-
-        //Add group  to NavDrawer
-
-
-        //open Nav Drawer to show newly added group
-        mDrawer.openDrawer(nvDrawer);
     }
 
 
