@@ -14,12 +14,14 @@ import com.crashlytics.android.Crashlytics;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.models.UserGroupStatus;
+import com.example.skarwa.letmeethappen.services.RegistrationIntentService;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
@@ -73,7 +75,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     DatabaseReference mDatabase;
     Account mAuthorizedAccount;
     private List<Parcelable> friends;
-    private ArrayList<Person> persons;
+
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
 
 
     @Override
@@ -81,6 +101,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login);
+
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -106,6 +127,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .build();
 
         mAuth = FirebaseAuth.getInstance();
+
+        if(checkPlayServices()) {
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
+
+
     }
 
 
@@ -154,7 +182,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             GoogleSignInAccount acct = result.getSignInAccount();
              mAuthorizedAccount = acct.getAccount();
             firebaseAuthWithGoogle(acct);
-            getContacts();
 
         } else {
             //TODO display message
@@ -187,7 +214,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 Log.d(TAG, "signInWithCredential:success");
                                 fbaseUser = mAuth.getCurrentUser();
                                 Toast.makeText(getBaseContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                //onLoginSuccess();  // onLoginSuccess(fbaseUser);
+                                getContacts();
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -199,6 +226,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // ...
                         }
                     });
+        } else {
+            getContacts();
         }
     }
 
@@ -323,7 +352,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         .people()
                         .connections()
                         .list("people/me")
-                        .setPageSize(10)
+                        .setPageSize(20)
                         .setPersonFields("names,emailAddresses,coverPhotos,phoneNumbers")
                          .execute();
                 result = connectionsResponse.getConnections();
@@ -365,14 +394,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //System.out.println("No names available for connection.");
                 }
 
+                List<EmailAddress> emails = person.getEmailAddresses();
+                if (emails == null || emails.size() == 0 ||
+                        !emails.get(0).getValue().endsWith("@gmail.com")) {
+                    continue;
+                }
+                user.setEmail(emails.get(0).getValue());
+
+
                 List<Photo> photos = person.getPhotos();
                 if (photos != null && photos.size() > 0) {
                     user.setProfilePicUrl(photos.get(0).getUrl());
-                }
-
-                List<EmailAddress> emails = person.getEmailAddresses();
-                if (emails != null && emails.size() > 0) {
-                    user.setEmail(emails.get(0).getDisplayName());
                 }
 
                 List<PhoneNumber> phones = person.getPhoneNumbers();

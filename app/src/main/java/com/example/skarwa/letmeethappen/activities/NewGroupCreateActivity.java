@@ -193,13 +193,14 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
 
         ArrayList<String> selects = new ArrayList<>();
         members = new ArrayList<User>();
+        adapter.clear();
 
 
         for (int i=0; i < selected.length; i++) {
             if (selected[i]) {
+                User user = (User) Parcels.unwrap(friends.get(i));
 
                 selects.add(names.get(i));
-                User user = (User) Parcels.unwrap(friends.get(i));
                 members.add(user);
 
                 //TODO uncomment once we have proper user objects to save
