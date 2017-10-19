@@ -36,6 +36,7 @@ import com.google.api.services.people.v1.model.EmailAddress;
 import com.google.api.services.people.v1.model.ListConnectionsResponse;
 import com.google.api.services.people.v1.model.Name;
 import com.google.api.services.people.v1.model.Person;
+import com.google.api.services.people.v1.model.PhoneNumber;
 import com.google.api.services.people.v1.model.Photo;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -54,6 +55,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
@@ -322,7 +324,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         .connections()
                         .list("people/me")
                         .setPageSize(10)
-                        .setPersonFields("names,emailAddresses,coverPhotos")
+                        .setPersonFields("names,emailAddresses,coverPhotos,phoneNumbers")
                          .execute();
                 result = connectionsResponse.getConnections();
             } catch (UserRecoverableAuthIOException userRecoverableException) {
@@ -350,6 +352,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             for (Person person : connections) {
                 User user = new User();
                 List<Name> names = person.getNames();
+
+                // create unique ID for the user
+                user.setId(String.valueOf(UUID.randomUUID()));
+
                 if (names != null && names.size() > 0) {
                     user.setDisplayName(person.getNames().get(0).getDisplayName());
                     //System.out.println("Name: " + person.getNames().get(0).getDisplayName());
@@ -365,6 +371,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 List<EmailAddress> emails = person.getEmailAddresses();
                 if (emails != null && emails.size() > 0) {
                     user.setEmail(emails.get(0).getDisplayName());
+                }
+
+                List<PhoneNumber> phones = person.getPhoneNumbers();
+                if (phones != null && phones.size() > 0) {
+                    user.setPhoneNum(phones.get(0).getFormattedType());
                 }
                 friends.add(Parcels.wrap(user));
             }

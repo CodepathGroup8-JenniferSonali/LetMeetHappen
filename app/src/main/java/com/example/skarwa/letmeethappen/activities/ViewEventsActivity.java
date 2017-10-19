@@ -16,10 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.widget.Toast;
 
 import com.example.skarwa.letmeethappen.R;
-import com.example.skarwa.letmeethappen.adapters.EventAdapter;
 import com.example.skarwa.letmeethappen.adapters.EventsPagerAdapter;
 import com.example.skarwa.letmeethappen.fragments.EventsListFragment;
 import com.example.skarwa.letmeethappen.fragments.NewEventFragment;
@@ -28,7 +28,6 @@ import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.Group;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
-import com.example.skarwa.letmeethappen.utils.MultiSpinner;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,8 +44,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.example.skarwa.letmeethappen.R.string.groups;
-
 /**
  * Created by jennifergodinez on 10/9/17.
  */
@@ -60,6 +57,8 @@ public class ViewEventsActivity extends AppCompatActivity
     ActionBarDrawerToggle drawerToggle;
     User loggedInUser;
     ArrayList<? extends Parcelable> friends;
+    SubMenu submenu;
+    Group newGroup;
 
 
     @BindView(R.id.viewpager)
@@ -131,7 +130,7 @@ public class ViewEventsActivity extends AppCompatActivity
                                 i.putExtra(USER_OBJ,Parcels.wrap(loggedInUser));
                                 i.putParcelableArrayListExtra(Constants.FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
                                 //send user details to the next activity to fetch groups and events
-                                startActivity(i);
+                                startActivityForResult(i, 1);
 
 
                                 //NewGroupFragment groupFragment = NewGroupFragment.newInstance(friends);
@@ -167,7 +166,36 @@ public class ViewEventsActivity extends AppCompatActivity
                         return true;
                     }
                 });
+        
+        Menu menu = navigationView.getMenu();
+        //submenu = menu.addSubMenu("@string/groups");
+        submenu = menu.addSubMenu("Groups");
     }
+    
+    
+    private void addMenuItemInNavMenuDrawer(String group_name) {
+        NavigationView navView = (NavigationView) findViewById(R.id.nvView);
+
+        submenu.add(group_name);
+        navView.invalidate();
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+                if(resultCode == RESULT_OK) {
+                        newGroup = Parcels.unwrap(data.getParcelableExtra("new_group"));
+                        addMenuItemInNavMenuDrawer(newGroup.getName());
+
+                }
+
+        }
+
+    }
+
+
+
 
     private ActionBarDrawerToggle setupDrawerToggle() {
         // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it

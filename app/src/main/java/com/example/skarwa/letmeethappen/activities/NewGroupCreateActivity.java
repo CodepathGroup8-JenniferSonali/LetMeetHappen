@@ -1,5 +1,6 @@
 package com.example.skarwa.letmeethappen.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.Group;
@@ -26,7 +26,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.parceler.Parcel;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -35,8 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
-import static com.example.skarwa.letmeethappen.utils.Constants.EVENTS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.GROUPS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.USERS_ENDPOINT;
 
@@ -156,9 +153,10 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
                 group.setName(groupName);
                 group.setCreatedDate(DateUtils.formatDateToString(new Date()));
                 group.setGroupStatus(UserGroupStatus.ACTIVE.name());
-                group.addMember(loggedInUser.getId(),true);
-
-
+                group.addMember(loggedInUser.getId(), true);
+                for (User member : members) {
+                    group.addMember(member.getId(), true);
+                }
 
                 if (groupName != null) {
                     //save group in DB
@@ -175,6 +173,11 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
 
                     //addMenuItemInNavMenuDrawer(view, groupName);
                 }
+
+                Intent intent = new Intent();
+                intent.putExtra("new_group", Parcels.wrap(group));
+                setResult(RESULT_OK, intent);
+
                 finish();
             }
         });
