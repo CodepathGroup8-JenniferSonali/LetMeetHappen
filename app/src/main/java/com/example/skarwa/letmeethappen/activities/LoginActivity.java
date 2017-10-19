@@ -355,6 +355,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 // create unique ID for the user
                 user.setId(String.valueOf(UUID.randomUUID()));
+                user.setUserStatus(UserGroupStatus.ACTIVE.name());
+                user.setUserSettings(null);
 
                 if (names != null && names.size() > 0) {
                     user.setDisplayName(person.getNames().get(0).getDisplayName());
