@@ -36,7 +36,7 @@ public class UpcomingEventsFragment extends EventsListFragment {
         Query myUpcomingEventsQuery = FirebaseDatabase.getInstance()
                 .getReference()
                 .child(USER_EVENTS)
-                .child(getUid());
+                .child(getUid()).orderByChild("eventStatus").equalTo("CONFIRMED");
 
 
         /*myUpcomingEventsQuery.addValueEventListener(new ValueEventListener() {
