@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.example.skarwa.letmeethappen.fragments.DraftEventsFragment;
 import com.example.skarwa.letmeethappen.fragments.PastEventsFragment;
+import com.example.skarwa.letmeethappen.fragments.PendingEventFragment;
 import com.example.skarwa.letmeethappen.fragments.UpcomingEventsFragment;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
@@ -14,7 +15,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
  */
 
 public class EventsPagerAdapter extends SmartFragmentStatePagerAdapter {
-    private String[] tabTitles = {"UPCOMING", "PAST", "DRAFT"};
+    private String[] tabTitles = {"UPCOMING", "PAST", "PENDING"};
     private Context context;
 
     public EventsPagerAdapter(FragmentManager fm, Context context) {
@@ -30,7 +31,7 @@ public class EventsPagerAdapter extends SmartFragmentStatePagerAdapter {
             //return new PastEventsFragment();
             return new PastEventsFragment();
         } else if (position == 2) {
-            return new DraftEventsFragment(); //temporary
+            return new PendingEventFragment(); //temporary
         } else {
             return null;
         }
@@ -43,7 +44,7 @@ public class EventsPagerAdapter extends SmartFragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 2; //3 if we support Draft/Saved New Event
+        return 3; //3 if we support Draft/Saved New Event
     }
 
 }

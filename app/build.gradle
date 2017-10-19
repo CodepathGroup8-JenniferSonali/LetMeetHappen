@@ -70,10 +70,12 @@ dependencies {
     compile 'com.google.apis:google-api-services-people:v1-rev153-1.23.0'
     compile 'com.google.android.gms:play-services-maps:11.4.2'
     compile 'com.jakewharton:butterknife:8.4.0'
+    compile 'com.android.support:support-v4:26.+'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'org.parceler:parceler:1.1.6'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }
+
 
 
 apply plugin: 'com.google.gms.google-services'

@@ -226,19 +226,19 @@ public class ViewEventsActivity extends AppCompatActivity
        // String key = mDatabase.child(EVENTS_ENDPOINT).child(loggedInUser.)
 
         String key = mDatabase.child(EVENTS_ENDPOINT).push().getKey();
-        Map<String, Object> eventValues = event.toMap();
+       // Map<String, Object> eventValues = event.toMap();
+
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/"+EVENTS_ENDPOINT+"/" + key, event);
-        childUpdates.put("/"+USER_EVENTS+"/" + loggedInUser.getId() + "/" + key, eventValues);
+        childUpdates.put("/"+USER_EVENTS+"/" + loggedInUser.getId() + "/" + key, event);
+
         //TODO add this to sending invites as well.
 
         mDatabase.updateChildren(childUpdates);
     }
 
-    public void onItemsSelected(boolean[] selected) {
 
-    }
 
     public void onEventClick(Event event) {
         Toast.makeText(this,"Show Event Details",Toast.LENGTH_SHORT).show();
