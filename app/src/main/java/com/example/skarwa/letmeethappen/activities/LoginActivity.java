@@ -257,6 +257,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         user.setDisplayName(fbaseUser.getDisplayName());
         user.setEmail(fbaseUser.getEmail());
         user.setId(fbaseUser.getUid());
+        //user.setId(FirebaseInstanceId.getInstance().getToken());  // use token ID or new field?
         user.setPhoneNum(fbaseUser.getPhoneNumber());
         user.setUserStatus(UserGroupStatus.ACTIVE.name());
         user.setProfilePicUrl(fbaseUser.getPhotoUrl().toString());

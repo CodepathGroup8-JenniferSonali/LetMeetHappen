@@ -264,6 +264,27 @@ public class ViewEventsActivity extends AppCompatActivity
         //TODO add this to sending invites as well.
 
         mDatabase.updateChildren(childUpdates);
+
+        /* TODO: UNCOMMENT this when Members are populated, DO NOT DELETE THE CODE BELOW!
+        //notify group members of the new invite
+        ArrayList<String> tokens = new ArrayList<>();
+        Map<String, Boolean> members = event.getGroup().getMembers();
+        if (members != null) {
+            for (String tId : members.keySet()) {
+                // exclude the host
+                if (tId != loggedInUser.getId()) {
+                    tokens.add(tId);
+                }
+            }
+
+            try {
+                Log.d(TAG, "TOKEN id = " + loggedInUser.getId());
+                FCM.pushFCMNotification(tokens);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        */
     }
 
 
