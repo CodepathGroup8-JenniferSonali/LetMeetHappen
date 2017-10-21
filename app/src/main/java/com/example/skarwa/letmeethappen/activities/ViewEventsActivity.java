@@ -48,8 +48,8 @@ import butterknife.ButterKnife;
  * Created by jennifergodinez on 10/9/17.
  */
 
-public class ViewEventsActivity extends AppCompatActivity
-        implements NewEventFragment.OnCreateEventClickListener,Constants,
+public class ViewEventsActivity extends AppCompatActivity implements
+        Constants,
         EventsListFragment.OnEventClickListener {
 
     private static final String TAG = "ViewEventsActivity";
@@ -59,6 +59,7 @@ public class ViewEventsActivity extends AppCompatActivity
     ArrayList<? extends Parcelable> friends;
     SubMenu submenu;
     Group newGroup;
+    int tabIndex;
 
 
     @BindView(R.id.viewpager)
@@ -89,7 +90,7 @@ public class ViewEventsActivity extends AppCompatActivity
 
         loggedInUser = Parcels.unwrap(getIntent().getParcelableExtra(Constants.USER_OBJ));
         friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(Constants.FRIENDS_OBJ);
-
+        tabIndex = getIntent().getIntExtra(Constants.SHOW_TAB_INDEX,0);
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -110,6 +111,7 @@ public class ViewEventsActivity extends AppCompatActivity
 
         pagerAdapter = new EventsPagerAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setCurrentItem(tabIndex);
         tabLayout.setupWithViewPager(viewPager);
     }
 
@@ -138,11 +140,13 @@ public class ViewEventsActivity extends AppCompatActivity
 
                                 break;
 
-                            case R.id.group1:  //TODO, we need to dynamically get the ID
-                                ViewGroupFragment viewgroupFragment = ViewGroupFragment.newInstance("Close Friends");
-                                viewgroupFragment.show(fm, "fragment_view_group");
-
+                            case R.id.myGroups:
+                                Intent i1 = new Intent(getBaseContext(), MyGroupsListActivity.class);
+                                i1.putExtra(USER_OBJ,Parcels.wrap(loggedInUser));
+                                //send user details to the next activity to fetch groups and events
+                                startActivity(i1);
                                 break;
+
 
                                 //case
 
@@ -242,108 +246,12 @@ public class ViewEventsActivity extends AppCompatActivity
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
     }
-
-
-    @Override
-    public void onCreateEvent(Event event) {
-
-        event.setPlanner(loggedInUser);
-        event.addAttendedUser(loggedInUser.getId(),true);
-        Toast.makeText(this, "Saving Event...", Toast.LENGTH_SHORT).show();
-
-       // String key = mDatabase.child(EVENTS_ENDPOINT).child(loggedInUser.)
-
-        String key = mDatabase.child(EVENTS_ENDPOINT).push().getKey();
-       // Map<String, Object> eventValues = event.toMap();
-
-
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/"+EVENTS_ENDPOINT+"/" + key, event);
-        childUpdates.put("/"+USER_EVENTS+"/" + loggedInUser.getId() + "/" + key, event);
-
-        //TODO add this to sending invites as well.
-
-        mDatabase.updateChildren(childUpdates);
-
-        /* TODO: UNCOMMENT this when Members are populated, DO NOT DELETE THE CODE BELOW!
-        //notify group members of the new invite
-        ArrayList<String> tokens = new ArrayList<>();
-        Map<String, Boolean> members = event.getGroup().getMembers();
-        if (members != null) {
-            for (String tId : members.keySet()) {
-                // exclude the host
-                if (tId != loggedInUser.getId()) {
-                    tokens.add(tId);
-                }
-            }
-
-            try {
-                Log.d(TAG, "TOKEN id = " + loggedInUser.getId());
-                FCM.pushFCMNotification(tokens);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        */
-    }
-
-
-
     public void onEventClick(Event event) {
         Toast.makeText(this,"Show Event Details",Toast.LENGTH_SHORT).show();
 
         Intent i = new Intent(getApplicationContext(), ViewEventDetailActivity.class);
         i.putExtra(Constants.EVENT_OBJ, Parcels.wrap(event));
+        i.putExtra(Constants.USER_OBJ,Parcels.wrap(loggedInUser));
         startActivity(i);
-    }
-
-
-    /**
-     * This will get all the groups belonging to authorized user.
-     */
-    //TODO :test this works
-    public void populateAllUserGroups(){
-        // List the names of all User's groups
-        // fetch a list of User's groups
-        mDatabase.child("users/"+loggedInUser.getId()+"/groups").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                // for each group, fetch the name and print it
-                String groupKey = snapshot.getKey();
-                Log.d(TAG,"onChildAdded:"+snapshot.getKey());
-
-                //TODO get all groups and attach it to navigation drawer
-                mDatabase.child("groups/" + groupKey + "/name").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        Log.d(TAG,loggedInUser + " is a member of this group: " + snapshot.getValue());
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError firebaseError) {
-                        // ignore
-                    }
-                });
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 }

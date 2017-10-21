@@ -13,32 +13,24 @@ import java.util.Map;
  */
 @Parcel
 public class UserMeetingPreferences {
-    User mUser;
-    Event mEvent;
+    String mUser;
+   // Event mEvent;
     Map<Date,UserResponse> mDatePreferenceMap;
 
     public UserMeetingPreferences() {
         //empty constructor needed
     }
 
-    public void setUser(User mUser) {
+    public void setUser(String userId) {
         this.mUser = mUser;
-    }
-
-    public void setEvent(Event mEvent) {
-        this.mEvent = mEvent;
     }
 
     public void setDatePreferenceMap(Map<Date, UserResponse> mDatePreferenceMap) {
         this.mDatePreferenceMap = mDatePreferenceMap;
     }
 
-    public User getUser() {
+    public String getUser() {
         return mUser;
-    }
-
-    public Event getEvent() {
-        return mEvent;
     }
 
     public Map<Date, UserResponse> getDatePreferenceMap() {

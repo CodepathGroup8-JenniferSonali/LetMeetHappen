@@ -1,6 +1,7 @@
 package com.example.skarwa.letmeethappen.fragments;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.media.VolumeProviderCompat;
@@ -14,14 +15,30 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.skarwa.letmeethappen.R;
+import com.example.skarwa.letmeethappen.models.Event;
+import com.example.skarwa.letmeethappen.models.EventStatus;
+import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.parceler.Parcel;
+import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.skarwa.letmeethappen.utils.Constants.EVENTS_ENDPOINT;
+import static com.example.skarwa.letmeethappen.utils.Constants.EVENT_OBJ;
+import static com.example.skarwa.letmeethappen.utils.Constants.GROUPS_ENDPOINT;
+import static com.example.skarwa.letmeethappen.utils.Constants.GROUP_OBJ;
+import static com.example.skarwa.letmeethappen.utils.Constants.USER_EVENTS;
 
 
 /**
@@ -47,15 +64,21 @@ public class RespondFragment extends DialogFragment implements SelectDatesFragme
     @BindView(R.id.btnSend)
     Button btnSend;
 
+    Event event;
+
+    // [START declare_database_ref]
+    private DatabaseReference mDatabase;
+    // [END declare_database_ref]
+
 
     public RespondFragment() {
     }
 
-    public static RespondFragment newInstance(String eventName) {
+    public static RespondFragment newInstance(Parcelable event) {
 
         RespondFragment fragment = new RespondFragment();
         Bundle args = new Bundle();
-        args.putString(Constants.EVENT_NAME, eventName);
+        args.putParcelable(Constants.EVENT_NAME, event);
         fragment.setArguments(args);
 
         return fragment;
@@ -65,7 +88,12 @@ public class RespondFragment extends DialogFragment implements SelectDatesFragme
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
+        event = Parcels.unwrap(args.getBundle(EVENT_OBJ));
         mEventName = args.getString(Constants.EVENT_NAME);
+
+        // [START initialize_database_ref]
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        // [END initialize_database_ref]
     }
 
 
@@ -85,16 +113,47 @@ public class RespondFragment extends DialogFragment implements SelectDatesFragme
         super.onViewCreated(view, savedInstanceState);
 
         //getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        getDialog().getWindow().setTitle(mEventName);
+        getDialog().setTitle(mEventName);
 
         btnSend.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 Log.d("RespondFragment", "Send Button clicked");
+
+                //if response was yes
+                //do this
+                //1) update the user as one of the attendies
+                //2) did we reach minAcceptance ? if yes set status as confirmed , else do nothing
+                //3)
+                //else
+                //do this
+                updateEventStatus();
+
+
+
                 dismiss();
             }
         });
+    }
+
+    private void updateEventStatus() {
+        //TODO update event with response
+        event.setEventStatus(EventStatus.CONFIRMED.name());
+        Map<String,Boolean> groupMembers =  event.getGroup().getMembers();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/"+EVENTS_ENDPOINT+"/" + event.getId(), event);
+
+
+
+        //TODO update event for all the users part of the event
+
+        for (String userId : groupMembers.keySet()){
+            childUpdates.put("/"+USER_EVENTS+"/"+userId+"/"+event.getId(),event);
+        }
+
+        //DatabaseReference groupMembers = mDatabase.child(GROUPS_ENDPOINT).child(event.getGroup().getId()).child("members");
     }
 
 

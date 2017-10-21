@@ -36,11 +36,6 @@ import static com.example.skarwa.letmeethappen.R.string.addNewGroup;
 
 public class ViewGroupFragment extends DialogFragment implements Constants {
 
-    String groupName;
-
-    //@BindView(R.id.etGroupName)
-    //EditText etGroupName;
-
     @BindView(R.id.lvMembers)
     ListView lvMembers;
 
@@ -48,12 +43,12 @@ public class ViewGroupFragment extends DialogFragment implements Constants {
     Button btnCreateEvent;
     Group group;
 
-    public static ViewGroupFragment newInstance(String groupName) {
+    public static ViewGroupFragment newInstance(Parcelable group) {
         ViewGroupFragment fragment = new ViewGroupFragment();
         Bundle args = new Bundle();
-        //args.putParcelable(Constants.GROUP_OBJ, group);
+        args.putParcelable(GROUP_OBJ, group);
 
-        args.putString(GROUP_NAME, groupName);
+       // args.putString(GROUP_NAME, groupName);
         fragment.setArguments(args);
 
         return fragment;
@@ -63,8 +58,7 @@ public class ViewGroupFragment extends DialogFragment implements Constants {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-       // group = Parcels.unwrap(args.getBundle(GROUP_OBJ));
-        groupName = args.getString(GROUP_NAME);
+        group = Parcels.unwrap(args.getParcelable(GROUP_OBJ));
     }
 
     @Override
@@ -80,7 +74,7 @@ public class ViewGroupFragment extends DialogFragment implements Constants {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getDialog().setTitle(groupName);
+        getDialog().setTitle(group.getName());
 
 
         String[] values = new String[]{"Jennifer","Sonali"
@@ -96,7 +90,7 @@ public class ViewGroupFragment extends DialogFragment implements Constants {
             @Override
             public void onClick(View view) {
                 //FragmentManager fm = getSupportFragmentManager();
-                NewEventFragment eventFragment = NewEventFragment.newInstance(groupName);
+                NewEventFragment eventFragment = NewEventFragment.newInstance(Parcels.wrap(group));
                 eventFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
                 eventFragment.show(getFragmentManager(), "fragment_new_event");
                 dismiss();
