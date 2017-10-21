@@ -57,7 +57,6 @@ public class ViewEventsActivity extends AppCompatActivity implements
     ActionBarDrawerToggle drawerToggle;
     User loggedInUser;
     ArrayList<? extends Parcelable> friends;
-    SubMenu submenu;
     Group newGroup;
     int tabIndex;
 
@@ -170,27 +169,14 @@ public class ViewEventsActivity extends AppCompatActivity implements
                         return true;
                     }
                 });
-        
-        Menu menu = navigationView.getMenu();
-        //submenu = menu.addSubMenu("@string/groups");
-        submenu = menu.addSubMenu("Groups");
-    }
-    
-    
-    private void addMenuItemInNavMenuDrawer(String group_name) {
-        NavigationView navView = (NavigationView) findViewById(R.id.nvView);
-
-        submenu.add(group_name);
-        navView.invalidate();
-
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
                 if(resultCode == RESULT_OK) {
-                        newGroup = Parcels.unwrap(data.getParcelableExtra("new_group"));
-                        addMenuItemInNavMenuDrawer(newGroup.getName());
+                    Toast.makeText(this,"New Group added successfully",Toast.LENGTH_SHORT);
+                        // We no longer need to add groups to nav menu .
 
                 }
 

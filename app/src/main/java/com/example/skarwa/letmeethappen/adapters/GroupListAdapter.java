@@ -101,7 +101,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.Grou
                 // Update RecyclerView
 
                 //TODO get all groups and attach it to navigation drawer
-                mDatabase.child("groups/" + groupKey).addValueEventListener(new ValueEventListener() {
+              /*  mDatabase.child("groups/" + groupKey).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         Group group = snapshot.getValue(Group.class);
@@ -123,7 +123,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.Grou
                         // ignore
                     }
                 });
-                // [END_EXCLUDE]
+                // [END_EXCLUDE]*/
             }
 
             @Override

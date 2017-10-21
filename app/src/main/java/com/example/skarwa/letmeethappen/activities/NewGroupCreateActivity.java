@@ -223,16 +223,14 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         String key = mGroupDatabase.push().getKey();
         group.setId(key);
 
-        loggedInUser.addGroup(key,true);
-
         //TODO uncomment once we have proper user objects to save
                     /*for(User user : members){
-                        user.addGroup(key,true);
+                        user.getGroups().put(key,true);
                     }*/
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/"+GROUPS_ENDPOINT+"/" + key, group);
-        childUpdates.put("/"+USERS_ENDPOINT+"/" +loggedInUser.getId(),loggedInUser);
+        childUpdates.put("/"+USERS_ENDPOINT+"/" +loggedInUser.getId()+"/groups/"+key,true);
 
         //TODo update user object with the group info
 
