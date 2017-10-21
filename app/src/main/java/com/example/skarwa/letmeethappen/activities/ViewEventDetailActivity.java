@@ -1,6 +1,7 @@
 package com.example.skarwa.letmeethappen.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.fragments.RespondFragment;
 import com.example.skarwa.letmeethappen.models.Event;
+import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
 
 import org.parceler.Parcels;
@@ -27,6 +29,7 @@ import static com.example.skarwa.letmeethappen.utils.Constants.EVENT_OBJ;
 public class ViewEventDetailActivity extends AppCompatActivity implements Constants {
     private static final String TAG = "ViewEventDetailActivity";
     Event mEvent;
+    User user;
 
     @BindView(R.id.btnRespond)
     Button btnRespond;
@@ -46,6 +49,7 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
         setSupportActionBar(toolbar);
 
         mEvent = Parcels.unwrap(getIntent().getParcelableExtra(EVENT_OBJ));
+        user = Parcels.unwrap(getIntent().getParcelableExtra(USER_OBJ));
 
         ButterKnife.bind(this);
 
@@ -56,18 +60,21 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
 
     private void generateDetailEventView() {
 
-        btnRespond.setOnClickListener(new View.OnClickListener() {
+        if(mEvent.getPlanner().getId() == user.getId()){
+            btnRespond.setVisibility(View.INVISIBLE);
+        } else {
+            btnRespond.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
+                @Override
+                public void onClick(View view) {
 
-                RespondFragment respondFragment = RespondFragment.newInstance(mEvent.getEventName());
-                respondFragment.show(getSupportFragmentManager(), "fragment_respond");
+                    RespondFragment respondFragment = RespondFragment.newInstance(Parcels.wrap(mEvent));
+                    respondFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
+                    respondFragment.show(getSupportFragmentManager(), "fragment_respond");
 
-                Log.d("DEBUG", "display Respond dialog here");
-            }
-        });
+                    Log.d("DEBUG", "display Respond dialog here");
+                }
+            });
+        }
     }
-
-
 }
