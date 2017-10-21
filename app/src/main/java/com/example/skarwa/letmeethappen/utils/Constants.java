@@ -13,8 +13,6 @@ public interface Constants {
     String EVENT_NAME = "event_name";
     String GROUP_NAME = "group_name";
     String GROUP_OBJ = "group";
-    String MY_GROUPS = "My Groups";
-    String SHOW_TAB_INDEX = "ShowTabIndex";
 
     //endpoints
     String USERS_ENDPOINT = "users";

@@ -1,8 +1,6 @@
 package com.example.skarwa.letmeethappen.fragments;
 
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -17,12 +15,9 @@ import android.widget.TextView;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.EventStatus;
-import com.example.skarwa.letmeethappen.models.Group;
 import com.example.skarwa.letmeethappen.models.Location;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.example.skarwa.letmeethappen.utils.DateUtils;
-
-import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,8 +26,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.example.skarwa.letmeethappen.utils.Constants.GROUP_OBJ;
 
 
 /**
@@ -57,8 +50,9 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     @BindView(R.id.etLocation)
     EditText etLocation;
 
+    String mTitle; //group name
     Event event;
-    Group group;
+
 
     // listener will the activity instance containing fragment
     private OnCreateEventClickListener listener;
@@ -72,10 +66,10 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     public NewEventFragment() {
     }
 
-    public static NewEventFragment newInstance(Parcelable group) {
+    public static NewEventFragment newInstance(String title) {
         NewEventFragment fragment = new NewEventFragment();
         Bundle args = new Bundle();
-        args.putParcelable(GROUP_OBJ, group);
+        args.putString(Constants.TITLE, title);
         fragment.setArguments(args);
         return fragment;
     }
@@ -84,14 +78,14 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        group = Parcels.unwrap(args.getParcelable(GROUP_OBJ));
+        mTitle = args.getString(Constants.TITLE);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_new_event, container);
-        getDialog().setTitle(group.getName());
+        getDialog().setTitle(mTitle);
         event = new Event();
         ButterKnife.bind(this,view);
         return view;
@@ -150,7 +144,6 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                 event.setEventName(etEventName.getText().toString());
                 event.setAcceptByDate(etRSVPDate.getText().toString());
                 event.setEventStatus(EventStatus.PENDING.name());
-                event.setGroup(group);
 
                 event.setLocation(location);
                 event.setMinAcceptance(2); //default to 2 for now

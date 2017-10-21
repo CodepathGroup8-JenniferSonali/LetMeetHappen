@@ -50,7 +50,6 @@
             android:value="53564889f405babd67506fa8c1fe48c8d9b20740" />
 
         <activity android:name=".activities.NewGroupCreateActivity"></activity>
-        <activity android:name=".activities.MyGroupsListActivity"></activity>
     </application>
 
 </manifest>

@@ -1,7 +1,5 @@
 package com.example.skarwa.letmeethappen.models;
 
-import android.support.v7.widget.SearchView;
-
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -14,7 +12,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static io.fabric.sdk.android.services.network.HttpRequest.put;
 
@@ -37,7 +34,7 @@ public class Event {
     EventStatus mEventStatus;
     String mPlannerMsgToGroup;
     Map<String,Boolean> mAttendedUser;
-    Map<String,Integer> mEventDateOptions;
+    List<String> mEventDateOptions;
     String mHostProfileImage;  //TODO We should get the profile image from the user object ...but its fine for now.
 
 
@@ -123,13 +120,13 @@ public class Event {
 
     public void addEventDateOptions(String eventDateOption) {
         if(this.mEventDateOptions == null){
-            this.mEventDateOptions =  new HashMap<>();
+            this.mEventDateOptions =  new ArrayList<String>();
         }
-        this.mEventDateOptions.put(eventDateOption,0);
+        this.mEventDateOptions.add(eventDateOption);
     }
 
 
-    public void setEventDateOptions(Map<String,Integer> eventDateOptions){
+    public void setEventDateOptions(List<String> eventDateOptions){
         this.mEventDateOptions = eventDateOptions;
     }
 
@@ -169,7 +166,7 @@ public class Event {
         return mMinAcceptance;
     }
 
-    public Map<String,Integer> getEventDateOptions() {
+    public List<String> getEventDateOptions() {
         return mEventDateOptions;
     }
 

@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="10dp"
     android:layout_marginLeft="8dp"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/imgHostPic"
@@ -27,24 +30,26 @@
             android:text="Message from host" />
 
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="11dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="14dp"
             android:text="@string/ask"
-            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
-            android:layout_below="@+id/imgHostPic"
-            android:layout_alignStart="@+id/tvMessage"
-            android:layout_marginStart="14dp" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle" />
+    </RelativeLayout>
 
     <RadioGroup
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentStart="true"
-        android:id="@+id/radioGroup4">
+        android:layout_height="180dp">
 
         <CheckBox
             android:id="@+id/cbYes"
@@ -68,30 +73,33 @@
             android:text="@string/maybe" />
     </RadioGroup>
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
-        android:text="@string/availableDates"
-        android:layout_below="@+id/radioGroup4"
-        android:layout_alignStart="@+id/imgHostPic" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="37dp"
+            android:layout_marginTop="42dp"
+            android:text="@string/availableDates" />
+
+        <ListView
+            android:id="@+id/lvDates"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/textView3"
+            android:layout_marginStart="29dp"
+            android:layout_marginTop="19dp" />
+    </RelativeLayout>
 
     <Button
         android:id="@+id/btnSend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/send"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="13dp" />
-
-    <ListView
-        android:id="@+id/lvDates"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="19dp"
-        android:layout_below="@+id/textView3"
-        android:layout_centerHorizontal="true" />
-
-</RelativeLayout>
+        android:text="@string/send" />
+</LinearLayout>
