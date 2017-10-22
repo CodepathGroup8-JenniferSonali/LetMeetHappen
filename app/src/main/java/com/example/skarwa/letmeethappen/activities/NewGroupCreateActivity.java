@@ -54,7 +54,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
     private DatabaseReference mDatabase;
     private DatabaseReference mGroupDatabase;
     // [END declare_database_ref]
-    User loggedInUser;
+    String loggedInUserId;
     
 
     @Override
@@ -112,7 +112,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         });
 
         // [END initialize_database_ref]
-        loggedInUser = Parcels.unwrap(getIntent().getParcelableExtra(Constants.USER_OBJ));
+        loggedInUserId = getIntent().getStringExtra(Constants.USER_ID);
         group = new Group();
 
         friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(Constants.FRIENDS_OBJ);
@@ -153,7 +153,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
                 group.setName(groupName);
                 group.setCreatedDate(DateUtils.formatDateToString(new Date()));
                 group.setGroupStatus(UserGroupStatus.ACTIVE.name());
-                group.addMember(loggedInUser.getId(), true);
+                group.addMember(loggedInUserId, true);
                 for (User member : members) {
                     group.addMember(member.getId(), true);
                 }
@@ -230,7 +230,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/"+GROUPS_ENDPOINT+"/" + key, group);
-        childUpdates.put("/"+USERS_ENDPOINT+"/" +loggedInUser.getId()+"/groups/"+key,true);
+        childUpdates.put("/"+USERS_ENDPOINT+"/" +loggedInUserId+"/groups/"+key,true);
 
         //TODo update user object with the group info
 

@@ -10,17 +10,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.skarwa.letmeethappen.R;
-import com.example.skarwa.letmeethappen.fragments.RespondFragment;
+import com.example.skarwa.letmeethappen.fragments.RespondEventInviteFragment;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.example.skarwa.letmeethappen.utils.Constants.EVENT_OBJ;
 
 /**
  * Created by skarwa on 10/16/17.
@@ -29,14 +28,26 @@ import static com.example.skarwa.letmeethappen.utils.Constants.EVENT_OBJ;
 public class ViewEventDetailActivity extends AppCompatActivity implements Constants {
     private static final String TAG = "ViewEventDetailActivity";
     Event mEvent;
-    User user;
+    String loggedInUserId;
+    String loggedInUserDisplayName;
 
     @BindView(R.id.btnRespond)
     Button btnRespond;
 
+    @BindView(R.id.tvHostName)
+    TextView tvHostName;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.tvLocationValue)
+    TextView tvLocationVal;
+
+    @BindView(R.id.tvRSVPDate)
+    TextView tvRSVPDate;
+
+    @BindView(R.id.tvDates)
+    TextView tvDates;
 
 
     @Override
@@ -49,7 +60,9 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
         setSupportActionBar(toolbar);
 
         mEvent = Parcels.unwrap(getIntent().getParcelableExtra(EVENT_OBJ));
-        user = Parcels.unwrap(getIntent().getParcelableExtra(USER_OBJ));
+        loggedInUserId = getIntent().getStringExtra(USER_ID);
+        loggedInUserDisplayName = getIntent().getStringExtra(USER_DISPLAY_NAME);
+
 
         ButterKnife.bind(this);
 
@@ -61,9 +74,15 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
     }
 
     private void generateDetailEventView() {
+        tvLocationVal.setText(mEvent.getLocation().getUserFriendlyName().toString());
+        tvRSVPDate.setText(mEvent.getAcceptByDate());
+        tvHostName.setText(loggedInUserDisplayName);
+        String dates =  mEvent.getEventDateOptions().keySet().toString();
 
-        //if its the planner do not show respond button.
-        if(mEvent.getPlanner().getId().equals(user.getId())){
+        tvDates.setText(dates);
+
+       // if its the planner do not show respond button.
+        if(mEvent.getPlannerId().equals(loggedInUserId)){
             btnRespond.setVisibility(View.INVISIBLE);
         } else {
             btnRespond.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +90,7 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
                 @Override
                 public void onClick(View view) {
 
-                    RespondFragment respondFragment = RespondFragment.newInstance(Parcels.wrap(mEvent));
+                    RespondEventInviteFragment respondFragment = RespondEventInviteFragment.newInstance(Parcels.wrap(mEvent),loggedInUserId);
                     respondFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
                     respondFragment.show(getSupportFragmentManager(), "fragment_respond");
 
@@ -80,4 +99,8 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
             });
         }
     }
+    public String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
 }

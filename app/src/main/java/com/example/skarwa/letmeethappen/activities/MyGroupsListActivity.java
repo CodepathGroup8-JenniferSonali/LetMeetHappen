@@ -35,6 +35,7 @@ import butterknife.ButterKnife;
 
 import static com.example.skarwa.letmeethappen.utils.Constants.EVENTS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.MY_GROUPS;
+import static com.example.skarwa.letmeethappen.utils.Constants.USERS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.USER_EVENTS;
 
 public class MyGroupsListActivity extends AppCompatActivity implements NewEventFragment.OnCreateEventClickListener {
@@ -44,7 +45,8 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
     // [START declare_database_ref]
     private DatabaseReference mUserGroupReference;
     // [END declare_database_ref]
-    User loggedInUser;
+    String loggedInUserId;
+    String loggedInUserDisplayName;
     GroupListAdapter mAdapter;
     LinearLayoutManager linearLayoutManager;
 
@@ -68,11 +70,12 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
 
         setSupportActionBar(toolbar);
 
-        loggedInUser = Parcels.unwrap(getIntent().getParcelableExtra(Constants.USER_OBJ));
+        loggedInUserId = getIntent().getStringExtra(Constants.USER_ID);
+        loggedInUserDisplayName =  getIntent().getStringExtra(Constants.USER_DISPLAY_NAME);
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mUserGroupReference = FirebaseDatabase.getInstance().getReference().child("users/"+loggedInUser.getId()+"/groups");
+        mUserGroupReference = FirebaseDatabase.getInstance().getReference().child("users/"+loggedInUserId+"/groups");
         // [END initialize_database_ref]
 
         getSupportActionBar().setTitle(MY_GROUPS);
@@ -98,8 +101,9 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
     @Override
     public void onCreateEvent(Event event) {
 
-        event.setPlanner(loggedInUser);
-        event.addAttendedUser(loggedInUser.getId(),true);
+        event.setPlannerId(loggedInUserId);
+        event.setPlannerName(loggedInUserDisplayName);
+        event.addAttendedUser(loggedInUserId,true);
         Toast.makeText(this, "Saving Event...", Toast.LENGTH_SHORT).show();
 
         // String key = mDatabase.child(EVENTS_ENDPOINT).child(loggedInUser.)
@@ -107,10 +111,9 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
         String key = mDatabase.child(EVENTS_ENDPOINT).push().getKey();
         // Map<String, Object> eventValues = event.toMap();
 
-
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/"+EVENTS_ENDPOINT+"/" + key, event);
-        childUpdates.put("/"+USER_EVENTS+"/" + loggedInUser.getId() + "/" + key, event);
+        childUpdates.put("/"+USER_EVENTS+"/" + loggedInUserId + "/" + key, event);
 
         //TODO add this to sending invites as well.
 
@@ -136,13 +139,12 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
         }
         */
 
-
         //show the ViewEventsActivity
         Intent i = new Intent(this, ViewEventsActivity.class);
         //send user details to the next activity to fetch groups and events
 
-        i.putExtra("ShowTabIndex",2); //show pending events tab
-        //i.putParcelableArrayListExtra("persons", persons);
+        //show pending events tab as thats where the new event will get added
+        i.putExtra("ShowTabIndex",2);
         startActivity(i);
     }
 }

@@ -113,8 +113,8 @@
         android:id="@+id/spMinYes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/tvRSVPDate"
-        android:layout_alignBottom="@+id/tvYesCount" />
+        android:layout_below="@+id/tvRSVPDate"
+        android:layout_toEndOf="@+id/etMessage" />
 
 
     <TextView

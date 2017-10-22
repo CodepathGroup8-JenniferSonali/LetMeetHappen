@@ -38,23 +38,6 @@ public class UpcomingEventsFragment extends EventsListFragment {
                 .child(USER_EVENTS)
                 .child(getUid()).orderByChild("eventStatus").equalTo("CONFIRMED");
 
-
-        /*myUpcomingEventsQuery.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    Event event = postSnapshot.getValue(Event.class);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        });*/
-
         return myUpcomingEventsQuery;
     }
 }

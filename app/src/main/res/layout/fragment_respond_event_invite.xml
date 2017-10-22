@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="5dp"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Host : "
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:id="@+id/tvHost"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/tvLocationValue" />
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/location"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:id="@+id/tvLocationLabel"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/tvHost"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/tvRSVPDate" />
+
+    <TextView
+        android:id="@+id/tvLocationValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="location value"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_alignBaseline="@+id/tvLocationLabel"
+        android:layout_alignBottom="@+id/tvLocationLabel"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/tvLocationLabel" />
+
+
+    <TextView
+        android:id="@+id/tvRSVPLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rsvp_date"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/tvLocationLabel"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/tvRSVPDate" />
+
+    <TextView
+        android:id="@+id/tvRSVPDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:ems="10"
+        android:inputType="date"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_alignBaseline="@+id/tvRSVPLabel"
+        android:layout_alignBottom="@+id/tvRSVPLabel"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/tvSelectDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Date :"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="bold"
+        android:layout_alignBaseline="@+id/rbDateOption1"
+        android:layout_alignBottom="@+id/rbDateOption1"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/rbDateOption2" />
+
+    <RadioButton
+        android:id="@+id/rbDateOption1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RadioButton"
+        android:layout_marginTop="33dp"
+        android:layout_below="@+id/tvRSVPDate"
+        android:layout_toEndOf="@+id/tvRSVPLabel"
+        android:layout_marginStart="10dp" />
+
+    <RadioButton
+        android:id="@+id/rbDateOption2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RadioButton"
+        android:layout_below="@+id/tvSelectDate"
+        android:layout_alignStart="@+id/rbDateOption1" />
+
+    <EditText
+        android:id="@+id/etMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="4"
+        android:text="Message from Host"
+        android:layout_below="@+id/rbDateOption2"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/btnNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No"
+        android:background="@drawable/button_background"
+        android:layout_alignBaseline="@+id/btnYes"
+        android:layout_alignBottom="@+id/btnYes"
+        android:layout_alignEnd="@+id/rbDateOption2" />
+
+    <TextView
+        android:id="@+id/tvQuestionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ask"
+        android:textStyle="italic"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+        android:layout_marginEnd="42dp"
+        android:layout_below="@+id/etMessage"
+        android:layout_alignEnd="@+id/rbDateOption2"
+        android:layout_marginTop="27dp" />
+
+    <Button
+        android:id="@+id/btnYes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="Yes"
+        android:background="@drawable/button_background"
+        android:layout_marginTop="37dp"
+        android:layout_below="@+id/tvQuestionLabel"
+        android:layout_alignEnd="@+id/tvQuestionLabel"
+        android:layout_marginEnd="53dp" />
+
+    <Button
+        android:id="@+id/btnSendUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Update"
+        style="@style/NiceButton"
+        android:layout_marginBottom="44dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tvHostName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvHost"
+        android:text="Host name"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/tvHost" />
+
+</RelativeLayout>

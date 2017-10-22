@@ -1,7 +1,9 @@
 package com.example.skarwa.letmeethappen.activities;
 
 import android.accounts.Account;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -75,6 +77,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     DatabaseReference mDatabase;
     Account mAuthorizedAccount;
     private List<Parcelable> friends;
+    SharedPreferences sharedPref;
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
@@ -263,6 +266,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         user.setProfilePicUrl(fbaseUser.getPhotoUrl().toString());
         user.setUserSettings(null); //setting settings null for now.
 
+
+        // save user details to shared preferences
+        sharedPref = this.getSharedPreferences(
+                USER_DETAILS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(USER_ID,fbaseUser.getUid());
+        editor.putString(USER_DISPLAY_NAME,fbaseUser.getDisplayName());
+        editor.apply();
 
         saveUser(user);
 

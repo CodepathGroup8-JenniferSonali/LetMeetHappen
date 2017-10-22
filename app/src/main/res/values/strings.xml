@@ -4,8 +4,8 @@
     <string name="event_name">Event Name</string>
     <string name="select_group">Select Group</string>
     <string name="dates">Dates</string>
-    <string name="rsvp_date">Respond by</string>
-    <string name="min_attendee">Minimum Attendees</string>
+    <string name="rsvp_date">Respond by :</string>
+    <string name="min_attendee">Minimum Attendees :</string>
     <string name="message">Message</string>
     <string name="send_invite">SEND INVITE</string>
     <string name="when">When?</string>
@@ -28,7 +28,7 @@
     <string name="maybe">Let me get back to you on this.</string>
     <string name="availableDates">Select All Available Dates</string>
     <string name="send">Send</string>
-    <string name="location">Location</string>
+    <string name="location">Location : </string>
     <string name="nYes">Going so far</string>
     <string name="attendees">Attendees</string>
     <string name="for_all">Click to select ...</string>

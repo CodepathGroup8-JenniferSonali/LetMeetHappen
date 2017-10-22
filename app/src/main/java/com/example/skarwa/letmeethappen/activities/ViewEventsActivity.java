@@ -1,6 +1,8 @@
 package com.example.skarwa.letmeethappen.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -28,6 +30,7 @@ import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.Group;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,6 +47,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.google.common.base.StandardSystemProperty.USER_NAME;
+
 /**
  * Created by jennifergodinez on 10/9/17.
  */
@@ -57,8 +62,8 @@ public class ViewEventsActivity extends AppCompatActivity implements
     ActionBarDrawerToggle drawerToggle;
     User loggedInUser;
     ArrayList<? extends Parcelable> friends;
-    Group newGroup;
     int tabIndex;
+    SharedPreferences sharedPref;
 
 
     @BindView(R.id.viewpager)
@@ -90,6 +95,9 @@ public class ViewEventsActivity extends AppCompatActivity implements
         loggedInUser = Parcels.unwrap(getIntent().getParcelableExtra(Constants.USER_OBJ));
         friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(Constants.FRIENDS_OBJ);
         tabIndex = getIntent().getIntExtra(Constants.SHOW_TAB_INDEX,0);
+
+        sharedPref = this.getSharedPreferences(
+                USER_DETAILS, Context.MODE_PRIVATE);
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -128,7 +136,8 @@ public class ViewEventsActivity extends AppCompatActivity implements
 
                             case R.id.addGroup:
                                 Intent i = new Intent(getBaseContext(), NewGroupCreateActivity.class);
-                                i.putExtra(USER_OBJ,Parcels.wrap(loggedInUser));
+                                i.putExtra(USER_ID,sharedPref.getString(USER_ID,getUid()));
+                                i.putExtra(USER_DISPLAY_NAME,sharedPref.getString(USER_DISPLAY_NAME,null));
                                 i.putParcelableArrayListExtra(Constants.FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
                                 //send user details to the next activity to fetch groups and events
                                 startActivityForResult(i, 1);
@@ -141,7 +150,8 @@ public class ViewEventsActivity extends AppCompatActivity implements
 
                             case R.id.myGroups:
                                 Intent i1 = new Intent(getBaseContext(), MyGroupsListActivity.class);
-                                i1.putExtra(USER_OBJ,Parcels.wrap(loggedInUser));
+                                i1.putExtra(USER_ID,sharedPref.getString(USER_ID,getUid()));
+                                i1.putExtra(USER_DISPLAY_NAME,sharedPref.getString(USER_DISPLAY_NAME,null));
                                 //send user details to the next activity to fetch groups and events
                                 startActivity(i1);
                                 break;
@@ -158,6 +168,7 @@ public class ViewEventsActivity extends AppCompatActivity implements
 
 
                         }
+
 
 
                         // Highlight the selected item has been done by NavigationView
@@ -232,12 +243,18 @@ public class ViewEventsActivity extends AppCompatActivity implements
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
     }
+
     public void onEventClick(Event event) {
         Toast.makeText(this,"Show Event Details",Toast.LENGTH_SHORT).show();
 
         Intent i = new Intent(getApplicationContext(), ViewEventDetailActivity.class);
         i.putExtra(Constants.EVENT_OBJ, Parcels.wrap(event));
-        i.putExtra(Constants.USER_OBJ,Parcels.wrap(loggedInUser));
+        i.putExtra(USER_ID,sharedPref.getString(USER_ID,getUid()));
+        i.putExtra(USER_DISPLAY_NAME,sharedPref.getString(USER_DISPLAY_NAME,null));
         startActivity(i);
+    }
+
+    public String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 }

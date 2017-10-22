@@ -15,6 +15,10 @@ public interface Constants {
     String GROUP_OBJ = "group";
     String MY_GROUPS = "My Groups";
     String SHOW_TAB_INDEX = "ShowTabIndex";
+    String USER_ID = "userId";
+    String USER_DISPLAY_NAME = "displayName";
+    String  USER_DETAILS = "user_details";
+    String DEFAULT_MSG ="Lets meet soon !!";
 
     //endpoints
     String USERS_ENDPOINT = "users";

@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.skarwa.letmeethappen.R;
@@ -56,6 +58,9 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
 
     @BindView(R.id.etLocation)
     EditText etLocation;
+
+    @BindView(R.id.spMinYes)
+    Spinner spMinYes;
 
     Event event;
     Group group;
@@ -103,11 +108,24 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
 
         //getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
+        //get count of group members
+        int count = group.getMembers().keySet().size();
+
+        List<String> list = new ArrayList<String>();
+        for(int i=2;i<=count;i++){
+            list.add(String.valueOf(i));
+        }
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spMinYes.setAdapter(dataAdapter);
 
         // Show soft keyboard automatically and request focus to field
         etEventName.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+
 
         etDates.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +171,13 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                 event.setGroup(group);
 
                 event.setLocation(location);
-                event.setMinAcceptance(2); //default to 2 for now
+                int getMin = Integer.valueOf((String)spMinYes.getSelectedItem());
+                if(getMin != 0){
+                    event.setMinAcceptance(2);
+                } else  {
+                    event.setMinAcceptance(2);   //default to 2 for now
+                }
+
 
                 listener = (OnCreateEventClickListener)getActivity();
                 listener.onCreateEvent(event);

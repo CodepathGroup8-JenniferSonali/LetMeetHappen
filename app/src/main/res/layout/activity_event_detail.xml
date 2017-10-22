@@ -8,58 +8,86 @@
         layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="12dp" />
+        android:id="@+id/include"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/tvHostLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include"
+        android:layout_marginTop="22dp"
+        android:text="Host :"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/tvHostName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="host name"
+        android:textSize="18sp"
+        android:layout_alignBaseline="@+id/tvHostLabel"
+        android:layout_alignBottom="@+id/tvHostLabel"
+        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/tvDates" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dates"
-        android:layout_alignBottom="@+id/tvDates"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/tvDates"
-        android:id="@+id/textView" />
-
-    <TextView
-        android:id="@+id/tvDates"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:maxLines="2"
-        android:textSize="16sp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="55dp"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:id="@+id/tvCurrentResponse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/current_response"
-        android:layout_marginTop="43dp"
-        android:layout_below="@+id/textView"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:id="@+id/textView"
+        android:layout_alignTop="@+id/tvDates"
         android:layout_alignParentStart="true" />
 
     <TextView
-        android:id="@+id/tvResponse"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Not yet responded"
-        android:textAlignment="center"
-        android:layout_alignBaseline="@+id/tvCurrentResponse"
-        android:layout_alignBottom="@+id/tvCurrentResponse"
-        android:layout_toEndOf="@+id/tvCurrentResponse" />
+           android:id="@+id/tvDates"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:ems="10"
+           android:inputType="textMultiLine"
+           android:maxLines="2"
+           android:textSize="14sp"
+           android:layout_marginTop="26dp"
+           android:layout_below="@+id/tvHostName"
+           android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/tvLocationValue" />
 
-    <TextView
+      <!--  <TextView
+          android:id="@+id/tvCurrentResponse"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/current_response"
+          android:layout_marginTop="32dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentStart="true" />
+
+      <TextView
+          android:id="@+id/tvResponse"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Not yet responded"
+          android:textAlignment="center"
+          android:layout_alignBaseline="@+id/tvCurrentResponse"
+          android:layout_alignBottom="@+id/tvCurrentResponse"
+          android:layout_toEndOf="@+id/tvCurrentResponse" />
+
+   <TextView
         android:id="@+id/tvYesCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nYes"
-        android:layout_below="@+id/tvCurrentResponse"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/tvDates" />
+       android:textSize="18sp"
+       android:textStyle="bold"
+       android:layout_below="@+id/tvCurrentResponse"
+       android:layout_alignParentStart="true"
+       android:layout_marginTop="18dp" />
 
     <TextView
         android:id="@+id/tvYesVal"
@@ -67,48 +95,54 @@
         android:layout_height="wrap_content"
         android:text="2"
         android:textAlignment="center"
-        android:layout_below="@+id/tvResponse"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/textView" />
+        android:layout_alignBaseline="@+id/tvYesCount"
+        android:layout_alignBottom="@+id/tvYesCount"
+        android:layout_toEndOf="@+id/tvCurrentResponse" />-->
 
-    <TextView
+   <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/location"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:id="@+id/textView6"
-        android:layout_below="@+id/tvCurrentResponse"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="38dp" />
+        android:id="@+id/tvLocationLabel"
+       android:layout_below="@+id/textView"
+       android:layout_alignParentStart="true"
+       android:layout_marginTop="42dp" />
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView3"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
-        android:layout_alignTop="@+id/textView6"
+    <TextView
+        android:id="@+id/tvLocationValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_above="@+id/tvRSVPLabel"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/tvCurrentResponse" />
+        android:layout_alignStart="@+id/tvRSVPDate" />
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/rsvp_date"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:id="@+id/textView5"
-        android:layout_below="@+id/mapView3"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp" />
+        android:id="@+id/tvRSVPLabel"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="26dp"
+        android:layout_below="@+id/tvLocationLabel"
+        android:layout_alignEnd="@+id/tvLocationLabel" />
 
     <TextView
         android:id="@+id/tvRSVPDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:textStyle="bold"
+        android:textSize="18sp"
         android:inputType="date"
         android:text="Thurs, Oct 13"
-        android:layout_toEndOf="@+id/textView"
-        android:layout_alignTop="@+id/textView5" />
+        android:layout_alignBaseline="@+id/tvRSVPLabel"
+        android:layout_alignBottom="@+id/tvRSVPLabel"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:id="@+id/btnRespond"
@@ -117,9 +151,9 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:text="@string/rsvp"
         style="@style/NiceButton"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/tvRSVPLabel"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="53dp" />
+        android:layout_marginTop="65dp" /> -->
 
 
 

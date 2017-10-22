@@ -30,7 +30,8 @@ public class Event {
     String mEventFinalDate;  //date the event is planned for after responses.
     String mEventCreatedDate;  //date the event was created
     Group mGroup;
-    User mPlanner;
+    String mPlannerId;
+    String mPlannerName;
     Location mLocation;
     int mMinAcceptance;
     String mAcceptByDate;
@@ -99,8 +100,8 @@ public class Event {
         this.mGroup = mGroup;
     }
 
-    public void setPlanner(User mPlanner) {
-        this.mPlanner = mPlanner;
+    public void setPlannerId(String mPlannerId) {
+        this.mPlannerId = mPlannerId;
     }
 
     public void setLocation(Location mLocation) {
@@ -157,8 +158,8 @@ public class Event {
         return mGroup;
     }
 
-    public User getPlanner() {
-        return mPlanner;
+    public String getPlannerId() {
+        return mPlannerId;
     }
 
     public Location getLocation() {
@@ -221,5 +222,13 @@ public class Event {
             this.mAttendedUser = new HashMap<String, Boolean>();
         }
         this.mAttendedUser.put(userId,IsAttending);
+    }
+
+    public String getPlannerName() {
+        return mPlannerName;
+    }
+
+    public void setPlannerName(String mPlannerName) {
+        this.mPlannerName = mPlannerName;
     }
 }
