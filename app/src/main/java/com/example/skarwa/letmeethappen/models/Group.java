@@ -5,12 +5,8 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 import org.parceler.Parcel;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by skarwa on 10/12/17.
@@ -25,6 +21,7 @@ public class Group {
     String mExpiredDate;
     UserGroupStatus mGroupStatus;
     Map<String,Boolean> mMembers;
+    Map<String,String> mTokens;
 
     public Group() {
         //empty constructor needed
@@ -32,9 +29,26 @@ public class Group {
 
     public void setId(String mid) {
         this.mid = mid;
-    } public String getId() {
+    } 
+    
+    public String getId() {
         return mid;
     }
+
+    public Map<String, String> getTokenSet() {
+            return mTokens;
+        }
+
+     public void setTokenSet(Map<String, String> tokens) {
+            this.mTokens = tokens;
+     }
+
+     public void addToken(String userId, String tokenId) {
+         if(this.mTokens == null){
+             this.mTokens = new HashMap<>();
+         }
+         this.mTokens.put(userId,tokenId);
+     }
 
     public void setName(String mName) {
         this.mName = mName;

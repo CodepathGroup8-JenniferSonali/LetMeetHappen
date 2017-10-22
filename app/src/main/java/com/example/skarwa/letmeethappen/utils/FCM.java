@@ -19,39 +19,50 @@ public class FCM {
 
 // userDeviceIdKey is the device id you will query from your database
 
-    public static void pushFCMNotification(ArrayList<String> tokens) throws Exception{
-    //public static void pushFCMNotification(String userDeviceIdKey) throws Exception{
+    public static void pushFCMNotification(final ArrayList<String> tokens) throws Exception{
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        String authKey = AUTH_KEY_FCM; // You FCM AUTH key
-        String FMCurl = API_URL_FCM;
+                try {
+                    String authKey = AUTH_KEY_FCM; // You FCM AUTH key
+                    String FMCurl = API_URL_FCM;
 
-        URL url = new URL(FMCurl);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    URL url = new URL(FMCurl);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-        conn.setUseCaches(false);
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
+                    conn.setUseCaches(false);
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
 
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Authorization","key="+authKey);
-        conn.setRequestProperty("Content-Type","application/json");
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Authorization", "key=" + authKey);
+                    conn.setRequestProperty("Content-Type", "application/json");
 
-        JSONObject json = new JSONObject();
-        String idTokens="[";
-        for (String token : tokens) {
-            idTokens += token +",";
-        }
-        idTokens.toCharArray()[idTokens.length()-1] = ']';
-        json.put("registration_ids",idTokens);
-        //json.put("to",userDeviceIdKey.trim());
-        JSONObject info = new JSONObject();
-        info.put("title", "Let Meet Happen"); // Notification title
-        info.put("body", "You have a new invite!"); // Notification body
-        json.put("notification", info);
+                    JSONObject json = new JSONObject();
+                    String idTokens = "[";
+                    for (String token : tokens) {
+                        idTokens += token + ",";
+                    }
+                    char[] chArry = idTokens.toCharArray();
+                    chArry[idTokens.length() - 1] = ']';
+                    //json.put("registration_ids", chArry); TODO commented for testing only
+                    String userDeviceIdKey = "cSKxpDF7A4M:APA91bHBOIor057IPJmrjtlNdZvAjaACh6aADFX_-cKIn-CtnNTrkkBla7u-0eTojWz7_Af-w6RS5TGQl3KGwuxvxblF9EE7GwgBCWibDR3LEhU6pQFCZRkHpr-I_UOD2qcrTR9CS3RR";
+                    json.put("to",userDeviceIdKey.trim());
 
-        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-        wr.write(json.toString());
-        wr.flush();
-        conn.getInputStream();
+                    JSONObject info = new JSONObject();
+                    info.put("title", "Let Meet Happen"); // Notification title
+                    info.put("body", "You have a new invite!"); // Notification body
+                    json.put("notification", info);
+
+                    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                    wr.write(json.toString());
+                    wr.flush();
+                    conn.getInputStream();
+                } catch (Exception e) {
+
+                }
+            }}).start();
     }
 }
+

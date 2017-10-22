@@ -55,6 +55,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
     private DatabaseReference mGroupDatabase;
     // [END declare_database_ref]
     String loggedInUserId;
+    String loggedInTokenId;
     
 
     @Override
@@ -113,6 +114,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
 
         // [END initialize_database_ref]
         loggedInUserId = getIntent().getStringExtra(Constants.USER_ID);
+        loggedInTokenId = getIntent().getStringExtra(Constants.TOKEN_ID);
         group = new Group();
 
         friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(Constants.FRIENDS_OBJ);
@@ -154,8 +156,17 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
                 group.setCreatedDate(DateUtils.formatDateToString(new Date()));
                 group.setGroupStatus(UserGroupStatus.ACTIVE.name());
                 group.addMember(loggedInUserId, true);
+                group.addToken(loggedInUserId, loggedInTokenId);
                 for (final User member : members) {
                     group.addMember(member.getId(), true);
+                    if (member.getTokenId() != null) {
+                        group.addToken(member.getId(), member.getTokenId());
+                    } else {
+                        //TODO for testing only
+                        if (member.getId().equals("jennifer,p1210")) {
+                            //group.addToken(member.getId(), "fx9AjmDq4CI:APA91bGw6nlWSr8DWq5Shv4mCKY4nqOudAP7sb3Lm4tO5LZuTEVKR7tsDfKgNeddZqAKOmK5CdU1poyBQmEd420VAFyX1BPOM5BY8-L7E0RAf2kvMGeKveL6UekSKT1xd3HiQ0BqDilx");
+                        }
+                    }
 
                     FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -210,7 +221,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
                     //open Nav Drawer to show newly added group
                     //  mDrawer.openDrawer(nvDrawer); //TODO
 
-                    sendInvite(group);
+
 
                     //addMenuItemInNavMenuDrawer(view, groupName);
                 }
@@ -251,6 +262,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         }
 
         adapter.addAll(selects);
+        adapter.notifyDataSetChanged();
 
     }
 
@@ -278,8 +290,5 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         mDatabase.updateChildren(childUpdates);
     }
 
-    public void sendInvite(Group group) {
-    // send invites to all group members to join
 
-    }
 }

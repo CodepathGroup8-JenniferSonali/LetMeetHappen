@@ -7,7 +7,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.skarwa.letmeethappen.R;
@@ -15,11 +14,9 @@ import com.example.skarwa.letmeethappen.adapters.GroupListAdapter;
 import com.example.skarwa.letmeethappen.fragments.NewEventFragment;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.utils.Constants;
-import com.example.skarwa.letmeethappen.utils.FCM;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -111,23 +108,6 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
 
         mDatabase.updateChildren(childUpdates);
 
-        //notify group members of the new invite
-        ArrayList<String> tokens = new ArrayList<>();
-        Map<String, Boolean> members = event.getGroup().getMembers();
-        if (members != null) {
-            for (String tId : members.keySet()) {
-                // exclude the host
-                if (tId != loggedInUserId) {
-                    tokens.add(tId);
-                }
-            }
-            try {
-                Log.d(TAG, "TOKEN id = " + loggedInUserId);
-                FCM.pushFCMNotification(tokens);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
         //show the ViewEventsActivity
         Intent i = new Intent(this, ViewEventsActivity.class);
@@ -136,5 +116,7 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
         //show pending events tab as thats where the new event will get added
         i.putExtra("ShowTabIndex",2);
         startActivity(i);
+
+
     }
 }

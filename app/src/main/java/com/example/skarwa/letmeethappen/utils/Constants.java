@@ -16,6 +16,7 @@ public interface Constants {
     String MY_GROUPS = "My Groups";
     String SHOW_TAB_INDEX = "ShowTabIndex";
     String USER_ID = "userId";
+    String TOKEN_ID = "tokenId";
     String USER_DISPLAY_NAME = "displayName";
     String  USER_DETAILS = "user_details";
     String DEFAULT_MSG ="Lets meet soon !!";

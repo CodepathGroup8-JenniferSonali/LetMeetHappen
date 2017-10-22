@@ -1,7 +1,6 @@
 package com.example.skarwa.letmeethappen.fragments;
 
 import android.os.Bundle;
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -14,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.Event;
@@ -23,6 +21,7 @@ import com.example.skarwa.letmeethappen.models.Group;
 import com.example.skarwa.letmeethappen.models.Location;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.example.skarwa.letmeethappen.utils.DateUtils;
+import com.example.skarwa.letmeethappen.utils.FCM;
 
 import org.parceler.Parcels;
 
@@ -30,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -183,7 +183,11 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                 listener.onCreateEvent(event);
 
                 Log.d(TAG, "Send Button Clicked");
+
                 dismiss();
+
+                sendInvite(group);
+
             }
         });
 
@@ -199,6 +203,34 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         }
         EditText et = (isRange) ? etDates : etRSVPDate;
         et.setText(str);
+    }
+
+
+    public void sendInvite(Group group) {
+        // send invites to all group members to join
+        //notify group members of the new invite
+        ArrayList<String> tokens = new ArrayList<>();
+        Map<String, String> tMap = group.getTokenSet();
+        if (tMap != null) {
+            for (String id : tMap.keySet()) {
+                // exclude the host
+                //if (!id.equals(loggedInUserId))
+                {
+
+                    tokens.add(tMap.get(id));
+                    break;
+                }
+            }
+            try {
+                //Log.d(TAG, "TOKEN id = " + loggedInUserId);
+                if (tokens.size() > 0) {
+                    FCM.pushFCMNotification(tokens);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
 

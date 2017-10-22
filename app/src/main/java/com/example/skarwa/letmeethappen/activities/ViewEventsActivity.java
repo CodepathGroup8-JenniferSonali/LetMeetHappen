@@ -124,6 +124,7 @@ public class ViewEventsActivity extends AppCompatActivity implements
                             case R.id.addGroup:
                                 Intent i = new Intent(getBaseContext(), NewGroupCreateActivity.class);
                                 i.putExtra(USER_ID,User.encode(loggedInUser.getEmail()));
+                                i.putExtra(TOKEN_ID, loggedInUser.getTokenId());
                                 i.putExtra(USER_DISPLAY_NAME,sharedPref.getString(USER_DISPLAY_NAME,null));
                                 i.putParcelableArrayListExtra(Constants.FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
                                 //send user details to the next activity to fetch groups and events
@@ -139,6 +140,7 @@ public class ViewEventsActivity extends AppCompatActivity implements
                                 Intent i1 = new Intent(getBaseContext(), MyGroupsListActivity.class);
                                 String emailId = User.encode(loggedInUser.getEmail());
                                 i1.putExtra(USER_ID, emailId);
+                                i1.putExtra(TOKEN_ID, loggedInUser.getTokenId());
                                 i1.putExtra(USER_DISPLAY_NAME,sharedPref.getString(USER_DISPLAY_NAME,null));
                                 //send user details to the next activity to fetch groups and events
                                 startActivity(i1);
