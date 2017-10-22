@@ -17,6 +17,7 @@ import java.util.Map;
 @Parcel
 public class User {
     String mId;
+    String tokenId;
     String mDisplayName;
     String mEmail;
     String mPhoneNum;
@@ -39,6 +40,14 @@ public class User {
 
     public void setId(String mId) {
         this.mId = mId;
+    }
+
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
     }
 
     public void setDisplayName(String mDisplayName) {

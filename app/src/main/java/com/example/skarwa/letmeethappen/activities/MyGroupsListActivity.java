@@ -1,9 +1,8 @@
 package com.example.skarwa.letmeethappen.activities;
 
 import android.content.Intent;
-import android.os.Parcelable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,16 +14,10 @@ import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.adapters.GroupListAdapter;
 import com.example.skarwa.letmeethappen.fragments.NewEventFragment;
 import com.example.skarwa.letmeethappen.models.Event;
-import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.example.skarwa.letmeethappen.utils.FCM;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +28,6 @@ import butterknife.ButterKnife;
 
 import static com.example.skarwa.letmeethappen.utils.Constants.EVENTS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.MY_GROUPS;
-import static com.example.skarwa.letmeethappen.utils.Constants.USERS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.USER_EVENTS;
 
 public class MyGroupsListActivity extends AppCompatActivity implements NewEventFragment.OnCreateEventClickListener {
@@ -119,25 +111,23 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
 
         mDatabase.updateChildren(childUpdates);
 
-        /* TODO: UNCOMMENT this when Members are populated, DO NOT DELETE THE CODE BELOW!
         //notify group members of the new invite
         ArrayList<String> tokens = new ArrayList<>();
         Map<String, Boolean> members = event.getGroup().getMembers();
         if (members != null) {
             for (String tId : members.keySet()) {
                 // exclude the host
-                if (tId != loggedInUser.getId()) {
+                if (tId != loggedInUserId) {
                     tokens.add(tId);
                 }
             }
             try {
-                Log.d(TAG, "TOKEN id = " + loggedInUser.getId());
+                Log.d(TAG, "TOKEN id = " + loggedInUserId);
                 FCM.pushFCMNotification(tokens);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        */
 
         //show the ViewEventsActivity
         Intent i = new Intent(this, ViewEventsActivity.class);

@@ -52,6 +52,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.parceler.Parcels;
 
@@ -260,7 +261,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         user.setDisplayName(fbaseUser.getDisplayName());
         user.setEmail(fbaseUser.getEmail());
         user.setId(fbaseUser.getUid());
-        //user.setId(FirebaseInstanceId.getInstance().getToken());  // use token ID or new field?
+        user.setTokenId(FirebaseInstanceId.getInstance().getToken());
+        // TODO : SAVE IT TO FIREBASE
         user.setPhoneNum(fbaseUser.getPhoneNumber());
         user.setUserStatus(UserGroupStatus.ACTIVE.name());
         user.setProfilePicUrl(fbaseUser.getPhotoUrl().toString());
