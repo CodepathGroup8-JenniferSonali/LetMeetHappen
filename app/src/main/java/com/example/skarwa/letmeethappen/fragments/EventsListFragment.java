@@ -1,5 +1,7 @@
 package com.example.skarwa.letmeethappen.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,14 +18,8 @@ import com.example.skarwa.letmeethappen.utils.Constants;
 import com.example.skarwa.letmeethappen.viewholder.EventViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.ArrayList;
 import com.google.firebase.database.Query;
 
 import butterknife.BindView;
@@ -134,8 +130,12 @@ public abstract class EventsListFragment extends Fragment implements Constants {
         }
     }
 
-    public String getUid() {
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+     public String getUid() {
+         SharedPreferences shared = getActivity().getSharedPreferences(
+                 USER_DETAILS, Context.MODE_PRIVATE);
+         String emailId = shared.getString(USER_ID, null);
+        //return FirebaseAuth.getInstance().getCurrentUser().getUid();
+         return emailId;
     }
 
     public abstract Query getQuery(DatabaseReference databaseReference);

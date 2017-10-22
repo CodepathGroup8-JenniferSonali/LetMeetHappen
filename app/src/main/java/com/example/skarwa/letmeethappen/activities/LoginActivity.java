@@ -260,7 +260,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         User user = new User();
         user.setDisplayName(fbaseUser.getDisplayName());
         user.setEmail(fbaseUser.getEmail());
-        user.setId(fbaseUser.getUid());
+        //user.setId(fbaseUser.getUid());
         user.setTokenId(FirebaseInstanceId.getInstance().getToken());
         // TODO : SAVE IT TO FIREBASE
         user.setPhoneNum(fbaseUser.getPhoneNumber());
@@ -273,7 +273,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         sharedPref = this.getSharedPreferences(
                 USER_DETAILS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(USER_ID,fbaseUser.getUid());
+        editor.putString(USER_ID, user.getId());
         editor.putString(USER_DISPLAY_NAME,fbaseUser.getDisplayName());
         editor.apply();
 
