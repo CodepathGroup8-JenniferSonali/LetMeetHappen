@@ -24,6 +24,7 @@ import com.example.skarwa.letmeethappen.adapters.EventsPagerAdapter;
 import com.example.skarwa.letmeethappen.fragments.EventsListFragment;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.User;
+import com.example.skarwa.letmeethappen.services.MyEventTrackingService;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -85,6 +86,8 @@ public class ViewEventsActivity extends AppCompatActivity implements
 
         sharedPref = this.getSharedPreferences(
                 USER_DETAILS, Context.MODE_PRIVATE);
+
+        launchEventTrackingService();
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -244,5 +247,16 @@ public class ViewEventsActivity extends AppCompatActivity implements
 
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+    // Call `launchTestService()` in the activity
+    // to startup the service
+    public void launchEventTrackingService() {
+        // Construct our Intent specifying the Service
+        Intent i = new Intent(this, MyEventTrackingService.class);
+        // Add extras to the bundle
+        i.putExtra(USER_ID,sharedPref.getString(USER_ID,getUid()));  //TODO : update as needed
+        // Start the service
+        startService(i);
     }
 }

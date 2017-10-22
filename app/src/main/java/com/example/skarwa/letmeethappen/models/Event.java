@@ -25,7 +25,7 @@ import static io.fabric.sdk.android.services.network.HttpRequest.put;
 @IgnoreExtraProperties
 @Parcel
 public class Event {
-    long mId;
+    String mId;
     String mEventName;
     String mEventFinalDate;  //date the event is planned for after responses.
     String mEventCreatedDate;  //date the event was created
@@ -80,7 +80,7 @@ public class Event {
         return event;
     }
 
-    public void setId(long mId) {
+    public void setId(String mId) {
         this.mId = mId;
     }
 
@@ -138,7 +138,7 @@ public class Event {
         this.mHostProfileImage = mHostProfileImage;
     }
 
-    public long getId() {
+    public String getId() {
         return mId;
     }
 

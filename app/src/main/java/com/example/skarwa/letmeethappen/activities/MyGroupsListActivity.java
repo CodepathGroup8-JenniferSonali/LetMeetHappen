@@ -92,6 +92,7 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
 
     @Override
     public void onCreateEvent(Event event) {
+        Map<String, Boolean> groupMembers = event.getGroup().getMembers();
 
         event.setPlannerId(loggedInUserId);
         event.setPlannerName(loggedInUserDisplayName);
@@ -101,33 +102,30 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
         // String key = mDatabase.child(EVENTS_ENDPOINT).child(loggedInUser.)
 
         String key = mDatabase.child(EVENTS_ENDPOINT).push().getKey();
+        event.setId(key); //setting event id as we need to link events to its ids.
         // Map<String, Object> eventValues = event.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/"+EVENTS_ENDPOINT+"/" + key, event);
         childUpdates.put("/"+USER_EVENTS+"/" + loggedInUserId + "/" + key, event);
 
+        ArrayList<String> tokens = new ArrayList<>();
+        //Add event for all users who are group members
+        for (String userId : groupMembers.keySet()) {
+            if (userId != loggedInUserId) {
+                tokens.add(userId);
+                childUpdates.put("/" + USER_EVENTS + "/" + userId + "/" +key, event);
+            }
+        }
+        try {
+            Log.d(TAG, "TOKEN id = " + loggedInUserId);
+            FCM.pushFCMNotification(tokens);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //TODO add this to sending invites as well.
 
         mDatabase.updateChildren(childUpdates);
-
-        //notify group members of the new invite
-        ArrayList<String> tokens = new ArrayList<>();
-        Map<String, Boolean> members = event.getGroup().getMembers();
-        if (members != null) {
-            for (String tId : members.keySet()) {
-                // exclude the host
-                if (tId != loggedInUserId) {
-                    tokens.add(tId);
-                }
-            }
-            try {
-                Log.d(TAG, "TOKEN id = " + loggedInUserId);
-                FCM.pushFCMNotification(tokens);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
         //show the ViewEventsActivity
         Intent i = new Intent(this, ViewEventsActivity.class);

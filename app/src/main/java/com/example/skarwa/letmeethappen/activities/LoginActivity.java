@@ -16,6 +16,8 @@ import com.crashlytics.android.Crashlytics;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.models.UserGroupStatus;
+import com.example.skarwa.letmeethappen.network.FirebaseDatabaseClient;
+import com.example.skarwa.letmeethappen.services.MyEventTrackingService;
 import com.example.skarwa.letmeethappen.services.RegistrationIntentService;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.example.skarwa.letmeethappen.utils.DBUtils;
@@ -52,6 +54,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.io.IOException;
@@ -109,6 +113,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // [END initialize_database_ref]
+
+
 
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
@@ -380,12 +386,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 friends.add(Parcels.wrap(user));
             }
-
             onLoginSuccess();
-
-
         }
     }
-
-
 }

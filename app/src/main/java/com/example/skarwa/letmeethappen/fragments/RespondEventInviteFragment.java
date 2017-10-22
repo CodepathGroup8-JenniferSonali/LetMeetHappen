@@ -184,6 +184,8 @@ public class RespondEventInviteFragment extends DialogFragment {
             childUpdates.put("/" + USER_EVENTS + "/" + userId + "/" + event.getId(), event);
         }
 
+        mDatabase.updateChildren(childUpdates);
+
         Intent intent = new Intent(getActivity(), ViewEventsActivity.class);
         startActivity(intent);
 

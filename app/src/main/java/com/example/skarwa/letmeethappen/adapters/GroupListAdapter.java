@@ -157,7 +157,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.Grou
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "postEvents:onCancelled", databaseError.toException());
+                Log.w(TAG, "onCancelled", databaseError.toException());
                 Toast.makeText(mContext, "Failed to load events.",
                         Toast.LENGTH_SHORT).show();
             }

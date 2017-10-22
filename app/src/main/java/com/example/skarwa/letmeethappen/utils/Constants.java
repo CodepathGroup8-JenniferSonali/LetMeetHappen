@@ -25,4 +25,8 @@ public interface Constants {
     String EVENTS_ENDPOINT = "events";
     String GROUPS_ENDPOINT = "groups";
     String USER_EVENTS = "user-events";
+
+
+    String MY_DATABSE_API_KEY = "AIzaSyD9SqX-S9A8pZs7hgZOX35msB8V36EN2Vg";
+
 }

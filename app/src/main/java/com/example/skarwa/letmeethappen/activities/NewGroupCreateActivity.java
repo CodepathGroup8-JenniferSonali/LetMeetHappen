@@ -54,7 +54,6 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
 
     // [START declare_database_ref]
     private DatabaseReference mDatabase;
-    private DatabaseReference mGroupDatabase;
     private DatabaseReference mUserDatabase;
     // [END declare_database_ref]
     String loggedInUserId;
@@ -76,7 +75,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
                 // run some code
                 if (dataSnapshot.hasChild(GROUPS_ENDPOINT)) {
                     //if users already exists
-                   mGroupDatabase.addChildEventListener(new ChildEventListener() {
+                    mDatabase.child(GROUPS_ENDPOINT).addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                             Group newGroup = dataSnapshot.getValue(Group.class);
@@ -106,7 +105,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
                         }
                     });
                 } else {  // if "group" child doesnt exist ..create the child and then add
-                    mGroupDatabase = mDatabase.child(GROUPS_ENDPOINT).push();
+                   mDatabase.child(GROUPS_ENDPOINT).push();
                 }
             }
 
@@ -206,7 +205,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
 
 
     public void saveGroup(){
-        mGroupDatabase = mDatabase.child(GROUPS_ENDPOINT);
+        DatabaseReference mGroupDatabase = mDatabase.child(GROUPS_ENDPOINT);
 
         String key = mGroupDatabase.push().getKey();
         group.setId(key);
