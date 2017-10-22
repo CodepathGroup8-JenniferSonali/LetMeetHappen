@@ -68,9 +68,7 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
 
         generateDetailEventView();
         getSupportActionBar().setTitle(mEvent.getEventName());
-
-        //TODO temporary fix...when we go back the user object becomes null. so not showing back icon for now.
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void generateDetailEventView() {
@@ -83,13 +81,12 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
 
        // if its the planner do not show respond button.
         if(mEvent.getPlannerId().equals(loggedInUserId)){
-            btnRespond.setVisibility(View.INVISIBLE);
+           btnRespond.setVisibility(View.INVISIBLE);
         } else {
             btnRespond.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
-
                     RespondEventInviteFragment respondFragment = RespondEventInviteFragment.newInstance(Parcels.wrap(mEvent),loggedInUserId);
                     respondFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
                     respondFragment.show(getSupportFragmentManager(), "fragment_respond");

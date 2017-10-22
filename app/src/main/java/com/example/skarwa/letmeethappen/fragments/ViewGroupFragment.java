@@ -5,6 +5,10 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,35 +25,74 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.example.skarwa.letmeethappen.adapters.GroupListAdapter;
+import com.example.skarwa.letmeethappen.adapters.GroupMembersAdapter;
+import com.example.skarwa.letmeethappen.utils.Constants;
+
+import com.example.skarwa.letmeethappen.models.Group;
+import com.example.skarwa.letmeethappen.models.UserGroupStatus;
+import com.example.skarwa.letmeethappen.utils.DateUtils;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.parceler.Parcels;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.skarwa.letmeethappen.R.id.lvMembers;
+import static com.example.skarwa.letmeethappen.R.id.rvGroupMembers;
+import static com.example.skarwa.letmeethappen.R.id.rvGroups;
+import static com.example.skarwa.letmeethappen.R.string.addNewGroup;
+
+
 
 public class ViewGroupFragment extends DialogFragment implements Constants {
+    Group group;
+    GroupMembersAdapter mAdapter;
+    LinearLayoutManager linearLayoutManager;
 
-    @BindView(R.id.lvMembers)
-    ListView lvMembers;
+    @BindView(R.id.rvGroupMembers)
+    RecyclerView rvGroupMembers;
 
     @BindView(R.id.btnCreateEvent)
     Button btnCreateEvent;
-    Group group;
-    ArrayAdapter<String> adapter;
+
+//    Group group;
+ //   ArrayAdapter<String> adapter;
+
+
+    // [START declare_database_ref]
+    private DatabaseReference mGroupReference;
+    // [END declare_database_ref]
+
+
 
     public static ViewGroupFragment newInstance(Parcelable group) {
         ViewGroupFragment fragment = new ViewGroupFragment();
         Bundle args = new Bundle();
         args.putParcelable(GROUP_OBJ, group);
 
-       // args.putString(GROUP_NAME, groupName);
         fragment.setArguments(args);
-
         return fragment;
     }
+
+    private void initRecyclerView() {
+        mAdapter = new GroupMembersAdapter(getContext(),mGroupReference);
+        RecyclerView.ItemDecoration itemDecoration = new
+                DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.scrollToPosition(0);
+
+        rvGroupMembers.setLayoutManager(linearLayoutManager);
+        rvGroupMembers.addItemDecoration(itemDecoration);
+        rvGroupMembers.setAdapter(mAdapter);
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +107,11 @@ public class ViewGroupFragment extends DialogFragment implements Constants {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_group, container, false);
         ButterKnife.bind(this,view);
+
+        mGroupReference = FirebaseDatabase.getInstance().getReference().child("groups/"+group.getId());
+
+        initRecyclerView();
+
         return view;
     }
 
@@ -73,6 +121,9 @@ public class ViewGroupFragment extends DialogFragment implements Constants {
 
         getDialog().setTitle(group.getName());
 
+
+        //Jennifer's Code'
+/*
         adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, new ArrayList<String>());
 
@@ -111,14 +162,14 @@ public class ViewGroupFragment extends DialogFragment implements Constants {
             }
         }
 
-        lvMembers.setAdapter(adapter);
+        lvMembers.setAdapter(adapter);*/
+
 
         btnCreateEvent = (Button)view.findViewById(R.id.btnCreateEvent);
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                //FragmentManager fm = getSupportFragmentManager();
                 NewEventFragment eventFragment = NewEventFragment.newInstance(Parcels.wrap(group));
                 eventFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
                 eventFragment.show(getFragmentManager(), "fragment_new_event");

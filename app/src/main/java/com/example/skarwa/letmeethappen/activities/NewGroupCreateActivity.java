@@ -18,6 +18,7 @@ import com.example.skarwa.letmeethappen.models.UserGroupStatus;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.example.skarwa.letmeethappen.utils.DateUtils;
 import com.example.skarwa.letmeethappen.utils.MultiSpinner;
+import com.example.skarwa.letmeethappen.utils.DBUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -49,13 +50,15 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
     List<String> names;
     ArrayAdapter<String> adapter;
     Group group;
+    DBUtils DBUtils;
 
     // [START declare_database_ref]
     private DatabaseReference mDatabase;
     private DatabaseReference mGroupDatabase;
+    private DatabaseReference mUserDatabase;
     // [END declare_database_ref]
     String loggedInUserId;
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +67,16 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        DBUtils = new DBUtils();
+
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // run some code
                 if (dataSnapshot.hasChild(GROUPS_ENDPOINT)) {
-                    mGroupDatabase =  mDatabase.child(GROUPS_ENDPOINT);
                     //if users already exists
-                    mDatabase.child(GROUPS_ENDPOINT).addChildEventListener(new ChildEventListener() {
+                   mGroupDatabase.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                             Group newGroup = dataSnapshot.getValue(Group.class);
@@ -131,11 +136,6 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
 
         lvMembers = (ListView) findViewById(R.id.lvMembers);
 
-        String[] values = new String[]{"Row1",
-                "Row2",
-                "Row 3",
-        };
-
         adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, new ArrayList<String>());
         lvMembers.setAdapter(adapter);
@@ -156,63 +156,13 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
                 group.addMember(loggedInUserId, true);
                 for (final User member : members) {
                     group.addMember(member.getId(), true);
-
-                    FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
-
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            // run some code
-                            if (dataSnapshot.hasChild(USERS_ENDPOINT)) {
-                                //if users already exists
-                                mDatabase.child(USERS_ENDPOINT).child(member.getId()).addValueEventListener(new ValueEventListener() {
-
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.exists()) {
-                                            // code if user exists
-                                            User user = dataSnapshot.getValue(User.class);
-                                            Log.d(TAG,"User exist !!");
-                                        } else {
-                                            // user not found
-                                            Log.d(TAG,"User does not exist !!");
-                                            mDatabase.child(USERS_ENDPOINT).child(member.getId()).setValue(member);
-                                        }
-
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-                                        System.out.println("The read failed: " + databaseError.getCode());
-                                    }
-                                });
-                            } else {  // if "users" child doesnt exist ..create the child and then add
-                                DatabaseReference mUserDBReference = mDatabase.child(USERS_ENDPOINT).push();
-                                mUserDBReference.child(member.getId()).setValue(member);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                    DBUtils.saveUser(member);
                 }
 
 
                 if (groupName != null) {
-                    //save group in DB
-
                     saveGroup();
-
-                    //Add group  to NavDrawer
-
-
-                    //open Nav Drawer to show newly added group
-                    //  mDrawer.openDrawer(nvDrawer); //TODO
-
                     sendInvite(group);
-
-                    //addMenuItemInNavMenuDrawer(view, groupName);
                 }
 
                 Intent intent = new Intent();
@@ -243,10 +193,6 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
 
                 selects.add(names.get(i));
                 members.add(user);
-
-                //TODO uncomment once we have proper user objects to save
-              //  group.addMember(user.getId(),true);
-
             }
         }
 
@@ -260,21 +206,26 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
 
 
     public void saveGroup(){
+        mGroupDatabase = mDatabase.child(GROUPS_ENDPOINT);
 
         String key = mGroupDatabase.push().getKey();
         group.setId(key);
 
-        //TODO uncomment once we have proper user objects to save
-                    /*for(User user : members){
-                        user.getGroups().put(key,true);
-                    }*/
-
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/"+GROUPS_ENDPOINT+"/" + key, group);
+
+        //update group for loggedInUser
         childUpdates.put("/"+USERS_ENDPOINT+"/" +loggedInUserId+"/groups/"+key,true);
 
-        //TODo update user object with the group info
+        //Save Group
+        childUpdates.put("/"+GROUPS_ENDPOINT+"/" + key, group);
 
+        //Save group members
+        for(User user : members){
+            //user.getGroups().put(key,true);
+
+            //mGroupDatabase.child(USERS_ENDPOINT).child(user.getId()).setValue(user);
+           childUpdates.put("/"+USERS_ENDPOINT+"/" +user.getId()+"/groups/"+key,true);
+        }
         mDatabase.updateChildren(childUpdates);
     }
 

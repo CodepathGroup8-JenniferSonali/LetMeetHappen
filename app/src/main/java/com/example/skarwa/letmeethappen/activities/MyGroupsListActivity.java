@@ -71,7 +71,7 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
         // [END initialize_database_ref]
 
         getSupportActionBar().setTitle(MY_GROUPS);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initRecyclerView();
 

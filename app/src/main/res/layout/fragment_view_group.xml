@@ -5,8 +5,8 @@
     android:baselineAligned="false"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/lvMembers"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvGroupMembers"
         android:layout_width="match_parent"
         android:clickable="false"
         android:layout_height="350dp" />

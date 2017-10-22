@@ -18,6 +18,7 @@ import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.models.UserGroupStatus;
 import com.example.skarwa.letmeethappen.services.RegistrationIntentService;
 import com.example.skarwa.letmeethappen.utils.Constants;
+import com.example.skarwa.letmeethappen.utils.DBUtils;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -47,11 +48,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.parceler.Parcels;
@@ -79,6 +77,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Account mAuthorizedAccount;
     private List<Parcelable> friends;
     SharedPreferences sharedPref;
+    DBUtils DBUtils;
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
@@ -136,8 +135,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
         }
-
-
     }
 
 
@@ -277,54 +274,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.putString(USER_DISPLAY_NAME,fbaseUser.getDisplayName());
         editor.apply();
 
-        saveUser(user);
-
-
-
+        DBUtils.saveUser(user);
         return user;
     }
 
-    private void saveUser(final User userToSave) {
-
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // run some code
-                if (dataSnapshot.hasChild(USERS_ENDPOINT)) {
-                    //if users already exists
-                    mDatabase.child(USERS_ENDPOINT).child(userToSave.getId()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                // code if user exists
-                                User user = dataSnapshot.getValue(User.class);
-                                Log.d(TAG,"User exist !!");
-                            } else {
-                                // user not found
-                                Log.d(TAG,"User does not exist !!");
-                                mDatabase.child(USERS_ENDPOINT).child(userToSave.getId()).setValue(userToSave);
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            System.out.println("The read failed: " + databaseError.getCode());
-                        }
-                    });
-                } else {  // if "users" child doesnt exist ..create the child and then add
-                    DatabaseReference mUserDBReference = mDatabase.child(USERS_ENDPOINT).push();
-                    mUserDBReference.child(userToSave.getId()).setValue(userToSave);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
 
 
@@ -366,7 +319,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         .people()
                         .connections()
                         .list("people/me")
-                        .setPageSize(20)
+                        .setPageSize(30)
                         .setPersonFields("names,emailAddresses,coverPhotos,phoneNumbers")
                          .execute();
                 result = connectionsResponse.getConnections();
