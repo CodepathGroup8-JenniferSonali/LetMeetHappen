@@ -154,9 +154,50 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
                 group.setCreatedDate(DateUtils.formatDateToString(new Date()));
                 group.setGroupStatus(UserGroupStatus.ACTIVE.name());
                 group.addMember(loggedInUserId, true);
-                for (User member : members) {
+                for (final User member : members) {
                     group.addMember(member.getId(), true);
+
+                    FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            // run some code
+                            if (dataSnapshot.hasChild(USERS_ENDPOINT)) {
+                                //if users already exists
+                                mDatabase.child(USERS_ENDPOINT).child(member.getId()).addValueEventListener(new ValueEventListener() {
+
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()) {
+                                            // code if user exists
+                                            User user = dataSnapshot.getValue(User.class);
+                                            Log.d(TAG,"User exist !!");
+                                        } else {
+                                            // user not found
+                                            Log.d(TAG,"User does not exist !!");
+                                            mDatabase.child(USERS_ENDPOINT).child(member.getId()).setValue(member);
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        System.out.println("The read failed: " + databaseError.getCode());
+                                    }
+                                });
+                            } else {  // if "users" child doesnt exist ..create the child and then add
+                                DatabaseReference mUserDBReference = mDatabase.child(USERS_ENDPOINT).push();
+                                mUserDBReference.child(member.getId()).setValue(member);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
+
 
                 if (groupName != null) {
                     //save group in DB

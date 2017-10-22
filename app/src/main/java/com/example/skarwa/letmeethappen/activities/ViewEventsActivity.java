@@ -15,39 +15,26 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.widget.Toast;
 
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.adapters.EventsPagerAdapter;
 import com.example.skarwa.letmeethappen.fragments.EventsListFragment;
-import com.example.skarwa.letmeethappen.fragments.NewEventFragment;
-import com.example.skarwa.letmeethappen.fragments.ViewGroupFragment;
 import com.example.skarwa.letmeethappen.models.Event;
-import com.example.skarwa.letmeethappen.models.Group;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.google.common.base.StandardSystemProperty.USER_NAME;
 
 /**
  * Created by jennifergodinez on 10/9/17.
@@ -136,7 +123,7 @@ public class ViewEventsActivity extends AppCompatActivity implements
 
                             case R.id.addGroup:
                                 Intent i = new Intent(getBaseContext(), NewGroupCreateActivity.class);
-                                i.putExtra(USER_ID,sharedPref.getString(USER_ID,getUid()));
+                                i.putExtra(USER_ID,User.encode(loggedInUser.getEmail()));
                                 i.putExtra(USER_DISPLAY_NAME,sharedPref.getString(USER_DISPLAY_NAME,null));
                                 i.putParcelableArrayListExtra(Constants.FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
                                 //send user details to the next activity to fetch groups and events
@@ -150,7 +137,8 @@ public class ViewEventsActivity extends AppCompatActivity implements
 
                             case R.id.myGroups:
                                 Intent i1 = new Intent(getBaseContext(), MyGroupsListActivity.class);
-                                i1.putExtra(USER_ID,sharedPref.getString(USER_ID,getUid()));
+                                String emailId = User.encode(loggedInUser.getEmail());
+                                i1.putExtra(USER_ID, emailId);
                                 i1.putExtra(USER_DISPLAY_NAME,sharedPref.getString(USER_DISPLAY_NAME,null));
                                 //send user details to the next activity to fetch groups and events
                                 startActivity(i1);

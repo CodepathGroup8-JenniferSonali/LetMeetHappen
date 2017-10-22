@@ -5,7 +5,6 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 import org.parceler.Parcel;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +29,12 @@ public class User {
         //default constructor needed by firebase
     }
 
+    public static String encode(String email) {
+        return email.replace(".", ",").replace("@gmail,com", "");
+    }
+
     public String getId() {
-        return mId;
+        return  encode(mEmail);
     }
 
     public void setId(String mId) {

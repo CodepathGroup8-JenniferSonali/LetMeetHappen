@@ -1,37 +1,33 @@
 package com.example.skarwa.letmeethappen.fragments;
 
 import android.os.Bundle;
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.skarwa.letmeethappen.R;
-import com.example.skarwa.letmeethappen.utils.Constants;
-
 import com.example.skarwa.letmeethappen.models.Group;
-import com.example.skarwa.letmeethappen.models.UserGroupStatus;
-import com.example.skarwa.letmeethappen.utils.DateUtils;
+import com.example.skarwa.letmeethappen.models.User;
+import com.example.skarwa.letmeethappen.utils.Constants;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
-import java.util.Date;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.example.skarwa.letmeethappen.R.string.addNewGroup;
 
 
 public class ViewGroupFragment extends DialogFragment implements Constants {
@@ -42,6 +38,7 @@ public class ViewGroupFragment extends DialogFragment implements Constants {
     @BindView(R.id.btnCreateEvent)
     Button btnCreateEvent;
     Group group;
+    ArrayAdapter<String> adapter;
 
     public static ViewGroupFragment newInstance(Parcelable group) {
         ViewGroupFragment fragment = new ViewGroupFragment();
@@ -76,12 +73,44 @@ public class ViewGroupFragment extends DialogFragment implements Constants {
 
         getDialog().setTitle(group.getName());
 
+        adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, new ArrayList<String>());
 
-        String[] values = new String[]{"Jennifer","Sonali"
-        };
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, values);
+        Map<String, Boolean> members = group.getMembers();
+
+        ArrayList<String> memberNames = new ArrayList<>();
+
+        if (members != null) {
+            for (String tid : members.keySet()) {
+
+                FirebaseDatabase.getInstance()
+                        .getReference()
+                        .child(Constants.USERS_ENDPOINT)
+                        .child(tid)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override public void onDataChange(DataSnapshot dataSnapshot) {
+                                User user = dataSnapshot.getValue(User.class);
+                                Log.d("d e  b  u  g ", "onDataChange");
+                                if (user != null) {
+                                    adapter.add(user.getDisplayName());
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.d("d e  b  u  g ", "onCancelled");
+                            }
+                        });
+                // exclude the host
+                //TODO get loggedInUser if (tId != loggedInUser.getId()) {
+                //Member m = members.get(tid);
+                //memberNames.add(m.getName());
+
+            }
+        }
+
         lvMembers.setAdapter(adapter);
 
         btnCreateEvent = (Button)view.findViewById(R.id.btnCreateEvent);
