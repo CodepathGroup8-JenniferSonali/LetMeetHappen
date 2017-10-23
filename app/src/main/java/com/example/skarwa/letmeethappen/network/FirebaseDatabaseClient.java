@@ -4,6 +4,8 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import java.net.URL;
+
 /**
  * Created by skarwa on 10/22/17.
  */
@@ -30,7 +32,7 @@ public class FirebaseDatabaseClient {
     }
 
     //method for accessing the users API
-    public void getUsers(final RequestParams params, JsonHttpResponseHandler handler) {
-        client.get(FIREBASE_USERS_DATABASE_URL, params, handler);
+    public void getUsers(String url, RequestParams params, JsonHttpResponseHandler handler) {
+        client.get(url, params, handler);
     }
 }

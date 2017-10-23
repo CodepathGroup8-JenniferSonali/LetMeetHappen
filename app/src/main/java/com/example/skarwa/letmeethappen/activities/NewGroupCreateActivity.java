@@ -10,11 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.Group;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.models.UserGroupStatus;
+import com.example.skarwa.letmeethappen.network.FirebaseDatabaseClient;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.example.skarwa.letmeethappen.utils.DateUtils;
 import com.example.skarwa.letmeethappen.utils.MultiSpinner;
@@ -26,7 +28,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -35,6 +40,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cz.msebera.android.httpclient.Header;
+
+import static android.app.SearchManager.QUERY;
 import static com.example.skarwa.letmeethappen.utils.Constants.GROUPS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.USERS_ENDPOINT;
 
@@ -58,6 +66,8 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
     // [END declare_database_ref]
     String loggedInUserId;
 
+    FirebaseDatabaseClient mClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +78,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         DBUtils = new DBUtils();
+        mClient = new FirebaseDatabaseClient();
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -79,8 +90,8 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                             Group newGroup = dataSnapshot.getValue(Group.class);
-                            if(newGroup != null){
-                                Log.d(TAG,"New Group created : "+newGroup.getName());
+                            if (newGroup != null) {
+                                Log.d(TAG, "New Group created : " + newGroup.getName());
                             }
                         }
 
@@ -105,7 +116,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
                         }
                     });
                 } else {  // if "group" child doesnt exist ..create the child and then add
-                   mDatabase.child(GROUPS_ENDPOINT).push();
+                    mDatabase.child(GROUPS_ENDPOINT).push();
                 }
             }
 
@@ -121,11 +132,11 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
 
         friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(Constants.FRIENDS_OBJ);
 
-        etGroupName = (EditText)findViewById(R.id.etGroupName);
+        etGroupName = (EditText) findViewById(R.id.etGroupName);
 
         names = new ArrayList<>();
 
-        for(int i=0; i<friends.size(); i++) {
+        for (int i = 0; i < friends.size(); i++) {
             User friend = Parcels.unwrap(friends.get(i));
             names.add(friend.getDisplayName());
         }
@@ -140,7 +151,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         lvMembers.setAdapter(adapter);
         adapter.setNotifyOnChange(true);
 
-        btn = (Button)findViewById(R.id.btnCreate);
+        btn = (Button) findViewById(R.id.btnCreate);
         btn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -155,9 +166,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
                 group.addMember(loggedInUserId, true);
                 for (final User member : members) {
                     group.addMember(member.getId(), true);
-                    DBUtils.saveUser(member);
                 }
-
 
                 if (groupName != null) {
                     saveGroup();
@@ -175,7 +184,6 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
     }
 
 
-
     @Override
     public void onItemsSelected(boolean[] selected) {
         Log.d("DEBUG", "onContacts selected");
@@ -186,7 +194,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         adapter.clear();
 
 
-        for (int i=0; i < selected.length; i++) {
+        for (int i = 0; i < selected.length; i++) {
             if (selected[i]) {
                 User user = (User) Parcels.unwrap(friends.get(i));
 
@@ -204,32 +212,32 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
     }
 
 
-    public void saveGroup(){
+    public void saveGroup() {
         DatabaseReference mGroupDatabase = mDatabase.child(GROUPS_ENDPOINT);
-
         String key = mGroupDatabase.push().getKey();
         group.setId(key);
 
         Map<String, Object> childUpdates = new HashMap<>();
 
         //update group for loggedInUser
-        childUpdates.put("/"+USERS_ENDPOINT+"/" +loggedInUserId+"/groups/"+key,true);
+        childUpdates.put("/" + USERS_ENDPOINT + "/" + loggedInUserId + "/groups/" + key, true);
 
         //Save Group
-        childUpdates.put("/"+GROUPS_ENDPOINT+"/" + key, group);
+        childUpdates.put("/" + GROUPS_ENDPOINT + "/" + key, group);
+
+        mDatabase.updateChildren(childUpdates);
 
         //Save group members
-        for(User user : members){
-            //user.getGroups().put(key,true);
-
-            //mGroupDatabase.child(USERS_ENDPOINT).child(user.getId()).setValue(user);
-           childUpdates.put("/"+USERS_ENDPOINT+"/" +user.getId()+"/groups/"+key,true);
+        for (final User user : members) {
+            user.addGroup(key,true);
+            String userId = User.encode(user.getEmail());
+            DBUtils.updateUserGroup(userId,user,key);
         }
-        mDatabase.updateChildren(childUpdates);
+        //mDatabase.updateChildren(childUpdates);
     }
 
     public void sendInvite(Group group) {
-    // send invites to all group members to join
+        // send invites to all group members to join
 
     }
 }

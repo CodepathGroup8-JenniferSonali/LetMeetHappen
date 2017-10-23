@@ -39,13 +39,14 @@ public class DBUtils {
                             if (dataSnapshot.exists()) {
                                 // code if user exists
                                 User user = dataSnapshot.getValue(User.class);
-                                Log.d(TAG,"User exist !!");
+                                Log.d(TAG, "User exist !!");
                             } else {
                                 // user not found
-                                Log.d(TAG,"User does not exist !!");
+                                Log.d(TAG, "User does not exist !!");
                                 mDatabase.child(USERS_ENDPOINT).child(userToSave.getId()).setValue(userToSave);
                             }
                         }
+
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
                             System.out.println("The read failed: " + databaseError.getCode());
@@ -60,6 +61,48 @@ public class DBUtils {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+    }
+
+    public static void updateUserGroup(final String userId, final User userToSave, final String groupKey) {
+
+        // [START initialize_database_ref]
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        // [END initialize_database_ref]
+
+        mDatabase.child(USERS_ENDPOINT).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                mDatabase.child(USERS_ENDPOINT).child(userId).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        if (dataSnapshot.exists()) {
+                            // code if user exists
+                            User user = dataSnapshot.getValue(User.class);
+                            mDatabase.child(USERS_ENDPOINT).child(userId).child("groups").child(groupKey).setValue(true);
+                            Log.d(TAG, "User group update !!");
+                        } else {
+                            // user not found
+                            Log.d(TAG, "User not found !!");
+                            mDatabase.child(USERS_ENDPOINT).child(userId).setValue(userToSave);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        System.out.println("The read failed: " + databaseError.getCode());
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
             }
         });
     }

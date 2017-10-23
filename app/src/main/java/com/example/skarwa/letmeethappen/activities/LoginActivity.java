@@ -263,7 +263,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         User user = new User();
         user.setDisplayName(fbaseUser.getDisplayName());
         user.setEmail(fbaseUser.getEmail());
-        //user.setId(fbaseUser.getUid());
         user.setTokenId(FirebaseInstanceId.getInstance().getToken());
         // TODO : SAVE IT TO FIREBASE
         user.setPhoneNum(fbaseUser.getPhoneNumber());

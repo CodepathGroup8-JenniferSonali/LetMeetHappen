@@ -108,7 +108,7 @@ public class ViewGroupFragment extends DialogFragment implements Constants {
         View view = inflater.inflate(R.layout.fragment_view_group, container, false);
         ButterKnife.bind(this,view);
 
-        mGroupReference = FirebaseDatabase.getInstance().getReference().child("groups/"+group.getId());
+        mGroupReference = FirebaseDatabase.getInstance().getReference().child("groups/"+group.getId()+"/members");
 
         initRecyclerView();
 

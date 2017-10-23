@@ -68,7 +68,7 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
 
         generateDetailEventView();
         getSupportActionBar().setTitle(mEvent.getEventName());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void generateDetailEventView() {
