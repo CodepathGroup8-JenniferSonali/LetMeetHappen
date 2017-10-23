@@ -6,16 +6,16 @@ Time Spent : XX hours spent in total
 ## User Stories
 
 The following **required** functionality is completed:
-* [ ] The user should be able to login /signup for the app using google
-* [ ] The user should be able to create groups and add friends to them.  
-* [ ] Logged in User should be able to create meeting request for a group.
-  * [ ] User who generates a meeting request will enter the event name, event dates(max 2), group to invite, location, minimum yes needed from the group (min: 2, max: group size), deadline to respond to the invite 
+* [x] The user should be able to login /signup for the app using google
+* [x] The user should be able to create groups and add friends to them.  
+* [x] Logged in User should be able to create meeting request for a group.
+  * [x] User who generates a meeting request will enter the event name, event dates(max 2), group to invite, location, minimum yes needed from the group (min: 2, max: group size), deadline to respond to the invite 
   * [ ] All member of the group should receive a push notification and email invite to repond to the meeting request
-* [ ] User should be able to respond(Yes/No/Maybe) to the meeting request
-* [ ] User can view all upcoming and past meetings on their home page.
-  * [ ] User can infinitely paginate both past and upcoming meetings
+* [x] User should be able to respond(Yes/No/Maybe) to the meeting request
+* [x] User can view all upcoming and past meetings on their home page.
+  * [x] User can infinitely paginate both past and upcoming meetings
   * [ ] Upcoming meeting will be color coded to differentiate Confirmed or Ongoing.
-* [ ] User can see their profile, group info, setting from the Navigation Drawer.
+* [x] User can see their profile, group info, setting from the Navigation Drawer.
 * [ ] User's get notifications when meeting is confirmed, cancelled or deadline approching.
 
 The following **optional** features are implemented:
@@ -47,7 +47,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-Link to [Wireframes](https://imgur.com/a/pIK0D).
+Link to [Imgur GIF](https://imgur.com/a/kx4Hq).
 
 <img src='http://i.imgur.com/gSutrSX.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
