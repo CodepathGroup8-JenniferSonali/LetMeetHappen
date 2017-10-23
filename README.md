@@ -31,7 +31,7 @@ The following **optional** features are implemented:
 
 The following **bonus** features are implemented:
 
-* [ ] Use Parcelable instead of Serializable using the popular [Parceler library](http://guides.codepath.com/android/Using-Parceler).
+* [X] Use Parcelable instead of Serializable using the popular [Parceler library](http://guides.codepath.com/android/Using-Parceler).
 * [ ] Leverages the [data binding support module](http://guides.codepath.com/android/Applying-Data-Binding-for-Views) to bind data into layout templates.
 * [ ] Uses [retrolambda expressions](http://guides.codepath.com/android/Lambda-Expressions) to cleanup event handling blocks. 
 * [ ] Replace all icon drawables and other static image assets with [vector drawables](http://guides.codepath.com/android/Drawables#vector-drawables) where appropriate.
@@ -47,8 +47,14 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-Link to [Imgur GIF](https://imgur.com/a/kx4Hq).
-[Another link](https://imgur.com/xDnSmW7)
+## Week 6 DEMO Links :
+Link to [Week 6 Demo1](https://i.imgur.com/xDnSmW7.gif).
+ 
+
+
+
+
+## Week 5 -  DEMO
 
 <img src='http://i.imgur.com/gSutrSX.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
@@ -59,9 +65,12 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 Wireframe images are in PLAN/wireframes subfolder.
 
-Describe any challenges encountered while building the app.
+## Describe any challenges encountered while building the app.
 
 Using Enums with  Model objects was not supported in Firebase.
+Push Notifications 
+Reading /writing from Firebase is complex 
+Improve the way we add group member...incorporate some search mechanism
 
 
 
