@@ -16,8 +16,6 @@ import com.crashlytics.android.Crashlytics;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.models.UserGroupStatus;
-import com.example.skarwa.letmeethappen.network.FirebaseDatabaseClient;
-import com.example.skarwa.letmeethappen.services.MyEventTrackingService;
 import com.example.skarwa.letmeethappen.services.RegistrationIntentService;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.example.skarwa.letmeethappen.utils.DBUtils;
@@ -54,8 +52,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.io.IOException;
@@ -264,7 +260,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         user.setDisplayName(fbaseUser.getDisplayName());
         user.setEmail(fbaseUser.getEmail());
         user.setTokenId(FirebaseInstanceId.getInstance().getToken());
-        // TODO : SAVE IT TO FIREBASE
         user.setPhoneNum(fbaseUser.getPhoneNumber());
         user.setUserStatus(UserGroupStatus.ACTIVE.name());
         user.setProfilePicUrl(fbaseUser.getPhotoUrl().toString());

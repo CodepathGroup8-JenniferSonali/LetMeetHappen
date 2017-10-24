@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.Group;
@@ -18,9 +17,9 @@ import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.models.UserGroupStatus;
 import com.example.skarwa.letmeethappen.network.FirebaseDatabaseClient;
 import com.example.skarwa.letmeethappen.utils.Constants;
+import com.example.skarwa.letmeethappen.utils.DBUtils;
 import com.example.skarwa.letmeethappen.utils.DateUtils;
 import com.example.skarwa.letmeethappen.utils.MultiSpinner;
-import com.example.skarwa.letmeethappen.utils.DBUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -28,10 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -40,9 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cz.msebera.android.httpclient.Header;
-
-import static android.app.SearchManager.QUERY;
 import static com.example.skarwa.letmeethappen.utils.Constants.GROUPS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.USERS_ENDPOINT;
 
@@ -65,6 +58,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
     private DatabaseReference mUserDatabase;
     // [END declare_database_ref]
     String loggedInUserId;
+    String loggedInTokenId;
 
     FirebaseDatabaseClient mClient;
 
@@ -128,6 +122,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
 
         // [END initialize_database_ref]
         loggedInUserId = getIntent().getStringExtra(Constants.USER_ID);
+        loggedInTokenId = getIntent().getStringExtra(Constants.TOKEN_ID);
         group = new Group();
 
         friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(Constants.FRIENDS_OBJ);
@@ -164,8 +159,12 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
                 group.setCreatedDate(DateUtils.formatDateToString(new Date()));
                 group.setGroupStatus(UserGroupStatus.ACTIVE.name());
                 group.addMember(loggedInUserId, true);
+                group.addToken(loggedInUserId, loggedInTokenId);
                 for (final User member : members) {
                     group.addMember(member.getId(), true);
+                    if (member.getTokenId() != null) {
+                        group.addToken(member.getId(), member.getTokenId());
+                    }
                 }
 
                 if (groupName != null) {

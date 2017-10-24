@@ -7,7 +7,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.skarwa.letmeethappen.R;
@@ -15,11 +14,9 @@ import com.example.skarwa.letmeethappen.adapters.GroupListAdapter;
 import com.example.skarwa.letmeethappen.fragments.NewEventFragment;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.utils.Constants;
-import com.example.skarwa.letmeethappen.utils.FCM;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -109,20 +106,11 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
         childUpdates.put("/"+EVENTS_ENDPOINT+"/" + key, event);
         childUpdates.put("/"+USER_EVENTS+"/" + loggedInUserId + "/" + key, event);
 
-        ArrayList<String> tokens = new ArrayList<>();
         //Add event for all users who are group members
         for (String userId : groupMembers.keySet()) {
-            if (userId != loggedInUserId) {
-                tokens.add(userId);
-                childUpdates.put("/" + USER_EVENTS + "/" + userId + "/" +key, event);
-            }
+            childUpdates.put("/" + USER_EVENTS + "/" + userId + "/" +key, event);
         }
-        try {
-            Log.d(TAG, "TOKEN id = " + loggedInUserId);
-            FCM.pushFCMNotification(tokens);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
         //TODO add this to sending invites as well.
 
         mDatabase.updateChildren(childUpdates);

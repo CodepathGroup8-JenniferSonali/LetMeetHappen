@@ -6,9 +6,11 @@ package com.example.skarwa.letmeethappen.services;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.skarwa.letmeethappen.R;
+import com.example.skarwa.letmeethappen.activities.LoginActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -35,6 +37,14 @@ public class FCMMessageHandler extends FirebaseMessagingService {
         NotificationManager mNotificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(MESSAGE_NOTIFICATION_ID, mBuilder.build());
+
+        launchSomeActivity(context, "");
     }
 
+    private void launchSomeActivity(Context context, String datavalue) {
+        Intent pupInt = new Intent(context, LoginActivity.class);
+        pupInt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //pupInt.putExtra("data", datavalue);
+                context.getApplicationContext().startActivity(pupInt);
+    }
 }
