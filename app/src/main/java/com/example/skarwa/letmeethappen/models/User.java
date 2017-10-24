@@ -34,6 +34,11 @@ public class User {
         return email.replace(".", ",").replace("@gmail,com", "");
     }
 
+    public static String decode(String id) {
+        return id.replace(",", ".") + "@gmail,com";
+    }
+
+
     public String getId() {
         return  encode(mEmail);
     }

@@ -1,5 +1,8 @@
 package com.example.skarwa.letmeethappen.fragments;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -19,6 +22,7 @@ import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.EventStatus;
 import com.example.skarwa.letmeethappen.models.Group;
 import com.example.skarwa.letmeethappen.models.Location;
+import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.example.skarwa.letmeethappen.utils.DateUtils;
 import com.example.skarwa.letmeethappen.utils.FCM;
@@ -204,6 +208,11 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                 //if (!id.equals(loggedInUserId))
                 {
                     tokens.add(tMap.get(id));
+                    PackageManager pm = getActivity().getPackageManager();
+                    String email = User.decode(id);
+                    //sendEmail( User.decode(id), "Jennifer", id );
+                    //sendEmail( "pizarro.concham@gmail.com", "Jennifer", id ); // for demo
+
                     break;
                 }
             }
@@ -217,6 +226,23 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
             }
         }
     }
+
+
+         void sendEmail( String sEmail, String fromName, String toName) {
+            String msg = String.format("Hi %s,\n\n %s has invited you.  Please install \"Let Meet Happen\" app", toName, fromName);
+            String uriText =
+                    "mailto:"+sEmail +
+                            "?subject=" + Uri.encode("LET MEET HAPPEN :  You've been invited!") +
+                            "&body=" + Uri.encode(msg);
+
+            Uri uri = Uri.parse(uriText);
+
+            Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
+            sendIntent.setData(uri);
+            if (sendIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivity(Intent.createChooser(sendIntent, "Send email"));
+            }
+        }
 
 
     @Override
