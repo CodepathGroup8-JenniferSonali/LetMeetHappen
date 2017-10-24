@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
@@ -17,8 +18,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.adapters.EventsPagerAdapter;
 import com.example.skarwa.letmeethappen.fragments.EventsListFragment;
@@ -36,6 +41,10 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.skarwa.letmeethappen.R.id.ivProfilePic;
+import static com.example.skarwa.letmeethappen.R.id.tvEmail;
+import static com.example.skarwa.letmeethappen.R.id.tvName;
 
 /**
  * Created by jennifergodinez on 10/9/17.
@@ -73,12 +82,30 @@ public class ViewEventsActivity extends AppCompatActivity implements
     private DatabaseReference mDatabase;
     // [END declare_database_ref]
 
+    static class NavHeaderLayout{
+        @BindView(R.id.tvEmail)
+        TextView tvEmail;
+
+        @BindView(R.id.tvName)
+        TextView tvName;
+
+        @BindView(R.id.ivProfilePic)
+        ImageView ivProfilePic;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_events);
 
         ButterKnife.bind(this);
+
+        //get the NavHeader
+        View headerLayout = nvDrawer.getHeaderView(0);
+
+        NavHeaderLayout navHeaderLayout = new NavHeaderLayout();
+        ButterKnife.bind(navHeaderLayout,headerLayout);
 
         loggedInUser = Parcels.unwrap(getIntent().getParcelableExtra(Constants.USER_OBJ));
         friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(Constants.FRIENDS_OBJ);
@@ -105,6 +132,11 @@ public class ViewEventsActivity extends AppCompatActivity implements
 
         // Setup drawer view
         setupDrawerContent(nvDrawer);
+
+        Glide.with(this).load(sharedPref.getString(USER_PROFILE_URL,null))
+                .into(navHeaderLayout.ivProfilePic);
+        navHeaderLayout.tvName.setText(sharedPref.getString(USER_DISPLAY_NAME,null));
+        navHeaderLayout.tvEmail.setText(User.encode(sharedPref.getString(USER_ID,null)));
 
         pagerAdapter = new EventsPagerAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(pagerAdapter);

@@ -27,6 +27,9 @@ public interface Constants {
     String GROUPS_ENDPOINT = "groups";
     String USER_EVENTS = "user-events";
 
+    String USER_PROFILE_URL = "photo_url";
+    String USER_EMAIL = "user_email";
+
 
     String MY_DATABSE_API_KEY = "AIzaSyD9SqX-S9A8pZs7hgZOX35msB8V36EN2Vg";
 
