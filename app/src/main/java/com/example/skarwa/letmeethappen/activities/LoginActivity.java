@@ -271,7 +271,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 USER_DETAILS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(USER_ID, user.getId());
+        editor.putString(USER_EMAIL,user.getEmail());
         editor.putString(USER_DISPLAY_NAME,fbaseUser.getDisplayName());
+        editor.putString(USER_PROFILE_URL,fbaseUser.getPhotoUrl().toString());
         editor.apply();
 
         DBUtils.saveUser(user);
