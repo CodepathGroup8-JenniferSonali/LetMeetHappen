@@ -136,7 +136,7 @@ public class ViewEventsActivity extends AppCompatActivity implements
         Glide.with(this).load(sharedPref.getString(USER_PROFILE_URL,null))
                 .into(navHeaderLayout.ivProfilePic);
         navHeaderLayout.tvName.setText(sharedPref.getString(USER_DISPLAY_NAME,null));
-        navHeaderLayout.tvEmail.setText(User.encode(sharedPref.getString(USER_ID,null)));
+        navHeaderLayout.tvEmail.setText(sharedPref.getString(USER_EMAIL,null));
 
         pagerAdapter = new EventsPagerAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(pagerAdapter);
