@@ -45,6 +45,7 @@ public class FCMMessageHandler extends FirebaseMessagingService {
         Intent pupInt = new Intent(context, LoginActivity.class);
         pupInt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //pupInt.putExtra("data", datavalue);
-                context.getApplicationContext().startActivity(pupInt);
+
+        context.getApplicationContext().startActivity(pupInt);
     }
 }

@@ -210,7 +210,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
             try {
                 //Log.d(TAG, "TOKEN id = " + loggedInUserId);
                 if (tokens.size() > 0) {
-                    FCM.pushFCMNotification(tokens);
+                    new FCM().execute(tokens.toArray());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
