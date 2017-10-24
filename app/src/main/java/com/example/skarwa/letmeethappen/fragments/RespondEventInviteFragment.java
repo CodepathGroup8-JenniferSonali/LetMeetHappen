@@ -126,7 +126,7 @@ public class RespondEventInviteFragment extends DialogFragment {
         //getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().setTitle(event.getEventName());
 
-        tvLocation.setText(event.getLocation().getUserFriendlyName());
+        tvLocation.setText(event.getLocation().getName().toString());
         tvRSVPDate.setText(event.getAcceptByDate());
         tvHostName.setText(event.getPlannerName());
 

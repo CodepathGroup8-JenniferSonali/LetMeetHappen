@@ -15,7 +15,7 @@
         android:textStyle="bold"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/etLocation"
+        android:layout_above="@+id/etLocationValue"
         android:layout_toStartOf="@+id/etEventName" />
 
     <EditText
@@ -27,27 +27,30 @@
         android:ems="10"
         android:hint="@string/event_name"
         android:inputType="textPersonName"
-        android:layout_alignStart="@+id/etLocation" />
+        android:layout_alignStart="@+id/etLocationValue" />
 
     <TextView
-        android:id="@+id/tvLocation"
+        android:id="@+id/tvLocationLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/etLocation"
+        android:layout_alignBottom="@+id/etLocationValue"
         android:layout_alignStart="@+id/tvEventName"
-        android:text="@string/location"
+        android:text="@string/locationLabel"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textStyle="bold"
-        android:layout_toStartOf="@+id/etLocation"
-        android:layout_alignTop="@+id/etLocation" />
+        android:layout_toStartOf="@+id/etLocationValue"
+        android:layout_alignTop="@+id/etLocationValue" />
 
     <EditText
-        android:id="@+id/etLocation"
+        android:id="@+id/etLocationValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/location"
+        android:hint="@string/locationHint"
+        android:enabled="true"
+        android:clickable="true"
         android:inputType="text"
+        android:maxLines="2"
         android:textSize="16sp"
         android:layout_below="@+id/etEventName"
         android:layout_alignParentEnd="true"
@@ -61,9 +64,9 @@
         android:text="@string/dates"
         android:textStyle="bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_alignEnd="@+id/tvLocation"
+        android:layout_alignEnd="@+id/etLocationValue"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tvLocation"
+        android:layout_below="@+id/etLocationValue"
         android:layout_alignBottom="@+id/etDates" />
 
     <EditText
@@ -75,7 +78,7 @@
         android:inputType="textMultiLine"
         android:maxLines="2"
         android:textSize="16sp"
-        android:layout_below="@+id/tvLocation"
+        android:layout_below="@+id/etLocationValue"
         android:layout_alignParentEnd="true" />
 
     <TextView
@@ -95,10 +98,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="@string/rsvp_date_hint"
         android:inputType="textPersonName"
         android:layout_below="@+id/tvDates"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/tvDates" />
+        android:layout_toEndOf="@+id/tvDates"
+        android:layout_alignStart="@+id/etDates" />
 
     <TextView
         android:id="@+id/tvYesCount"
@@ -144,7 +149,6 @@
         android:layout_below="@+id/tvMessage"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp" />
-    -->
 
     <Button
         android:id="@+id/btn_send"

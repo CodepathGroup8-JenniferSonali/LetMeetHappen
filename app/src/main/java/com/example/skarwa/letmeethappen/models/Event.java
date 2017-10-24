@@ -2,6 +2,7 @@ package com.example.skarwa.letmeethappen.models;
 
 import android.support.v7.widget.SearchView;
 
+import com.google.android.gms.location.places.Place;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -104,10 +105,6 @@ public class Event {
         this.mPlannerId = mPlannerId;
     }
 
-    public void setLocation(Location mLocation) {
-        this.mLocation = mLocation;
-    }
-
     public void setMinAcceptance(int mMinAcceptance) {
         this.mMinAcceptance = mMinAcceptance;
     }
@@ -120,7 +117,13 @@ public class Event {
         this.mPlannerMsgToGroup = mPlannerMsgToGroup;
     }
 
+    public Location getLocation() {
+        return mLocation;
+    }
 
+    public void setLocation(Location location) {
+        this.mLocation = location;
+    }
 
     public void addEventDateOptions(String eventDateOption) {
         if(this.mEventDateOptions == null){
@@ -162,9 +165,7 @@ public class Event {
         return mPlannerId;
     }
 
-    public Location getLocation() {
-        return mLocation;
-    }
+
 
     public int getMinAcceptance() {
         return mMinAcceptance;

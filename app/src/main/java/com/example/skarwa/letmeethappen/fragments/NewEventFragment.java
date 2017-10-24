@@ -16,16 +16,24 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.Event;
+import com.example.skarwa.letmeethappen.models.Location;
 import com.example.skarwa.letmeethappen.models.EventStatus;
 import com.example.skarwa.letmeethappen.models.Group;
-import com.example.skarwa.letmeethappen.models.Location;
 import com.example.skarwa.letmeethappen.models.User;
+
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.example.skarwa.letmeethappen.utils.DateUtils;
 import com.example.skarwa.letmeethappen.utils.FCM;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.parceler.Parcels;
 
@@ -38,6 +46,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
 import static com.example.skarwa.letmeethappen.utils.Constants.GROUP_OBJ;
 
 
@@ -50,6 +59,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     private static final String TAG = "NewEventFragment";
     final static String ISRANGE = "IS_RANGE";
     final static String DATE_PICKER = "datePicker";
+    final static int PLACE_PICKER_REQUEST = 1;
 
     @BindView(R.id.etEventName)
     EditText etEventName;
@@ -60,8 +70,8 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     @BindView(R.id.etRSVPDate)
     EditText etRSVPDate;
 
-    @BindView(R.id.etLocation)
-    EditText etLocation;
+    @BindView(R.id.etLocationValue)
+    EditText etLocationValue;
 
     @BindView(R.id.spMinYes)
     Spinner spMinYes;
@@ -120,6 +130,28 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         for (int i = 2; i <= count; i++) {
             list.add(String.valueOf(i));
         }
+
+       etLocationValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+                Intent intent = null;
+                try {
+                    intent = intentBuilder.build(getActivity());
+                    // Start the Intent by requesting a result, identified by a request code.
+                    startActivityForResult(intent, PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    GooglePlayServicesUtil
+                            .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    Toast.makeText(getActivity(), "Google Play Services is not available.",
+                            Toast.LENGTH_LONG)
+                            .show();
+                }
+
+            }
+        });
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -165,16 +197,11 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
 
             @Override
             public void onClick(View view) {
-
-                Location location = new Location();
-                location.setUserFriendlyName(etLocation.getText().toString());
-
                 event.setEventName(etEventName.getText().toString());
                 event.setAcceptByDate(etRSVPDate.getText().toString());
                 event.setEventStatus(EventStatus.PENDING.name());
                 event.setGroup(group);
 
-                event.setLocation(location);
                 int getMin = Integer.valueOf((String) spMinYes.getSelectedItem());
                 if (getMin != 0) {
                     event.setMinAcceptance(2);
@@ -223,6 +250,28 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(getContext(),data);
+                LatLng latlng =  place.getLatLng();
+
+                Location selectedLocation = new Location();
+                selectedLocation.setName(place.getName().toString());
+
+                selectedLocation.setLatitude(latlng.latitude);
+                selectedLocation.setLongitude(latlng.longitude);
+
+                event.setLocation(selectedLocation);
+                etLocationValue.setText(place.getName().toString());
+
+                String toastMsg = String.format("Place: %s", place.getName());
+                Toast.makeText(getContext(), toastMsg, Toast.LENGTH_LONG).show();
             }
         }
     }

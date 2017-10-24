@@ -72,7 +72,7 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
     }
 
     private void generateDetailEventView() {
-        tvLocationVal.setText(mEvent.getLocation().getUserFriendlyName().toString());
+        tvLocationVal.setText(mEvent.getLocation().getName().toString());
         tvRSVPDate.setText(mEvent.getAcceptByDate());
         tvHostName.setText(loggedInUserDisplayName);
         String dates =  mEvent.getEventDateOptions().keySet().toString();

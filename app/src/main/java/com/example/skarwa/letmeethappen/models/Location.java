@@ -1,5 +1,7 @@
 package com.example.skarwa.letmeethappen.models;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.parceler.Parcel;
 
 /**
@@ -8,37 +10,35 @@ import org.parceler.Parcel;
 
 @Parcel
 public class Location {
-    float mLatitude;
-    float mLongitude;
-    String mUserFriendlyName;
+    double mLatitude;
+    double mLongitude;
+    String mName;
 
     public Location() {
         //empty constructor needed
     }
 
-    public void setLatitude(float mLatitude) {
+    public void setLatitude(double mLatitude) {
         this.mLatitude = mLatitude;
     }
 
-    public void setLongitude(float mLongitude) {
+    public void setLongitude(double mLongitude) {
         this.mLongitude = mLongitude;
     }
 
-    public void setUserFriendlyName(String mUserFriendlyName) {
-        this.mUserFriendlyName = mUserFriendlyName;
+    public void setName(String name) {
+        this.mName = name;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return mLatitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return mLongitude;
     }
 
-    public String getUserFriendlyName() {
-        return mUserFriendlyName;
+    public String getName() {
+        return mName;
     }
-
-
 }
