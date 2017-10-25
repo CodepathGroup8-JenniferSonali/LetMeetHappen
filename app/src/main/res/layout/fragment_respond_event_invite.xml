@@ -70,28 +70,33 @@
         android:text="Select Date :"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="bold"
-        android:layout_alignBaseline="@+id/rbDateOption1"
-        android:layout_alignBottom="@+id/rbDateOption1"
+        android:layout_above="@+id/etMessage"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/rbDateOption2" />
+        android:layout_marginBottom="20dp"
+        android:layout_toStartOf="@+id/rbGroup" />
 
-    <RadioButton
-        android:id="@+id/rbDateOption1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="RadioButton"
-        android:layout_marginTop="33dp"
-        android:layout_below="@+id/tvRSVPDate"
+    <RadioGroup
+        android:id="@+id/rbGroup"
+        android:layout_below="@id/tvRSVPDate"
+        android:layout_width="match_parent"
         android:layout_toEndOf="@+id/tvRSVPLabel"
-        android:layout_marginStart="10dp" />
+        android:layout_height="wrap_content">
 
-    <RadioButton
-        android:id="@+id/rbDateOption2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="RadioButton"
-        android:layout_below="@+id/tvSelectDate"
-        android:layout_alignStart="@+id/rbDateOption1" />
+        <RadioButton
+            android:id="@+id/rbDateOption1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date 1" />
+
+        <RadioButton
+            android:id="@+id/rbDateOption2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date 2" />
+
+    </RadioGroup>
+
+
 
     <EditText
         android:id="@+id/etMessage"
@@ -99,7 +104,7 @@
         android:layout_height="wrap_content"
         android:maxLines="4"
         android:text="Message from Host"
-        android:layout_below="@+id/rbDateOption2"
+        android:layout_below="@+id/rbGroup"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp" />
 
@@ -111,7 +116,8 @@
         android:background="@drawable/button_background"
         android:layout_alignBaseline="@+id/btnYes"
         android:layout_alignBottom="@+id/btnYes"
-        android:layout_alignEnd="@+id/rbDateOption2" />
+        android:layout_toEndOf="@+id/btnYes"
+        android:layout_marginStart="32dp" />
 
     <TextView
         android:id="@+id/tvQuestionLabel"
@@ -123,7 +129,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
         android:layout_marginEnd="42dp"
         android:layout_below="@+id/etMessage"
-        android:layout_alignEnd="@+id/rbDateOption2"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="27dp" />
 
     <Button
@@ -133,10 +140,10 @@
         android:layout_marginLeft="5dp"
         android:text="Yes"
         android:background="@drawable/button_background"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="12dp"
         android:layout_below="@+id/tvQuestionLabel"
-        android:layout_alignEnd="@+id/tvQuestionLabel"
-        android:layout_marginEnd="53dp" />
+        android:layout_toStartOf="@+id/rbGroup" />
 
     <Button
         android:id="@+id/btnSendUpdate"

@@ -43,11 +43,6 @@ import static com.example.skarwa.letmeethappen.utils.Constants.USER_ID;
 
 public class MyEventTrackingService extends IntentService {
     DatabaseReference mDatabase;
-    DatabaseReference mEventsDatabase;
-    private ValueEventListener eventListener;
-    FirebaseDatabaseClient mClient;
-
-
     // Must create a default constructor
     public MyEventTrackingService() {
         // Used to name the worker thread, important only for debugging.
@@ -71,18 +66,26 @@ public class MyEventTrackingService extends IntentService {
 
         Map<String, Object> childUpdates = new HashMap<>();
 
-        if (event.getAttendedUser().keySet().size() >= minYes) {
+        if (event.getEventStatus().equals(EventStatus.CONFIRMED)) {  //mark event as SUCCESS -> Becomes a PAST event
+            event.setEventStatus(EventStatus.SUCCESSFUL.name());
+        } else if (event.getAttendedUser().keySet().size() >= minYes && event.getEventStatus()!= EventStatus.CONFIRMED.name()) {
             event.setEventStatus(EventStatus.CONFIRMED.name());
+            String[] dates = event.getEventDateOptions().keySet().toArray(new String[2]);
+            Integer[] count = event.getEventDateOptions().values().toArray(new Integer[2]);
+            if (count[0] > count[1]) {
+                event.setEventFinalDate(dates[0]);
+            } else if (count[0] < count[1]) {
+                event.setEventFinalDate(dates[1]);
+            } else { //equal count
+                event.setEventFinalDate(dates[0]); //defaults to first option
+            }
         } else {
             event.setEventStatus(EventStatus.CANCELLED.name());
         }
-
         childUpdates.put("/" + EVENTS_ENDPOINT + "/" + event.getId(), event);
-
         for (String userId : event.getGroup().getMembers().keySet()) {
             childUpdates.put("/" + USER_EVENTS + "/" + userId + "/" + event.getId(), event);
         }
-
         mDatabase.updateChildren(childUpdates);
     }
 
@@ -91,30 +94,18 @@ public class MyEventTrackingService extends IntentService {
         final Date today = new Date();
         String userId = intent.getStringExtra(USER_ID);
 
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(USER_EVENTS).child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // run some code
-                if (dataSnapshot.hasChild(USER_EVENTS)) {
-                    //if users already exists
-                    mDatabase.child(USER_EVENTS).child(USER_ID).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                Event event = dataSnapshot.getValue(Event.class);
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Event event = snapshot.getValue(Event.class);
 
-                                if (event.getAcceptByDate() != null && event.getAcceptByDate().equals(DateUtils.formatDateToString(today))) {
-                                    updateEvent(event);
-                                    Log.d(TAG, "Deadline for event " + event + " approached !!");
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            System.out.println("The read failed: " + databaseError.getCode());
-                        }
-                    });
+                    Date acceptByDate = DateUtils.parseDatefromString(event.getAcceptByDate());
+                    if (acceptByDate != null && acceptByDate.after(today)) {
+                        updateEvent(event);
+                        Log.d(TAG, "Deadline for event " + event + " approached !!");
+                    }
                 }
             }
 

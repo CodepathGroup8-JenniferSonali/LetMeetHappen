@@ -1,12 +1,13 @@
 package com.example.skarwa.letmeethappen.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.provider.ContactsContract;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
@@ -29,6 +30,7 @@ import com.example.skarwa.letmeethappen.adapters.EventsPagerAdapter;
 import com.example.skarwa.letmeethappen.fragments.EventsListFragment;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.User;
+import com.example.skarwa.letmeethappen.services.MyAlarmReceiver;
 import com.example.skarwa.letmeethappen.services.MyEventTrackingService;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,9 +44,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.example.skarwa.letmeethappen.R.id.ivProfilePic;
-import static com.example.skarwa.letmeethappen.R.id.tvEmail;
-import static com.example.skarwa.letmeethappen.R.id.tvName;
 
 /**
  * Created by jennifergodinez on 10/9/17.
@@ -114,7 +113,7 @@ public class ViewEventsActivity extends AppCompatActivity implements
         sharedPref = this.getSharedPreferences(
                 USER_DETAILS, Context.MODE_PRIVATE);
 
-        launchEventTrackingService();
+        scheduleAlarm();
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -284,12 +283,38 @@ public class ViewEventsActivity extends AppCompatActivity implements
 
     // Call `launchTestService()` in the activity
     // to startup the service
-    public void launchEventTrackingService() {
+   /* public void launchEventTrackingService() {
         // Construct our Intent specifying the Service
         Intent i = new Intent(this, MyEventTrackingService.class);
         // Add extras to the bundle
         i.putExtra(USER_ID,sharedPref.getString(USER_ID,getUid()));  //TODO : update as needed
         // Start the service
         startService(i);
+    }*/
+
+    // Setup a recurring alarm every half hour
+    public void scheduleAlarm() {
+        // Construct an intent that will execute the AlarmReceiver
+        Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
+        intent.putExtra(USER_ID,sharedPref.getString(USER_ID,getUid()));
+        // Create a PendingIntent to be triggered when the alarm goes off
+        final PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Setup periodic alarm every day  from this point onwards
+        long firstMillis = System.currentTimeMillis(); // alarm is set right away
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
+        // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+                AlarmManager.INTERVAL_DAY, pIntent);
     }
+
+    //cancel alaerm
+    /*public void cancelAlarm() {
+        Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
+        final PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarm.cancel(pIntent);
+    }*/
 }

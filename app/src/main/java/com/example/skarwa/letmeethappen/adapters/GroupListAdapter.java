@@ -182,16 +182,18 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.Grou
     public void onBindViewHolder(GroupViewHolder holder, int position) {
         final Group group = mGroups.get(position);
 
-        holder.groupName.setText(group.getName());
+        if(group != null){
+            holder.groupName.setText(group.getName());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                // handle click of view
-                FragmentManager fm = ((FragmentActivity)getContext()).getSupportFragmentManager();
-                ViewGroupFragment viewgroupFragment = ViewGroupFragment.newInstance(Parcels.wrap(group));
-                viewgroupFragment.show(fm, "fragment_view_group");
-            }
-        });
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    // handle click of view
+                    FragmentManager fm = ((FragmentActivity)getContext()).getSupportFragmentManager();
+                    ViewGroupFragment viewgroupFragment = ViewGroupFragment.newInstance(Parcels.wrap(group));
+                    viewgroupFragment.show(fm, "fragment_view_group");
+                }
+            });
+        }
     }
 
     public Context getContext() {

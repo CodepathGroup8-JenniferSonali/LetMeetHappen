@@ -34,6 +34,11 @@
         <service android:name=".services.MyEventTrackingService"
             android:exported="false" />
 
+        <receiver
+            android:name=".services.MyAlarmReceiver"
+            android:process=":remote" >
+        </receiver>
+
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/SplashTheme">

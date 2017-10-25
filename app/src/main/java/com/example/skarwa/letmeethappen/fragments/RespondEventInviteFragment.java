@@ -173,6 +173,37 @@ public class RespondEventInviteFragment extends DialogFragment {
 
 
     private void sendUpdate() {
+        int attendingCount = 0;
+        if(rbDate1.isChecked()){
+            int value = event.getEventDateOptions().get(rbDate1.getText());
+            event.getEventDateOptions().put(rbDate1.getText().toString(),++value);
+        } else if(rbDate2.isChecked()){
+            int value = event.getEventDateOptions().get(rbDate2.getText());
+            event.getEventDateOptions().put(rbDate2.getText().toString(),++value);
+        }
+
+        //loop a Map
+        for (Map.Entry<String, Boolean> entry : event.getAttendedUser().entrySet()) {
+            if (entry.getValue().equals(Boolean.TRUE)) {
+                attendingCount++;
+            }
+            if (attendingCount >= event.getMinAcceptance()) {
+                event.setEventStatus(EventStatus.CONFIRMED.name());
+                String[] dates = event.getEventDateOptions().keySet().toArray(new String[2]);
+                Integer[] count = event.getEventDateOptions().values().toArray(new Integer[2]);
+                if(count[0] > count[1]){
+                    event.setEventFinalDate(dates[0]);
+                } else if(count[0] < count[1]) {
+                    event.setEventFinalDate(dates[1]);
+                } else { //equal count
+                    event.setEventFinalDate(dates[0]); //defaults to first option
+                }
+            }
+        }
+
+
+
+
         //TODO update event with response
         Map<String, Boolean> groupMembers = event.getGroup().getMembers();
 
@@ -193,17 +224,11 @@ public class RespondEventInviteFragment extends DialogFragment {
     }
 
     private void updateEvent(String userId, boolean response) {
-        int attendingCount = 0;
-        event.addAttendedUser(userId, true);
 
-        //loop a Map
-        for (Map.Entry<String, Boolean> entry : event.getAttendedUser().entrySet()) {
-            if (entry.getValue().equals(Boolean.TRUE)) {
-                attendingCount++;
-            }
-            if (attendingCount >= event.getMinAcceptance()) {
-                event.setEventStatus(EventStatus.CONFIRMED.name());
-            }
+        if (response){
+            event.addAttendedUser(userId, true);
+        } else {
+            event.addAttendedUser(userId, false);
         }
     }
 }

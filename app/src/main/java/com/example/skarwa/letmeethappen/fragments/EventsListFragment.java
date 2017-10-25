@@ -84,20 +84,17 @@ public abstract class EventsListFragment extends Fragment implements Constants {
        mAdapter = new FirebaseRecyclerAdapter<Event, EventViewHolder>(options) {
             @Override
             protected void onBindViewHolder(EventViewHolder viewHolder, int position, final Event model) {
-                final DatabaseReference eventRef = getRef(position);
+                if(model != null) {
+                    viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override public void onClick(View v) {
+                            // handle click of view
+                            ((OnEventClickListener)getActivity()).onEventClick(model);
+                        }
+                    });
 
-                // Set click listener for the whole post view
-                final String postKey = eventRef.getKey();
-
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override public void onClick(View v) {
-                         // handle click of view
-                        ((OnEventClickListener)getActivity()).onEventClick(model);
-                    }
-                });
-
-                // Bind Post to ViewHolder
-                viewHolder.bindToEvent(model,getActivity());
+                    // Bind Post to ViewHolder
+                    viewHolder.bindToEvent(model,getActivity());
+                }
             }
 
             @Override
