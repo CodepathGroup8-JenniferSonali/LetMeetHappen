@@ -6,40 +6,18 @@
     android:padding="10dp"
     android:layout_margin="10dp">
 
-    <TextView
-        android:id="@+id/tvEventName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/event_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textStyle="bold"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/etLocationValue"
-        android:layout_toStartOf="@+id/etEventName" />
 
     <EditText
         android:id="@+id/etEventName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
         android:ems="10"
         android:hint="@string/event_name"
+        android:textSize="@dimen/titleTextSize"
         android:inputType="textPersonName"
-        android:layout_alignStart="@+id/etLocationValue" />
-
-    <TextView
-        android:id="@+id/tvLocationLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/etLocationValue"
-        android:layout_alignStart="@+id/tvEventName"
-        android:text="@string/locationLabel"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textStyle="bold"
-        android:layout_toStartOf="@+id/etLocationValue"
-        android:layout_alignTop="@+id/etLocationValue" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:id="@+id/etLocationValue"
@@ -51,23 +29,12 @@
         android:clickable="true"
         android:inputType="text"
         android:maxLines="2"
-        android:textSize="16sp"
+        android:textSize="@dimen/subheadingTextSize"
+        android:layout_marginTop="21dp"
         android:layout_below="@+id/etEventName"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="11dp" />
+        android:layout_alignParentStart="true" />
 
-
-    <TextView
-        android:id="@+id/tvDates"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dates"
-        android:textStyle="bold"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_alignEnd="@+id/etLocationValue"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/etLocationValue"
-        android:layout_alignBottom="@+id/etDates" />
 
     <EditText
         android:id="@+id/etDates"
@@ -77,21 +44,10 @@
         android:hint="@string/when"
         android:inputType="textMultiLine"
         android:maxLines="2"
-        android:textSize="16sp"
+        android:textSize="@dimen/subheadingTextSize"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/etLocationValue"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:id="@+id/tvRSVPDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/rsvp_date"
-        android:textStyle="bold"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_alignTop="@+id/etRSVPDate"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/etRSVPDate"
-        android:layout_alignBottom="@+id/etRSVPDate" />
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:id="@+id/etRSVPDate"
@@ -99,41 +55,56 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/rsvp_date_hint"
-        android:inputType="textPersonName"
-        android:layout_below="@+id/tvDates"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/tvDates"
-        android:layout_alignStart="@+id/etDates" />
+        android:textSize="@dimen/subheadingTextSize"
+        android:inputType="date"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/etDates"
+        android:layout_alignParentStart="true" />
 
-    <TextView
-        android:id="@+id/tvYesCount"
+
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/min_attendee"
-        android:textStyle="bold"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_below="@+id/tvRSVPDate" />
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout"
+        android:layout_marginTop="13dp"
+        android:layout_below="@+id/etRSVPDate"
+        android:layout_alignParentStart="true">
 
-    <Spinner
-        android:id="@+id/spMinYes"
+        <TextView
+            android:id="@+id/tvYesCount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignEnd="@+id/etRSVPDate"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="@string/min_attendee"
+            android:textAlignment="gravity"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <NumberPicker
+            android:id="@+id/npMinYes"
+            android:layout_width="wrap_content"
+            android:layout_height="75dp"
+            android:layout_alignBottom="@+id/tvYesCount"
+            android:layout_marginStart="31dp"
+            android:layout_toEndOf="@+id/tvYesCount" />
+
+    </LinearLayout>
+
+
+
+
+   <!-- <SeekBar
+        android:id="@+id/sbMinYes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvRSVPDate"
-        android:layout_toEndOf="@+id/etMessage" />
+        android:layout_alignTop="@+id/tvYesCount"
+        android:layout_toEndOf="@+id/tvYesCount"
+        android:clickable="true"
+        android:min="2"/>-->
 
-
-    <TextView
-        android:id="@+id/tvMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="34dp"
-        android:textStyle="bold"
-        android:text="@string/message"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_below="@+id/tvYesCount"
-        android:layout_centerHorizontal="true" />
 
     <EditText
         android:id="@+id/etMessage"
@@ -143,12 +114,16 @@
         android:layout_gravity="center"
         android:background="@drawable/rectangle"
         android:ems="10"
+        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:hint="Your message to the group"
         android:inputType="textMultiLine"
         android:maxLines="4"
-        android:textSize="14sp"
-        android:layout_below="@+id/tvMessage"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp" />
+        android:textSize="@dimen/bodyTextSize"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="32dp"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:id="@+id/btn_send"
@@ -159,6 +134,7 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="35dp" />
+        android:layout_marginBottom="10dp" />
+
 
 </RelativeLayout>

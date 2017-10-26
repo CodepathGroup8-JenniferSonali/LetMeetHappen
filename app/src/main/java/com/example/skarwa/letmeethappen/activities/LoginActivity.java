@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -60,6 +62,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
@@ -78,6 +82,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private List<Parcelable> friends;
     SharedPreferences sharedPref;
     DBUtils DBUtils;
+
+    @BindView(R.id.sign_in_button)
+    SignInButton signInButton;
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
@@ -105,6 +112,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login);
 
+        ButterKnife.bind(this);
+
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -112,9 +121,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setOnClickListener(this);
+        TextView textView = (TextView) signInButton.getChildAt(0);
+        textView.setText("Sign In with Google");
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -273,6 +284,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.putString(USER_ID, user.getId());
         editor.putString(USER_EMAIL,user.getEmail());
         editor.putString(USER_DISPLAY_NAME,fbaseUser.getDisplayName());
+        editor.putString(TOKEN_ID,user.getTokenId());
         editor.putString(USER_PROFILE_URL,fbaseUser.getPhotoUrl().toString());
         editor.apply();
 

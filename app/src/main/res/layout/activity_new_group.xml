@@ -11,10 +11,9 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:text="@string/group_name"
             android:layout_alignBaseline="@+id/etGroupName"
             android:layout_alignBottom="@+id/etGroupName"
+            android:text="@string/group_name"
             android:layout_alignParentStart="true" />
 
 
@@ -62,6 +61,8 @@
         android:id="@+id/btnCreate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/buttonTextSize"
+        style="@style/NiceButton"
         android:text="@string/create_group" />
 
 </LinearLayout>

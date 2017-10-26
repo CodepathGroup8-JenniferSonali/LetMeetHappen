@@ -46,12 +46,14 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     public void bindToEvent(Event event, Context context) {
         tvEventName.setText(event.getEventName());
 
-        String dateOptions = event.getEventDateOptions().toString();
-        if(event.getEventFinalDate() ==  null){
+        String dateOptions = event.getEventDateOptions().keySet().toString();
+        tvDate.setText(dateOptions);
+
+       /* if(event.getEventFinalDate() ==  null){
             tvDate.setText(dateOptions);
         } else {
             tvDate.setText(event.getEventFinalDate().toString()); //TODO change this to confirmed date
-        }
+        }*/
 
         Glide.with(context)
                 .load(event.getHostProfileImage())

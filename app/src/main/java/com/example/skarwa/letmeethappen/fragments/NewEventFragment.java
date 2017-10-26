@@ -15,6 +15,8 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -47,6 +49,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.skarwa.letmeethappen.R.id.npMinYes;
 import static com.example.skarwa.letmeethappen.utils.Constants.GROUP_OBJ;
 
 
@@ -73,8 +76,8 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     @BindView(R.id.etLocationValue)
     EditText etLocationValue;
 
-    @BindView(R.id.spMinYes)
-    Spinner spMinYes;
+    @BindView(R.id.npMinYes)
+    NumberPicker numberPicker;
 
     Event event;
     Group group;
@@ -125,11 +128,32 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
 
         //get count of group members
         int count = group.getMembers().keySet().size();
+        numberPicker.setMinValue(2);
+        numberPicker.setMaxValue(count);
+        numberPicker.setWrapSelectorWheel(true);
 
-        List<String> list = new ArrayList<String>();
+
+        //Set a value change listener for NumberPicker
+        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+
+                int getMin = newVal;
+                if (getMin != 0) {
+                    event.setMinAcceptance(getMin);
+                } else {
+                    event.setMinAcceptance(2);   //default to 2 for now
+                }
+            }
+        });
+
+        /*List<String> list = new ArrayList<String>();
         for (int i = 2; i <= count; i++) {
             list.add(String.valueOf(i));
-        }
+        }ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sbMinYes.setAdapter(dataAdapter);*/
 
        etLocationValue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,10 +176,8 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
             }
         });
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spMinYes.setAdapter(dataAdapter);
+
+
 
         // Show soft keyboard automatically and request focus to field
         etEventName.requestFocus();
@@ -202,12 +224,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                 event.setEventStatus(EventStatus.PENDING.name());
                 event.setGroup(group);
 
-                int getMin = Integer.valueOf((String) spMinYes.getSelectedItem());
-                if (getMin != 0) {
-                    event.setMinAcceptance(2);
-                } else {
-                    event.setMinAcceptance(2);   //default to 2 for now
-                }
+
 
 
                 listener = (OnCreateEventClickListener) getActivity();

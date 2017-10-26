@@ -66,7 +66,7 @@ public class MyEventTrackingService extends IntentService {
 
         Map<String, Object> childUpdates = new HashMap<>();
 
-        if (event.getEventStatus().equals(EventStatus.CONFIRMED)) {  //mark event as SUCCESS -> Becomes a PAST event
+        if (event.getEventStatus().equals(EventStatus.CONFIRMED.name())) {  //mark event as SUCCESS -> Becomes a PAST event
             event.setEventStatus(EventStatus.SUCCESSFUL.name());
         } else if (event.getAttendedUser().keySet().size() >= minYes && event.getEventStatus()!= EventStatus.CONFIRMED.name()) {
             event.setEventStatus(EventStatus.CONFIRMED.name());
@@ -102,7 +102,7 @@ public class MyEventTrackingService extends IntentService {
                     Event event = snapshot.getValue(Event.class);
 
                     Date acceptByDate = DateUtils.parseDatefromString(event.getAcceptByDate());
-                    if (acceptByDate != null && acceptByDate.after(today)) {
+                    if (acceptByDate != null && acceptByDate.before(today)) {
                         updateEvent(event);
                         Log.d(TAG, "Deadline for event " + event + " approached !!");
                     }

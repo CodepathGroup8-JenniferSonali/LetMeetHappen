@@ -21,6 +21,8 @@ public interface Constants {
     String  USER_DETAILS = "user_details";
     String DEFAULT_MSG ="Lets meet soon !!";
 
+    String SIGN_GOOGLE= "Sign in with Google";
+
     //endpoints
     String USERS_ENDPOINT = "users";
     String EVENTS_ENDPOINT = "events";

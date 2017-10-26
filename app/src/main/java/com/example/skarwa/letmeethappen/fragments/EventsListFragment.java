@@ -69,9 +69,9 @@ public abstract class EventsListFragment extends Fragment implements Constants {
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
         rvEvents.setLayoutManager(mManager);
-        RecyclerView.ItemDecoration itemDecoration = new
+        /*RecyclerView.ItemDecoration itemDecoration = new
                 DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-        rvEvents.addItemDecoration(itemDecoration);
+        rvEvents.addItemDecoration(itemDecoration);*/
 
         // Set up FirebaseRecyclerAdapter with the Query
         Query eventsQuery = getQuery(mDatabase);

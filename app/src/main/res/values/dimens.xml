@@ -1,5 +1,8 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="titleTextSize">18sp</dimen>
-    <dimen name="contentTextSize">14sp</dimen>
+    <dimen name="headlineTextSize">24sp</dimen>
+    <dimen name="titleTextSize">20sp</dimen>
+    <dimen name="subheadingTextSize">18sp</dimen>
+    <dimen name="bodyTextSize">14sp</dimen>
+    <dimen name="buttonTextSize">14sp</dimen>
 </resources>

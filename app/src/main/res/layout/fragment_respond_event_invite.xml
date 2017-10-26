@@ -5,51 +5,48 @@
     android:layout_height="fill_parent">
 
     <TextView
+        android:id="@+id/tvHost"
+        android:textSize="@dimen/subheadingTextSize"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Host : "
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:id="@+id/tvHost"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/tvLocationValue" />
+        android:layout_alignParentTop="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:text="Host : " />
 
     <TextView
+        android:id="@+id/tvLocationLabel"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="@string/locationLabel"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:id="@+id/tvLocationLabel"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/tvHost"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/tvRSVPDate" />
+        android:layout_below="@+id/tvHost"
+        android:layout_marginTop="30dp"
+        android:layout_toStartOf="@+id/tvRSVPDate"
+        android:text="@string/locationLabel"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
     <TextView
         android:id="@+id/tvLocationValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="location value"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:layout_alignBaseline="@+id/tvLocationLabel"
         android:layout_alignBottom="@+id/tvLocationLabel"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/tvLocationLabel" />
+        android:layout_toEndOf="@+id/tvLocationLabel"
+        android:text="location value"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 
     <TextView
         android:id="@+id/tvRSVPLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/rsvp_date"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="22dp"
-        android:layout_below="@+id/tvLocationLabel"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/tvRSVPDate" />
+        android:layout_below="@+id/tvLocationLabel"
+        android:layout_marginTop="22dp"
+        android:layout_toStartOf="@+id/tvRSVPDate"
+        android:text="@string/rsvp_date"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:id="@+id/tvRSVPDate"
@@ -67,13 +64,12 @@
         android:id="@+id/tvSelectDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Date :"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textStyle="bold"
         android:layout_above="@+id/etMessage"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="20dp"
-        android:layout_toStartOf="@+id/rbGroup" />
+        android:layout_toStartOf="@+id/rbGroup"
+        android:text="Select Date :"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <RadioGroup
         android:id="@+id/rbGroup"
@@ -86,27 +82,30 @@
             android:id="@+id/rbDateOption1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date 1" />
+            android:text="Date 1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <RadioButton
             android:id="@+id/rbDateOption2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date 2" />
+            android:text="Date 2"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     </RadioGroup>
-
 
 
     <EditText
         android:id="@+id/etMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/rbGroup"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/subheadingTextSize"
         android:maxLines="4"
         android:text="Message from Host"
-        android:layout_below="@+id/rbGroup"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
+        android:textStyle="bold|italic" />
 
     <Button
         android:id="@+id/btnNo"
@@ -123,15 +122,13 @@
         android:id="@+id/tvQuestionLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ask"
-        android:textStyle="italic"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
-        android:layout_marginEnd="42dp"
         android:layout_below="@+id/etMessage"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp" />
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="42dp"
+        android:layout_marginTop="27dp"
+        android:text="@string/ask"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <Button
         android:id="@+id/btnYes"
@@ -147,21 +144,24 @@
 
     <Button
         android:id="@+id/btnSendUpdate"
+        style="@style/NiceButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send Update"
-        style="@style/NiceButton"
-        android:layout_marginBottom="44dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:text="@string/save_button_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_below="@+id/btnNo"
+        android:layout_alignStart="@+id/tvQuestionLabel"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="59dp" />
 
     <TextView
         android:id="@+id/tvHostName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/tvHost"
-        android:text="Host name"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/tvHost" />
+        android:layout_toEndOf="@+id/tvLocationLabel"
+        android:text="Host name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 </RelativeLayout>

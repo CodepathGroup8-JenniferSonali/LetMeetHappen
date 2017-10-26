@@ -173,7 +173,7 @@ public class ViewEventsActivity extends AppCompatActivity implements
                             case R.id.myGroups:
                                 Intent i1 = new Intent(getBaseContext(), MyGroupsListActivity.class);
                                 i1.putExtra(USER_ID, User.encode(sharedPref.getString(USER_ID,null)));
-                                i1.putExtra(TOKEN_ID, loggedInUser.getTokenId());
+                                i1.putExtra(TOKEN_ID, sharedPref.getString(TOKEN_ID,null));
                                 i1.putExtra(USER_DISPLAY_NAME,sharedPref.getString(USER_DISPLAY_NAME,null));
                                 //send user details to the next activity to fetch groups and events
                                 startActivity(i1);
@@ -244,6 +244,8 @@ public class ViewEventsActivity extends AppCompatActivity implements
                     return true;
                 }
 
+            case R.id.miNotify:
+                //TODO : inform user of the ne notification received
             default:
                 return super.onOptionsItemSelected(item);
         }

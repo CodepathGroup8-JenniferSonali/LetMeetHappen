@@ -6,11 +6,11 @@
     <string name="dates">Dates</string>
     <string name="rsvp_date">Respond by :</string>
     <string name= "rsvp_date_hint">respond by this date</string>
-    <string name="min_attendee">Minimum Attendees :</string>
+    <string name="min_attendee">Min Attend:</string>
     <string name="message">Message</string>
-    <string name="send_invite">SEND INVITE</string>
+
     <string name="when">When?</string>
-    <string name="select_done">DONE</string>
+
     <string name="settings">Settings</string>
     <string name="groups">Groups</string>
     <string name="group1">Close friends</string>
@@ -21,7 +21,6 @@
     <string name="group_name">Group Name</string>
     <string name="members">Members</string>
     <string name="create_invite">New Event</string>
-    <string name="rsvp">Respond to Invite</string>
     <string name="current_response">Your current response</string>
     <string name="ask">Can you make it?</string>
     <string name="positive">Yes, looking forward to it</string>
@@ -29,13 +28,22 @@
     <string name="maybe">Let me get back to you on this.</string>
     <string name="availableDates">Select All Available Dates</string>
     <string name="send">Send</string>
-    <string name="locationLabel">Location:</string>
+    <string name="locationLabel">Location :</string>
     <string name="locationHint">Select place to meet</string>
     <string name="nYes">Going so far</string>
     <string name="attendees">Attendees</string>
     <string name="for_all">Click to select ...</string>
     <string name="let_meet_happen">Let Meet Happen</string>
-    <string name="create_group">Create Group</string>
     <string name="title_activity_groups_list">GroupsListActivity</string>
+
+
+    <!--All button texts should be ALL CAPS-->
+    <string name="save_button_text">SAVE</string>
+    <string name="send_invite">INVITE</string>
+    <string name="yes_button_text">YES</string>
+    <string name="no_button_text">NO</string>
+    <string name="create_group">CREATE</string>
+    <string name="select_done">DONE</string>
+    <string name="rsvp">RESPOND</string>
 
 </resources>
