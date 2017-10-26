@@ -7,6 +7,14 @@ tools:context="com.codepath.jennifergodinez.nytimessearch.activities.TimelineAct
         android:id="@+id/miNotify"
         android:icon="@drawable/ic_stat_name"
         app:showAsAction="always"
+        android:orderInCategory="2"
         android:title="Notifications">
+    </item>
+
+    <item
+        android:id="@+id/actionSave"
+        app:showAsAction="always"
+        android:orderInCategory="1"
+        android:title="SAVE">
     </item>
 </menu>

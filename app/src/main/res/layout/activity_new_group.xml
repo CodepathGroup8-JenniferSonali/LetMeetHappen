@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleTextColor="@android:color/white"
+        android:layout_alignParentStart="true"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/etGroupName"
-            android:layout_alignBottom="@+id/etGroupName"
-            android:text="@string/group_name"
-            android:layout_alignParentStart="true" />
 
 
         <EditText
@@ -24,10 +24,10 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="12dp"
             android:layout_marginTop="17dp"
-            android:layout_toEndOf="@+id/textView4"
             android:ems="10"
+            android:inputType="textNoSuggestions"
             android:hint="@string/group_name"
-            android:inputType="text" />
+            android:textSize="34sp"/>
 
 
     </RelativeLayout>
@@ -36,19 +36,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvMembers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="@string/members"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true" />
-
         <com.example.skarwa.letmeethappen.utils.MultiSpinner android:id="@+id/multi_spinner"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:layout_toEndOf="@+id/tvMembers" />
+            android:layout_marginLeft="10dp"
+            android:scrollbarSize="10dp" />
 
     </RelativeLayout>
 
@@ -57,12 +49,5 @@
         android:layout_width="match_parent"
         android:layout_height="350dp" />
 
-    <Button
-        android:id="@+id/btnCreate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/buttonTextSize"
-        style="@style/NiceButton"
-        android:text="@string/create_group" />
 
 </LinearLayout>

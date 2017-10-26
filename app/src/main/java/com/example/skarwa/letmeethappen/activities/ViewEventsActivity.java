@@ -31,7 +31,6 @@ import com.example.skarwa.letmeethappen.fragments.EventsListFragment;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.services.MyAlarmReceiver;
-import com.example.skarwa.letmeethappen.services.MyEventTrackingService;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -232,6 +231,7 @@ public class ViewEventsActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        menu.findItem(R.id.actionSave).setVisible(false);
         return true;
     }
 

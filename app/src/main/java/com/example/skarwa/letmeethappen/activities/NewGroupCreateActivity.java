@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -46,6 +49,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
     ListView lvMembers;
     Button btn;
     MultiSpinner.MultiSpinnerListener listener;
+    MultiSpinner multiSpinner;
     ArrayList<? extends Parcelable> friends;
     ArrayList<User> members;
     List<String> names;
@@ -67,6 +71,12 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_group);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -135,7 +145,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
             User friend = Parcels.unwrap(friends.get(i));
             names.add(friend.getDisplayName());
         }
-        MultiSpinner multiSpinner = (MultiSpinner) findViewById(R.id.multi_spinner);
+        multiSpinner = (MultiSpinner) findViewById(R.id.multi_spinner);
         multiSpinner.setItems(names, getString(R.string.for_all), this);
 
 
@@ -146,47 +156,63 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         lvMembers.setAdapter(adapter);
         adapter.setNotifyOnChange(true);
 
-        btn = (Button) findViewById(R.id.btnCreate);
-        btn.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                // add new group to nav menu
-                String groupName = etGroupName.getText().toString();
-
-                //TODO verify the group name is unique
-                group.setName(groupName);
-                group.setCreatedDate(DateUtils.formatDateToString(new Date()));
-                group.setGroupStatus(UserGroupStatus.ACTIVE.name());
-                group.addMember(loggedInUserId, true);
-                group.addToken(loggedInUserId, loggedInTokenId);
-                for (final User member : members) {
-                    group.addMember(member.getId(), true);
-                    if (member.getTokenId() != null) {
-                        group.addToken(member.getId(), member.getTokenId());
-                    }
-                }
-
-                if (groupName != null) {
-                    saveGroup();
-                    sendInvite(group);
-                }
-
-                Intent intent = new Intent();
-                intent.putExtra("new_group", Parcels.wrap(group));
-                setResult(RESULT_OK, intent);
-
-                finish();
-            }
-        });
-
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        menu.findItem(R.id.miNotify).setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        } else if (item.getItemId() == R.id.actionSave) {
+            String groupName = etGroupName.getText().toString();
+
+            //TODO verify the group name is unique
+            group.setName(groupName);
+            group.setCreatedDate(DateUtils.formatDateToString(new Date()));
+            group.setGroupStatus(UserGroupStatus.ACTIVE.name());
+            group.addMember(loggedInUserId, true);
+            group.addToken(loggedInUserId, loggedInTokenId);
+            for (final User member : members) {
+                group.addMember(member.getId(), true);
+                if (member.getTokenId() != null) {
+                    group.addToken(member.getId(), member.getTokenId());
+                }
+            }
+
+            if (groupName != null) {
+                saveGroup();
+                sendInvite(group);
+            }
+
+            Intent intent = new Intent();
+            intent.putExtra("new_group", Parcels.wrap(group));
+            setResult(RESULT_OK, intent);
+
+            finish();
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
 
     @Override
     public void onItemsSelected(boolean[] selected) {
         Log.d("DEBUG", "onContacts selected");
 
+        multiSpinner.setEnabled(false);
+        multiSpinner.setVisibility(View.INVISIBLE);
 
         ArrayList<String> selects = new ArrayList<>();
         members = new ArrayList<User>();
