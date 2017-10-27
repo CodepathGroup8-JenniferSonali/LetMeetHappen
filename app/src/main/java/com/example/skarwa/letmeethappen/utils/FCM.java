@@ -18,17 +18,9 @@ public class FCM extends AsyncTask {
     public final static String AUTH_KEY_FCM = "AAAAI2oBZc8:APA91bFkpgjmhaJg1pd6xbsdpXFZDkpOoWpL3Ftpac0qQ3BAZSI36B8X07QiLCJgFpy-VnwzmMJpUgDXhjJEHpb4O22kgyGt0jzyW1P79RwRG0gC-N9wEiCPOrlD5ErzTBoMyw5YQ46-";
     public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
 
-// userDeviceIdKey is the device id you will query from your database
 
-
-
-
-        protected void onPostExecute(Object result) {
-        }
-
-
-    //@Override
-    //protected Object doInBackground(Object[] objects) {
+    protected void onPostExecute(Object result) {
+    }
 
 
     @Override
@@ -50,16 +42,10 @@ public class FCM extends AsyncTask {
 
             JSONObject json = new JSONObject();
             String idTokens = "[";
-            for (int i=0; i< tokens.length; i++) {
-                idTokens += tokens[i] +",";
-            }
-            char[] chArry = idTokens.toCharArray();
-            chArry[idTokens.length() - 1] = ']';
 
-            //json.put("registration_ids", chArry); TODO commented for testing only  e0BmSKx-hmQ:APA91bEBMqJ_Vh0k40kF01DKRJ79Nu--GhE1FxI8sJITTqB8MJNpHI0IZBPETzUpaNRzJ8fjhXBAmncpu6uQzNH1ka-JQVi_VVweGiR0715kv4Jc2U7kHOrMGnjv6Z_VKZCFDLw-Jj1C
-            String userDeviceIdKey = "e0BmSKx-hmQ:APA91bEBMqJ_Vh0k40kF01DKRJ79Nu--GhE1FxI8sJITTqB8MJNpHI0IZBPETzUpaNRzJ8fjhXBAmncpu6uQzNH1ka-JQVi_VVweGiR0715kv4Jc2U7kHOrMGnjv6Z_VKZCFDLw-Jj1C";
-            json.put("to",userDeviceIdKey.trim());
-                   
+            String userDeviceIdKey = (String)tokens[0]; // "e0BmSKx-hmQ:APA91bEBMqJ_Vh0k40kF01DKRJ79Nu--GhE1FxI8sJITTqB8MJNpHI0IZBPETzUpaNRzJ8fjhXBAmncpu6uQzNH1ka-JQVi_VVweGiR0715kv4Jc2U7kHOrMGnjv6Z_VKZCFDLw-Jj1C";
+            json.put("to", userDeviceIdKey.trim());
+
             JSONObject info = new JSONObject();
             info.put("title", "Let Meet Happen"); // Notification title
             info.put("body", "You have a new invite!"); // Notification body
@@ -69,6 +55,7 @@ public class FCM extends AsyncTask {
             wr.write(json.toString());
             wr.flush();
             conn.getInputStream();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

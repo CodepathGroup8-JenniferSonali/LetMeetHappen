@@ -9,6 +9,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 import static android.content.ContentValues.TAG;
 import static com.example.skarwa.letmeethappen.utils.Constants.USERS_ENDPOINT;
 
@@ -18,6 +20,7 @@ import static com.example.skarwa.letmeethappen.utils.Constants.USERS_ENDPOINT;
 
 public class DBUtils {
     static DatabaseReference mDatabase;
+    public static HashMap<String, String> dbTokens;
 
     public static void saveUser(final User userToSave) {
 

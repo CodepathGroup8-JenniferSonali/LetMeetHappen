@@ -179,8 +179,9 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
             group.setName(groupName);
             group.setCreatedDate(DateUtils.formatDateToString(new Date()));
             group.setGroupStatus(UserGroupStatus.ACTIVE.name());
-            group.addMember(loggedInUserId, true);
-            group.addToken(loggedInUserId, loggedInTokenId);
+            //group.addMember(loggedInUserId, true);
+            //group.addToken(loggedInUserId, loggedInTokenId);
+
             for (final User member : members) {
                 group.addMember(member.getId(), true);
                 if (member.getTokenId() != null) {

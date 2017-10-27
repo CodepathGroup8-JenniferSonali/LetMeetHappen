@@ -4,50 +4,26 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
-
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 
 import com.example.skarwa.letmeethappen.R;
-import com.example.skarwa.letmeethappen.models.Group;
-import com.example.skarwa.letmeethappen.models.User;
-import com.example.skarwa.letmeethappen.utils.Constants;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import com.example.skarwa.letmeethappen.adapters.GroupListAdapter;
 import com.example.skarwa.letmeethappen.adapters.GroupMembersAdapter;
-import com.example.skarwa.letmeethappen.utils.Constants;
-
 import com.example.skarwa.letmeethappen.models.Group;
-import com.example.skarwa.letmeethappen.models.UserGroupStatus;
-import com.example.skarwa.letmeethappen.utils.DateUtils;
+import com.example.skarwa.letmeethappen.utils.Constants;
+import com.example.skarwa.letmeethappen.utils.RetrieveDBToken;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.parceler.Parcels;
 
-import java.lang.reflect.Member;
-import java.util.ArrayList;
-import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.example.skarwa.letmeethappen.R.id.lvMembers;
-import static com.example.skarwa.letmeethappen.R.id.rvGroupMembers;
-import static com.example.skarwa.letmeethappen.R.id.rvGroups;
-import static com.example.skarwa.letmeethappen.R.string.addNewGroup;
 
 
 
@@ -99,6 +75,7 @@ public class ViewGroupFragment extends DialogFragment implements Constants {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         group = Parcels.unwrap(args.getParcelable(GROUP_OBJ));
+        new RetrieveDBToken().execute(group.getMembers().keySet().toArray());
     }
 
     @Override

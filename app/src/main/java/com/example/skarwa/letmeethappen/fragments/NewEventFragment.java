@@ -1,7 +1,6 @@
 package com.example.skarwa.letmeethappen.fragments;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -12,22 +11,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
-import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.Event;
-import com.example.skarwa.letmeethappen.models.Location;
 import com.example.skarwa.letmeethappen.models.EventStatus;
 import com.example.skarwa.letmeethappen.models.Group;
+import com.example.skarwa.letmeethappen.models.Location;
 import com.example.skarwa.letmeethappen.models.User;
-
 import com.example.skarwa.letmeethappen.utils.Constants;
+import com.example.skarwa.letmeethappen.utils.DBUtils;
 import com.example.skarwa.letmeethappen.utils.DateUtils;
 import com.example.skarwa.letmeethappen.utils.FCM;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -49,7 +45,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
-import static com.example.skarwa.letmeethappen.R.id.npMinYes;
 import static com.example.skarwa.letmeethappen.utils.Constants.GROUP_OBJ;
 
 
@@ -224,9 +219,6 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                 event.setEventStatus(EventStatus.PENDING.name());
                 event.setGroup(group);
 
-
-
-
                 listener = (OnCreateEventClickListener) getActivity();
                 listener.onCreateEvent(event);
 
@@ -246,30 +238,44 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
 
         ArrayList<String> tokens = new ArrayList<>();
         Map<String, String> tMap = group.getTokenSet();
-        if (tMap != null) {
-            for (String id : tMap.keySet()) {
-                // exclude the host
-                //if (!id.equals(loggedInUserId))
-                {
-                    tokens.add(tMap.get(id));
-                    PackageManager pm = getActivity().getPackageManager();
-                    String email = User.decode(id);
-                    //sendEmail( User.decode(id), "Jennifer", id );
-                    //sendEmail( "pizarro.concham@gmail.com", "Jennifer", id ); // for demo
 
-                    break;
+        for (String id : group.getMembers().keySet()) {
+            String tId = null;
+            if (tMap != null && tMap.containsKey(id)) {
+                tId = tMap.get(id);
+            } else {
+                // check our DB
+                if (DBUtils.dbTokens != null) {
+                    tId = DBUtils.dbTokens.get(id);
                 }
             }
-            try {
-                //Log.d(TAG, "TOKEN id = " + loggedInUserId);
-                if (tokens.size() > 0) {
-                    new FCM().execute(tokens.toArray());
+
+            if (tId != null) {
+                tokens.add(tId);
+
+                boolean sendEmail = false;
+                if (sendEmail) {
+                    sendEmail( User.decode(id), "", id );
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+
             }
         }
+
+        try {
+            //Log.d(TAG, "TOKEN id = " + loggedInUserId);
+            if (tokens.size() > 0) {
+                for (String t : tokens) {
+                    String[] tArr = new String[1];
+                    tArr[0] = t;
+                    new FCM().execute(tArr);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
