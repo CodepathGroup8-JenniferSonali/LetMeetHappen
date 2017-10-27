@@ -7,6 +7,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.skarwa.letmeethappen.R;
@@ -122,5 +124,21 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
         //show pending events tab as thats where the new event will get added
         i.putExtra("ShowTabIndex",2);
         startActivity(i);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_groups, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.addGroup:
+              //TODO : add group from here
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

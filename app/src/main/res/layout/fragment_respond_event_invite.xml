@@ -4,49 +4,49 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <TextView
-        android:id="@+id/tvHost"
+    <ImageView
+        android:id="@+id/ivHostIcon"
         android:textSize="@dimen/subheadingTextSize"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:text="Host : " />
+        android:src="@drawable/ic_host_icon"
+        android:layout_toStartOf="@+id/tvHostName" />
 
-    <TextView
-        android:id="@+id/tvLocationLabel"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/ivLocationIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tvHost"
+        android:layout_below="@+id/ivHostIcon"
         android:layout_marginTop="30dp"
         android:layout_toStartOf="@+id/tvRSVPDate"
-        android:text="@string/locationLabel"
+        android:src="@drawable/ic_location"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
     <TextView
         android:id="@+id/tvLocationValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tvLocationLabel"
-        android:layout_alignBottom="@+id/tvLocationLabel"
+        android:layout_alignBaseline="@+id/ivLocationIcon"
+        android:layout_alignBottom="@+id/ivLocationIcon"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/tvLocationLabel"
+        android:layout_toEndOf="@+id/ivLocationIcon"
         android:text="location value"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 
-    <TextView
-        android:id="@+id/tvRSVPLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/ivSandClockIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tvLocationLabel"
+        android:layout_below="@+id/ivLocationIcon"
         android:layout_marginTop="22dp"
         android:layout_toStartOf="@+id/tvRSVPDate"
-        android:text="@string/rsvp_date"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:src="@drawable/ic_sandclock_icon"
+       />
 
     <TextView
         android:id="@+id/tvRSVPDate"
@@ -56,26 +56,25 @@
         android:ems="10"
         android:inputType="date"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:layout_alignBaseline="@+id/tvRSVPLabel"
-        android:layout_alignBottom="@+id/tvRSVPLabel"
+        android:layout_alignBaseline="@+id/ivSandClockIcon"
+        android:layout_alignBottom="@+id/ivSandClockIcon"
         android:layout_alignParentEnd="true" />
 
-    <TextView
-        android:id="@+id/tvSelectDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/ivEventDateIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_above="@+id/etMessage"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="20dp"
-        android:layout_toStartOf="@+id/rbGroup"
-        android:text="Select Date :"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:src="@drawable/ic_event_dates"
+        android:layout_toStartOf="@+id/rbGroup" />
 
     <RadioGroup
         android:id="@+id/rbGroup"
         android:layout_below="@id/tvRSVPDate"
         android:layout_width="match_parent"
-        android:layout_toEndOf="@+id/tvRSVPLabel"
+        android:layout_toEndOf="@+id/ivSandClockIcon"
         android:layout_height="wrap_content">
 
         <RadioButton
@@ -158,9 +157,9 @@
         android:id="@+id/tvHostName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvHost"
+        android:layout_alignBottom="@+id/ivHostIcon"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/tvLocationLabel"
+        android:layout_toEndOf="@+id/ivLocationIcon"
         android:text="Host name"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 

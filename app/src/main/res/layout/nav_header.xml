@@ -10,6 +10,7 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:padding="5dp"
+        android:layout_marginTop="21dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
@@ -17,12 +18,13 @@
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:text="name"
+        android:layout_above="@+id/tvEmail"
+        android:layout_alignEnd="@+id/tvEmail"
+        android:layout_marginBottom="13dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/ivProfilePic" />
+        android:text="name"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/tvEmail"
@@ -30,8 +32,10 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:text="email"
+        android:textAlignment="viewStart"
         android:layout_marginLeft="5dp"
         android:layout_marginBottom="12dp"
+        android:layout_marginStart="19dp"
         android:layout_alignBottom="@+id/ivProfilePic"
         android:layout_toEndOf="@+id/ivProfilePic" />
 </RelativeLayout>

@@ -127,6 +127,7 @@ public class ViewEventsActivity extends AppCompatActivity implements
 
         // Tie DrawerLayout events to the ActionBarToggle
         mDrawer.addDrawerListener(drawerToggle);
+        nvDrawer.setItemIconTintList(null);
 
         // Setup drawer view
         setupDrawerContent(nvDrawer);
