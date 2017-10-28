@@ -5,11 +5,11 @@
     <string name="select_group">Select Group</string>
     <string name="dates">Dates</string>
     <string name="rsvp_date">Respond by :</string>
-    <string name= "rsvp_date_hint">respond by this date</string>
+    <string name= "rsvp_date_hint">Respond by</string>
     <string name="min_attendee">Min Attendees:</string>
     <string name="message">Message</string>
 
-    <string name="when">When?</string>
+    <string name="when">When</string>
 
     <string name="settings">Settings</string>
     <string name="groups">Groups</string>
@@ -29,7 +29,7 @@
     <string name="availableDates">Select All Available Dates</string>
     <string name="send">Send</string>
     <string name="locationLabel">Location :</string>
-    <string name="locationHint">Select place to meet</string>
+    <string name="locationHint">Where</string>
     <string name="nYes">Going so far</string>
     <string name="attendees">Attendees</string>
     <string name="for_all">Click to select ...</string>

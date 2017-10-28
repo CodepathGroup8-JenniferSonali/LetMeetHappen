@@ -48,7 +48,7 @@ public class FCM extends AsyncTask {
 
             JSONObject info = new JSONObject();
             info.put("title", "Let Meet Happen"); // Notification title
-            info.put("body", "You have a new invite!"); // Notification body
+            info.put("body", (String)tokens[1]); // Notification body
             json.put("notification", info);
 
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());

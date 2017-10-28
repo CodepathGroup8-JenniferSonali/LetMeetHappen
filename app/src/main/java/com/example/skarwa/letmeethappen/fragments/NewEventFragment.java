@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,6 +59,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     final static String ISRANGE = "IS_RANGE";
     final static String DATE_PICKER = "datePicker";
     final static int PLACE_PICKER_REQUEST = 1;
+    EditText etMessage;
 
     @BindView(R.id.etEventName)
     EditText etEventName;
@@ -109,9 +111,13 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_event, container);
-        getDialog().setTitle(group.getName());
+
+        etMessage = view.findViewById(R.id.etMessage);
+        //getDialog().setTitle(group.getName());
         event = new Event();
         ButterKnife.bind(this, view);
+        Button btn = (Button)view.findViewById(R.id.btn_send);
+        btn.setText("INVITE\n"+group.getName());
         return view;
     }
 
@@ -119,7 +125,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         //get count of group members
         int count = group.getMembers().keySet().size();
@@ -225,21 +231,27 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                 Log.d(TAG, "Send Button Clicked");
                 dismiss();
 
-                sendInvite(group);
+
+                sendInvite(group, etMessage.getText().toString());
             }
         });
 
     }
 
 
-    public void sendInvite(Group group) {
+    public void sendInvite(Group group, String msg) {
         // send invites to all group members to join
         //notify group members of the new invite
+
+        String bodyMsg = "\n\n\""+msg+"\" - "+event.getPlannerName();
 
         ArrayList<String> tokens = new ArrayList<>();
         Map<String, String> tMap = group.getTokenSet();
 
         for (String id : group.getMembers().keySet()) {
+            if (id.equals(event.getPlannerId())) {
+                continue;
+            }
             String tId = null;
             if (tMap != null && tMap.containsKey(id)) {
                 tId = tMap.get(id);
@@ -265,8 +277,9 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
             //Log.d(TAG, "TOKEN id = " + loggedInUserId);
             if (tokens.size() > 0) {
                 for (String t : tokens) {
-                    String[] tArr = new String[1];
+                    String[] tArr = new String[2];
                     tArr[0] = t;
+                    tArr[1] = bodyMsg;
                     new FCM().execute(tArr);
                 }
             }
