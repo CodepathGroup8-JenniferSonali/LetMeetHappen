@@ -33,7 +33,7 @@ public interface Constants {
     String USER_EMAIL = "user_email";
 
 
-    String MY_DATABSE_API_KEY = "AIzaSyD9SqX-S9A8pZs7hgZOX35msB8V36EN2Vg";
+    String MY_DATABASE_API_KEY = "AIzaSyD9SqX-S9A8pZs7hgZOX35msB8V36EN2Vg";
     String GOOGLE_PLACES_API_KEY = "AIzaSyD_k4h_fu-wo2-R4NWhQyB-41qgiWnaTCc";
 
 }

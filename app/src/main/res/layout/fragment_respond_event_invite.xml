@@ -96,6 +96,7 @@
 
     <EditText
         android:id="@+id/etMessage"
+        android:backgroundTint="@color/colorAccent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -106,40 +107,9 @@
         android:text="Message from Host"
         android:textStyle="bold|italic" />
 
-    <Button
-        android:id="@+id/btnNo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="No"
-        android:background="@drawable/button_background"
-        android:layout_alignBaseline="@+id/btnYes"
-        android:layout_alignBottom="@+id/btnYes"
-        android:layout_toEndOf="@+id/btnYes"
-        android:layout_marginStart="32dp" />
 
-    <TextView
-        android:id="@+id/tvQuestionLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etMessage"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="42dp"
-        android:layout_marginTop="27dp"
-        android:text="@string/ask"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-    <Button
-        android:id="@+id/btnYes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:text="Yes"
-        android:background="@drawable/button_background"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="12dp"
-        android:layout_below="@+id/tvQuestionLabel"
-        android:layout_toStartOf="@+id/rbGroup" />
+
 
     <Button
         android:id="@+id/btnSendUpdate"
@@ -148,10 +118,9 @@
         android:layout_height="wrap_content"
         android:text="@string/save_button_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:layout_below="@+id/btnNo"
-        android:layout_alignStart="@+id/tvQuestionLabel"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="59dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="97dp" />
 
     <TextView
         android:id="@+id/tvHostName"
@@ -162,5 +131,22 @@
         android:layout_toEndOf="@+id/ivLocationIcon"
         android:text="Host name"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <Switch
+        android:id="@+id/swResponse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/subheadingTextSize"
+        android:text="Can you make it ?  "
+        android:textOff="No"
+        android:textOn="Yes"
+        android:thumbTint="@color/colorAccent"
+        android:layout_below="@+id/etMessage"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_alignEnd="@+id/btnSendUpdate" />
 
 </RelativeLayout>

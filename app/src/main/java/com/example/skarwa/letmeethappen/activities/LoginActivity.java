@@ -1,6 +1,8 @@
 package com.example.skarwa.letmeethappen.activities;
 
 import android.accounts.Account;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +20,7 @@ import com.crashlytics.android.Crashlytics;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.models.UserGroupStatus;
+import com.example.skarwa.letmeethappen.services.MyAlarmReceiver;
 import com.example.skarwa.letmeethappen.services.RegistrationIntentService;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.example.skarwa.letmeethappen.utils.DBUtils;
@@ -118,8 +121,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // [END initialize_database_ref]
-
-
 
 
         signInButton.setSize(SignInButton.SIZE_STANDARD);
@@ -289,6 +290,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.apply();
 
         DBUtils.saveUser(user);
+        scheduleAlarm();
+
         return user;
     }
 
@@ -396,5 +399,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
             onLoginSuccess();
         }
+    }
+
+    // Setup a recurring alarm every day
+    public void scheduleAlarm() {
+        // Construct an intent that will execute the AlarmReceiver
+        Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
+        intent.putExtra(USER_ID,sharedPref.getString(USER_ID,null));
+        // Create a PendingIntent to be triggered when the alarm goes off
+        final PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Setup periodic alarm every day  from this point onwards
+        long firstMillis = System.currentTimeMillis(); // alarm is set right away
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
+        // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+                AlarmManager.INTERVAL_DAY, pIntent);
     }
 }

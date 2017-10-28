@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.skarwa.letmeethappen.R;
@@ -60,11 +61,8 @@ public class RespondEventInviteFragment extends DialogFragment {
     @BindView(R.id.tvLocationValue)
     TextView tvLocation;
 
-    @BindView(R.id.btnYes)
-    Button btnYes;
-
-    @BindView(R.id.btnNo)
-    Button btnNo;
+    @BindView(R.id.swResponse)
+    Switch response;
 
     @BindView(R.id.tvHostName)
     TextView tvHostName;
@@ -142,22 +140,12 @@ public class RespondEventInviteFragment extends DialogFragment {
         //TODO enable yes , no ,send update only when date selected
         //TODO set date on event when checked
 
-        btnYes.setOnClickListener(new View.OnClickListener() {
+        response.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Yes Button clicked");
-                updateEvent(loggedInUserId, true);
-            }
-        });
-
-
-        btnNo.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "No Button clicked");
-                updateEvent(loggedInUserId, false);
+                Log.d(TAG, "Switch selected");
+                event.addAttendedUser(loggedInUserId, response.isChecked());
             }
         });
 
@@ -225,11 +213,6 @@ public class RespondEventInviteFragment extends DialogFragment {
 
     private void updateEvent(String userId, boolean response) {
 
-        if (response){
-            event.addAttendedUser(userId, true);
-        } else {
-            event.addAttendedUser(userId, false);
-        }
     }
 }
 

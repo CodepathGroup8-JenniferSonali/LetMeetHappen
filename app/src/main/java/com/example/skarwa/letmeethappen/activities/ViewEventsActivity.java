@@ -2,8 +2,10 @@ package com.example.skarwa.letmeethappen.activities;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -31,6 +34,7 @@ import com.example.skarwa.letmeethappen.fragments.EventsListFragment;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.services.MyAlarmReceiver;
+import com.example.skarwa.letmeethappen.services.MyEventTrackingService;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -111,8 +115,6 @@ public class ViewEventsActivity extends AppCompatActivity implements
 
         sharedPref = this.getSharedPreferences(
                 USER_DETAILS, Context.MODE_PRIVATE);
-
-        scheduleAlarm();
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -284,6 +286,39 @@ public class ViewEventsActivity extends AppCompatActivity implements
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
+
+    // Define the callback for what to do when data is received
+    private BroadcastReceiver testReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int resultCode = intent.getIntExtra("resultCode", RESULT_CANCELED);
+            if (resultCode == RESULT_OK) {
+                viewPager.getAdapter().notifyDataSetChanged();
+                //String resultValue = intent.getStringExtra("resultValue");
+                //Toast.makeText(ViewEventsActivity.this, resultValue, Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Register for the particular broadcast based on ACTION string
+        IntentFilter filter = new IntentFilter(MyEventTrackingService.ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(testReceiver, filter);
+        // or `registerReceiver(testReceiver, filter)` for a normal broadcast
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Unregister the listener when the application is paused
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(testReceiver);
+        // or `unregisterReceiver(testReceiver)` for a normal broadcast
+    }
+
+
+
     // Call `launchTestService()` in the activity
     // to startup the service
    /* public void launchEventTrackingService() {
@@ -295,24 +330,9 @@ public class ViewEventsActivity extends AppCompatActivity implements
         startService(i);
     }*/
 
-    // Setup a recurring alarm every half hour
-    public void scheduleAlarm() {
-        // Construct an intent that will execute the AlarmReceiver
-        Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
-        intent.putExtra(USER_ID,sharedPref.getString(USER_ID,getUid()));
-        // Create a PendingIntent to be triggered when the alarm goes off
-        final PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        // Setup periodic alarm every day  from this point onwards
-        long firstMillis = System.currentTimeMillis(); // alarm is set right away
-        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
-        // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-                AlarmManager.INTERVAL_DAY, pIntent);
-    }
 
-    //cancel alaerm
+
+    //cancel alarm
     /*public void cancelAlarm() {
         Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
         final PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE,

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.fragments.RespondEventInviteFragment;
 import com.example.skarwa.letmeethappen.models.Event;
+import com.example.skarwa.letmeethappen.models.EventStatus;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
@@ -79,8 +80,9 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
 
         tvDates.setText(dates);
 
+
        // if its the planner do not show respond button.
-        if(mEvent.getPlannerId().equals(loggedInUserId)){
+        if(mEvent.getPlannerId().equals(loggedInUserId) || mEvent.getEventStatus().equals(EventStatus.SUCCESSFUL.name()) || mEvent.getEventStatus().equals(EventStatus.CONFIRMED.name())){
            btnRespond.setVisibility(View.INVISIBLE);
         } else {
             btnRespond.setOnClickListener(new View.OnClickListener() {

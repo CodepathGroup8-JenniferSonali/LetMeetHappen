@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/myGroups" android:icon="@drawable/ic_group_icon"
+    <item android:id="@+id/myGroups" android:icon="@drawable/ic_groups_grey"
         android:title="My Groups" />
     <item android:id="@+id/addGroup"
         android:orderInCategory="998"
         android:title="@string/addNewGroup">
     </item>
-    <item android:title="@string/settings"
+    <item android:title="@string/settings" android:icon="@drawable/ic_settings_icon"
         android:orderInCategory="999">
     </item>
 </menu>

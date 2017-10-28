@@ -1,8 +1,10 @@
 package com.example.skarwa.letmeethappen.services;
 
+import android.app.Activity;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -42,6 +44,10 @@ import static com.example.skarwa.letmeethappen.utils.Constants.USER_ID;
  */
 
 public class MyEventTrackingService extends IntentService {
+    FirebaseDatabaseClient databaseClient;
+
+    public static final String ACTION = "com.example.skarwa.letmeethappen.services.MyEventTrackingService";
+
     DatabaseReference mDatabase;
     // Must create a default constructor
     public MyEventTrackingService() {
@@ -58,6 +64,8 @@ public class MyEventTrackingService extends IntentService {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         //mEventsDatabase = mDatabase.child(Constants.EVENTS_ENDPOINT);
         // [END initialize_database_ref]
+
+        databaseClient = new FirebaseDatabaseClient();
     }
 
 
@@ -87,6 +95,15 @@ public class MyEventTrackingService extends IntentService {
             childUpdates.put("/" + USER_EVENTS + "/" + userId + "/" + event.getId(), event);
         }
         mDatabase.updateChildren(childUpdates);
+
+
+        // Construct an Intent tying it to the ACTION (arbitrary event namespace)
+        Intent in = new Intent(ACTION);
+        // Put extras into the intent as usual
+        in.putExtra("resultCode", Activity.RESULT_OK);
+        //in.putExtra("resultValue", "My Result Value. Passed in: " + val);
+        // Fire the broadcast with intent packaged
+        LocalBroadcastManager.getInstance(this).sendBroadcast(in);
     }
 
     @Override
@@ -94,7 +111,9 @@ public class MyEventTrackingService extends IntentService {
         final Date today = new Date();
         String userId = intent.getStringExtra(USER_ID);
 
-        mDatabase.child(USER_EVENTS).child(userId).addValueEventListener(new ValueEventListener() {
+       //fetchEvents(userId);
+
+        mDatabase.child(USER_EVENTS).child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // run some code
@@ -102,7 +121,7 @@ public class MyEventTrackingService extends IntentService {
                     Event event = snapshot.getValue(Event.class);
 
                     Date acceptByDate = DateUtils.parseDatefromString(event.getAcceptByDate());
-                    if (acceptByDate != null && acceptByDate.before(today)) {
+                    if (acceptByDate != null && acceptByDate.before(today) && event.getEventStatus()!= EventStatus.SUCCESSFUL.name()) {
                         updateEvent(event);
                         Log.d(TAG, "Deadline for event " + event + " approached !!");
                     }
@@ -118,12 +137,11 @@ public class MyEventTrackingService extends IntentService {
         });
 
     }
-}
 
-    /*public void fetchEvents(int page) {
-        Log.d("DEBUG", " Loading Page:" + page);
+    public void fetchEvents(String userId) {
+     //   Log.d("DEBUG", " Loading Page:" + page);
 
-        mClient.getEvents(null, new JsonHttpResponseHandler() {
+        databaseClient.getUserEvents("https://https://let-meet-happen.firebaseio.com/user-events/"+userId+".json",null, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -140,19 +158,12 @@ public class MyEventTrackingService extends IntentService {
     private RequestParams getParams(int page) {
 
         RequestParams params = new RequestParams();
-        //  params.put("auth", Constants.MY_DATABSE_API_KEY);
+        //params.put("auth", Constants.MY_DATABASE_API_KEY);
         //params.put(PAGE, page);
-        /*params.put(QUERY, queryString);
-        if (mBeginDate != null) {
-            params.put(BEGIN_DATE, mBeginDate);
-        }
-        if (mSortOrder != null) {
-            params.put(SORT, mSortOrder);
-        }
+        //params.put(, queryString);
 
-        if (mNewsDeskValues != null && mNewsDeskValues.size() >= 1) {
-            params.put(FILTER_QUERY, getNewsDeskFilterQuery());
-        }
         return params;
-    }*/
+    }
+
+  }
 

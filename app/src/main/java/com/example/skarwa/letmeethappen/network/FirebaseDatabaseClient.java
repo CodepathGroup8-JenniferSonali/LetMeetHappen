@@ -15,10 +15,16 @@ public class FirebaseDatabaseClient {
     private String FIREBASE_GROUPS_DATABASE_URL = "https://let-meet-happen.firebaseio.com/groups.json";
     private String FIREBASE_USERS_DATABASE_URL = "https://let-meet-happen.firebaseio.com/users.json";
     private String FIREBASE_EVENTS_DATABASE_URL = "https://let-meet-happen.firebaseio.com/events.json";
+    private String FIREBASE_USER_EVENTS_DATABASE_URL = "https://https://let-meet-happen.firebaseio.com/user-events.json";
 
 
     public FirebaseDatabaseClient() {
         this.client = new AsyncHttpClient();
+    }
+
+    // Method for accessing the events API
+    public void getUserEvents(String url,final RequestParams params, JsonHttpResponseHandler handler) {
+        client.get(url, params, handler);
     }
 
     // Method for accessing the events API

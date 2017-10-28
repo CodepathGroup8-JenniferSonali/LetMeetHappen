@@ -69,6 +69,7 @@ public abstract class EventsListFragment extends Fragment implements Constants {
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
         rvEvents.setLayoutManager(mManager);
+        rvEvents.getItemAnimator().setChangeDuration(0);
         /*RecyclerView.ItemDecoration itemDecoration = new
                 DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         rvEvents.addItemDecoration(itemDecoration);*/

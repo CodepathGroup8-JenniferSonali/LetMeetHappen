@@ -16,4 +16,6 @@
     <color name="button_pressed">#ff8a00</color>
     <color name="button_focused">#ff8a00</color>
     <color name="button_default">#8BC34A</color>
+    <color name="calendar_selected_day_bg">#FFFFFF</color>
+    <color name="calendar_text_selected">#FF9800</color>
 </resources>
