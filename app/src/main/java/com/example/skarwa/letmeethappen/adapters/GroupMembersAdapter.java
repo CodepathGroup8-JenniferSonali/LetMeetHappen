@@ -1,19 +1,17 @@
 package com.example.skarwa.letmeethappen.adapters;
 
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.skarwa.letmeethappen.R;
-import com.example.skarwa.letmeethappen.fragments.ViewGroupFragment;
-import com.example.skarwa.letmeethappen.models.Group;
 import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.google.firebase.database.ChildEventListener;
@@ -23,13 +21,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.parceler.Parcels;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * Created by skarwa on 10/22/17.
@@ -51,6 +48,9 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
 
         @BindView(R.id.tvGroupMemberName)
         public TextView groupMember;
+
+        @BindView(R.id.ivProfileURL)
+        public ImageView memberPic;
 
         public GroupMemberHolder(View itemView) {
             super(itemView);
@@ -181,6 +181,11 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         final User user = mUsers.get(position);
 
         holder.groupMember.setText(user.getDisplayName());
+        Glide.with(getContext()).load(user.getProfilePicUrl())
+                .placeholder(R.drawable.ic_host_placeholder)
+                .bitmapTransform(new RoundedCornersTransformation(getContext(), 30, 10))
+                .override(100, 200)
+                .into(holder.memberPic);
     }
 
     public Context getContext() {
