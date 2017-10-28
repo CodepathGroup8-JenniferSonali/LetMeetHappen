@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/event_name"
-        android:textSize="@dimen/titleTextSize"
+        android:textSize="@dimen/headlineTextSize"
         android:inputType="textPersonName"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
