@@ -75,6 +75,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle("New Group");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
