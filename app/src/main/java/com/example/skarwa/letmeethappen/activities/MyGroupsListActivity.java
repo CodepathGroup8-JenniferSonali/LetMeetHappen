@@ -70,8 +70,8 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
         // [END initialize_database_ref]
 
         getSupportActionBar().setTitle(MY_GROUPS);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initRecyclerView();
 
@@ -137,7 +137,7 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.home:
-                finish();
+                //finish();
                 break;
             case R.id.addGroup:
               //TODO : add group from here
