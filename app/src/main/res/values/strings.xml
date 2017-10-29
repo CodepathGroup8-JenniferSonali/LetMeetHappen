@@ -5,7 +5,7 @@
     <string name="select_group">Select Group</string>
     <string name="dates">Dates</string>
     <string name="rsvp_date">Respond by :</string>
-    <string name= "rsvp_date_hint">Respond by</string>
+    <string name="rsvp_date_hint">Respond by</string>
     <string name="min_attendee">Min Attendees:</string>
     <string name="message">Message</string>
 

@@ -160,24 +160,17 @@ public class ViewEventsActivity extends AppCompatActivity implements
                             case R.id.myGroups:
                                 Intent i1 = new Intent(getBaseContext(), MyGroupsListActivity.class);
                                 i1.putParcelableArrayListExtra(Constants.FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
-                                startActivity(i1);
-                                break;
+                                startActivityForResult(i1, 1);
+                                return true;
 
-
-                                //case
-
-                                //TODO else if settings selects
-                                //launch settings page
-                                //launchSettingsDialog/ Activity
+                            case R.id.mySettings:
+                                Intent i2 = new Intent(getBaseContext(), MySettingsActivity.class);
+                                startActivity(i2);
+                                return true;
 
                             default:
                                 break;
-
-
                         }
-
-
-
                         // Highlight the selected item has been done by NavigationView
                         menuItem.setChecked(true);
                         // Set action bar title
@@ -283,20 +276,18 @@ public class ViewEventsActivity extends AppCompatActivity implements
         // or `unregisterReceiver(testReceiver)` for a normal broadcast
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                //reset the friends object
+                friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(Constants.FRIENDS_OBJ);
+            }
 
+        }
 
-    // Call `launchTestService()` in the activity
-    // to startup the service
-   /* public void launchEventTrackingService() {
-        // Construct our Intent specifying the Service
-        Intent i = new Intent(this, MyEventTrackingService.class);
-        // Add extras to the bundle
-        i.putExtra(USER_ID,sharedPref.getString(USER_ID,getUid()));  //TODO : update as needed
-        // Start the service
-        startService(i);
-    }*/
-
-
+    }
 
     //cancel alarm
     /*public void cancelAlarm() {

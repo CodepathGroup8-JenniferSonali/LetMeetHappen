@@ -5,9 +5,9 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -16,28 +16,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name="com.example.skarwa.letmeethappen.services.RegistrationIntentService" android:exported="false"/>
         <service
-            android:name="com.example.skarwa.letmeethappen.services.MyInstanceIDListenerService"
+            android:name=".services.RegistrationIntentService"
+            android:exported="false" />
+        <service
+            android:name=".services.MyInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
         <service
-            android:name="com.example.skarwa.letmeethappen.services.FCMMessageHandler"
-            android:exported="false" >
+            android:name=".services.FCMMessageHandler"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".services.MyEventTrackingService"
+        <service
+            android:name=".services.MyEventTrackingService"
             android:exported="false" />
 
         <receiver
             android:name=".services.MyAlarmReceiver"
-            android:process=":remote" >
-        </receiver>
+            android:process=":remote"></receiver>
 
         <activity
             android:name=".activities.LoginActivity"
@@ -48,33 +50,40 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ViewEventsActivity"></activity>
-        <activity android:name=".activities.ViewEventDetailActivity" android:theme="@style/AppTheme">
+        <activity
+            android:name=".activities.ViewEventsActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".activities.ViewEventDetailActivity"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.skarwa.letmeethappen.activities.ViewEventsActivity"
-                />
+                android:value="com.example.skarwa.letmeethappen.activities.ViewEventsActivity" />
         </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="53564889f405babd67506fa8c1fe48c8d9b20740" />
 
-        <activity android:name=".activities.NewGroupCreateActivity"></activity>
+        <activity android:name=".activities.NewGroupCreateActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.skarwa.letmeethappen.activities.MyGroupsListActivity" />
+        </activity>
         <activity android:name=".activities.MyGroupsListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.skarwa.letmeethappen.activities.ViewEventsActivity"
-                />
+                android:value="com.example.skarwa.letmeethappen.activities.ViewEventsActivity" />
         </activity>
 
-
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD_k4h_fu-wo2-R4NWhQyB-41qgiWnaTCc" />
 
+        <activity android:name=".activities.MySettingsActivity"></activity>
     </application>
 
 </manifest>

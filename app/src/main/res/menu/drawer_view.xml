@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/myGroups" android:icon="@drawable/ic_groups_grey"
         android:title="My Groups" />
-    <item android:title="@string/settings" android:icon="@drawable/ic_settings_icon"
+    <item android:id="@+id/mySettings" android:title="@string/settings" android:icon="@drawable/ic_settings_icon"
         android:orderInCategory="999">
     </item>
 </menu>

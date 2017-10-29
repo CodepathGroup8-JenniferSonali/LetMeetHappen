@@ -30,6 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.example.skarwa.letmeethappen.utils.Constants.EVENTS_ENDPOINT;
+import static com.example.skarwa.letmeethappen.utils.Constants.FRIENDS_OBJ;
 import static com.example.skarwa.letmeethappen.utils.Constants.MY_GROUPS;
 import static com.example.skarwa.letmeethappen.utils.Constants.USER_DETAILS;
 import static com.example.skarwa.letmeethappen.utils.Constants.USER_DISPLAY_NAME;
@@ -154,22 +155,35 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
     }
 
     @Override
+    public void onBackPressed() {
+        if(friends == null){
+            friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(Constants.FRIENDS_OBJ);
+        }
+        Intent intent = new Intent();
+        intent.putParcelableArrayListExtra(FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.home:
+                onBackPressed();
+                return true;
                 //finish();
-                break;
             case R.id.addGroup:
                 Intent i = new Intent(getBaseContext(), NewGroupCreateActivity.class);
                 i.putParcelableArrayListExtra(Constants.FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
                 //send user details to the next activity to fetch groups and events
                 startActivityForResult(i, 1);
+                return true;
             default:
-
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {

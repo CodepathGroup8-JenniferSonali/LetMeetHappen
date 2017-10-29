@@ -11,25 +11,26 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="97dp">
 
         <TextView
             android:id="@+id/tvDate2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignStart="@id/tvDate"
+            android:layout_below="@+id/tvDate"
+            android:layout_marginTop="5dp"
             android:text="date2"
-            android:visibility="invisible"
             android:textSize="@dimen/bodyTextSize"
-            android:layout_alignEnd="@+id/tvEventName"
-            android:layout_alignTop="@+id/tvDate" />
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/ivProfileImage"
             android:layout_width="@dimen/profileSize"
             android:layout_height="@dimen/profileSize"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:padding="@dimen/profileImagePadding" />
+            android:padding="@dimen/profileImagePadding"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:id="@+id/tvDate"

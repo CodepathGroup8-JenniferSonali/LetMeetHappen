@@ -44,6 +44,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.skarwa.letmeethappen.utils.Constants.FRIENDS_OBJ;
 import static com.example.skarwa.letmeethappen.utils.Constants.GROUPS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.USERS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.USER_DETAILS;
@@ -150,7 +151,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         loggedInTokenId = sharedPref.getString(Constants.TOKEN_ID,null);
         group = new Group();
 
-        friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(Constants.FRIENDS_OBJ);
+        friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(FRIENDS_OBJ);
 
         names = new ArrayList<>();
 
@@ -179,7 +180,9 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            onBackPressed();
+            return true;
+
         } else if (item.getItemId() == R.id.actionSave) {
             String groupName = etGroupName.getText().toString();
 
@@ -201,20 +204,22 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
                 saveGroup();
                 sendInvite(group);
             }
-
-            Intent intent = new Intent();
-            intent.putExtra(Constants.NEW_GROUP, Parcels.wrap(group));
-            setResult(RESULT_OK, intent);
-            finish();
+            onBackPressed();
+            return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
 
-
-
-
-
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.NEW_GROUP, Parcels.wrap(group));
+        intent.putParcelableArrayListExtra(FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 
     @Override
     public void onItemsSelected(boolean[] selected) {

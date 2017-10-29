@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     GoogleApiClient mGoogleApiClient;
     DatabaseReference mDatabase;
     Account mAuthorizedAccount;
-    private List<Parcelable> friends;
+    List<Parcelable> friends;
     SharedPreferences sharedPref;
     DBUtils DBUtils;
 
