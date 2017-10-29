@@ -1,5 +1,7 @@
 package com.example.skarwa.letmeethappen.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +33,8 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
     Event mEvent;
     String loggedInUserId;
     String loggedInUserDisplayName;
+    SharedPreferences sharedPref;
+
 
     @BindView(R.id.btnRespond)
     Button btnRespond;
@@ -58,18 +62,20 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
 
         ButterKnife.bind(this);
 
+        sharedPref = this.getSharedPreferences(
+                USER_DETAILS, Context.MODE_PRIVATE);
+
         setSupportActionBar(toolbar);
 
         mEvent = Parcels.unwrap(getIntent().getParcelableExtra(EVENT_OBJ));
-        loggedInUserId = getIntent().getStringExtra(USER_ID);
-        loggedInUserDisplayName = getIntent().getStringExtra(USER_DISPLAY_NAME);
-
+        loggedInUserId = sharedPref.getString(USER_ID,null);
+        loggedInUserDisplayName = sharedPref.getString(USER_DISPLAY_NAME,null);
 
         ButterKnife.bind(this);
 
         generateDetailEventView();
         getSupportActionBar().setTitle(mEvent.getEventName());
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void generateDetailEventView() {
@@ -98,8 +104,4 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
             });
         }
     }
-    public String getUid() {
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
-    }
-
 }

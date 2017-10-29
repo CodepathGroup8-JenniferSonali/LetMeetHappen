@@ -1,6 +1,8 @@
 package com.example.skarwa.letmeethappen.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
@@ -39,23 +41,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.example.skarwa.letmeethappen.utils.Constants.GROUPS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.USERS_ENDPOINT;
+import static com.example.skarwa.letmeethappen.utils.Constants.USER_DETAILS;
 
 public class NewGroupCreateActivity extends AppCompatActivity implements MultiSpinner.MultiSpinnerListener {
 
     private static final String TAG = "NewGroupCreateActivity";
-    EditText etGroupName;
-    ListView lvMembers;
-    Button btn;
     MultiSpinner.MultiSpinnerListener listener;
-    MultiSpinner multiSpinner;
     ArrayList<? extends Parcelable> friends;
     ArrayList<User> members;
     List<String> names;
     ArrayAdapter<String> adapter;
     Group group;
     DBUtils DBUtils;
+    SharedPreferences sharedPref;
 
     // [START declare_database_ref]
     private DatabaseReference mDatabase;
@@ -64,7 +67,17 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
     String loggedInUserId;
     String loggedInTokenId;
 
-    FirebaseDatabaseClient mClient;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.etGroupName)
+    EditText etGroupName;
+
+    @BindView(R.id.multi_spinner)
+    MultiSpinner multiSpinner;
+
+    @BindView(R.id.lvMembers)
+    ListView lvMembers;
 
 
     @Override
@@ -72,10 +85,13 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_group);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+        sharedPref = this.getSharedPreferences(
+                USER_DETAILS, Context.MODE_PRIVATE);
+
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setTitle("New Group");
+        getSupportActionBar().setTitle(Constants.NEW_GROUP_TITLE);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -83,8 +99,6 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         DBUtils = new DBUtils();
-        mClient = new FirebaseDatabaseClient();
-
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -132,13 +146,11 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         });
 
         // [END initialize_database_ref]
-        loggedInUserId = getIntent().getStringExtra(Constants.USER_ID);
-        loggedInTokenId = getIntent().getStringExtra(Constants.TOKEN_ID);
+        loggedInUserId = sharedPref.getString(Constants.USER_ID,null);
+        loggedInTokenId = sharedPref.getString(Constants.TOKEN_ID,null);
         group = new Group();
 
         friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(Constants.FRIENDS_OBJ);
-
-        etGroupName = (EditText) findViewById(R.id.etGroupName);
 
         names = new ArrayList<>();
 
@@ -146,17 +158,12 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
             User friend = Parcels.unwrap(friends.get(i));
             names.add(friend.getDisplayName());
         }
-        multiSpinner = (MultiSpinner) findViewById(R.id.multi_spinner);
         multiSpinner.setItems(names, getString(R.string.for_all), this);
-
-
-        lvMembers = (ListView) findViewById(R.id.lvMembers);
 
         adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, new ArrayList<String>());
         lvMembers.setAdapter(adapter);
         adapter.setNotifyOnChange(true);
-
     }
 
 
@@ -196,15 +203,15 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
             }
 
             Intent intent = new Intent();
-            intent.putExtra("new_group", Parcels.wrap(group));
+            intent.putExtra(Constants.NEW_GROUP, Parcels.wrap(group));
             setResult(RESULT_OK, intent);
-
             finish();
-
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 
 

@@ -136,17 +136,13 @@
         android:id="@+id/swResponse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/subheadingTextSize"
         android:text="Can you make it ?  "
         android:textOff="No"
         android:textOn="Yes"
-        android:thumbTint="@color/colorAccent"
+        android:showText="true"
+        style="@style/MySwitchStyle"
+        android:layout_marginTop="21dp"
         android:layout_below="@+id/etMessage"
-        android:layout_marginTop="20dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
         android:layout_alignEnd="@+id/btnSendUpdate" />
 
 </RelativeLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MySwitchStyle" parent="Theme.AppCompat.Light">
+        <item name="android:showText">true</item>
+        <item name="android:thumbTextPadding">10dp</item>
+        <item name="android:thumbTint">@color/colorAccent</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:switchPadding">10dp</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="android:thumb">@drawable/rectangle</item>
+        <item name="android:track">@drawable/track</item>
+    </style>
+</resources>

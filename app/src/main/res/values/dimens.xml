@@ -5,4 +5,8 @@
     <dimen name="subheadingTextSize">18sp</dimen>
     <dimen name="bodyTextSize">14sp</dimen>
     <dimen name="buttonTextSize">14sp</dimen>
+
+    <!--image properties -->
+    <dimen name="profileSize">44dp</dimen>
+    <dimen name="profileImagePadding">2dp</dimen>
 </resources>

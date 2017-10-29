@@ -1,7 +1,10 @@
 package com.example.skarwa.letmeethappen.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +22,7 @@ import com.example.skarwa.letmeethappen.utils.Constants;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +31,11 @@ import butterknife.ButterKnife;
 
 import static com.example.skarwa.letmeethappen.utils.Constants.EVENTS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.MY_GROUPS;
+import static com.example.skarwa.letmeethappen.utils.Constants.USER_DETAILS;
+import static com.example.skarwa.letmeethappen.utils.Constants.USER_DISPLAY_NAME;
 import static com.example.skarwa.letmeethappen.utils.Constants.USER_EVENTS;
+import static com.example.skarwa.letmeethappen.utils.Constants.USER_ID;
+import static com.example.skarwa.letmeethappen.utils.Constants.USER_PROFILE_URL;
 
 public class MyGroupsListActivity extends AppCompatActivity implements NewEventFragment.OnCreateEventClickListener {
 
@@ -38,8 +46,13 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
     // [END declare_database_ref]
     String loggedInUserId;
     String loggedInUserDisplayName;
+    String loggedInUserProfilePic;
+    ArrayList<? extends Parcelable> friends;
+
     GroupListAdapter mAdapter;
     LinearLayoutManager linearLayoutManager;
+
+    SharedPreferences sharedPref;
 
     @BindView(R.id.rvGroups)
     RecyclerView rvGroups;
@@ -61,8 +74,14 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
 
         setSupportActionBar(toolbar);
 
-        loggedInUserId = getIntent().getStringExtra(Constants.USER_ID);
-        loggedInUserDisplayName =  getIntent().getStringExtra(Constants.USER_DISPLAY_NAME);
+        sharedPref = this.getSharedPreferences(
+                USER_DETAILS, Context.MODE_PRIVATE);
+
+        loggedInUserId = sharedPref.getString(USER_ID,null);
+        loggedInUserDisplayName =  sharedPref.getString(USER_DISPLAY_NAME,null);
+        loggedInUserProfilePic = sharedPref.getString(USER_PROFILE_URL,null);
+        friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(Constants.FRIENDS_OBJ);
+
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -70,8 +89,8 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
         // [END initialize_database_ref]
 
         getSupportActionBar().setTitle(MY_GROUPS);
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initRecyclerView();
 
@@ -96,6 +115,7 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
 
         event.setPlannerId(loggedInUserId);
         event.setPlannerName(loggedInUserDisplayName);
+        event.setHostProfileImage(loggedInUserProfilePic);
         event.addAttendedUser(loggedInUserId,true);
         Toast.makeText(this, "Saving Event...", Toast.LENGTH_SHORT).show();
 
@@ -140,10 +160,26 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
                 //finish();
                 break;
             case R.id.addGroup:
-              //TODO : add group from here
+                Intent i = new Intent(getBaseContext(), NewGroupCreateActivity.class);
+                i.putParcelableArrayListExtra(Constants.FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
+                //send user details to the next activity to fetch groups and events
+                startActivityForResult(i, 1);
             default:
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                Toast.makeText(this,"New Group added successfully",Toast.LENGTH_SHORT);
+                // We no longer need to add groups to nav menu .
+
+            }
+
+        }
+
     }
 }

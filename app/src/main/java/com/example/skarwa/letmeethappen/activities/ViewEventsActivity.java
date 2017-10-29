@@ -157,27 +157,9 @@ public class ViewEventsActivity extends AppCompatActivity implements
 
                         switch(menuItem.getItemId()) {
 
-                            case R.id.addGroup:
-                                Intent i = new Intent(getBaseContext(), NewGroupCreateActivity.class);
-                                i.putExtra(USER_ID,User.encode(sharedPref.getString(USER_ID,null)));
-                                i.putExtra(TOKEN_ID, loggedInUser.getTokenId());
-                                i.putExtra(USER_DISPLAY_NAME,sharedPref.getString(USER_DISPLAY_NAME,null));
-                                i.putParcelableArrayListExtra(Constants.FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
-                                //send user details to the next activity to fetch groups and events
-                                startActivityForResult(i, 1);
-
-
-                                //NewGroupFragment groupFragment = NewGroupFragment.newInstance(friends);
-                                //groupFragment.show(fm, "fragment_new_group");
-
-                                break;
-
                             case R.id.myGroups:
                                 Intent i1 = new Intent(getBaseContext(), MyGroupsListActivity.class);
-                                i1.putExtra(USER_ID, User.encode(sharedPref.getString(USER_ID,null)));
-                                i1.putExtra(TOKEN_ID, sharedPref.getString(TOKEN_ID,null));
-                                i1.putExtra(USER_DISPLAY_NAME,sharedPref.getString(USER_DISPLAY_NAME,null));
-                                //send user details to the next activity to fetch groups and events
+                                i1.putParcelableArrayListExtra(Constants.FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
                                 startActivity(i1);
                                 break;
 
@@ -206,20 +188,6 @@ public class ViewEventsActivity extends AppCompatActivity implements
                     }
                 });
     }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-                if(resultCode == RESULT_OK) {
-                    Toast.makeText(this,"New Group added successfully",Toast.LENGTH_SHORT);
-                        // We no longer need to add groups to nav menu .
-
-                }
-
-        }
-
-    }
-
 
 
 
@@ -277,8 +245,6 @@ public class ViewEventsActivity extends AppCompatActivity implements
 
         Intent i = new Intent(getApplicationContext(), ViewEventDetailActivity.class);
         i.putExtra(Constants.EVENT_OBJ, Parcels.wrap(event));
-        i.putExtra(USER_ID,sharedPref.getString(USER_ID,getUid()));
-        i.putExtra(USER_DISPLAY_NAME,sharedPref.getString(USER_DISPLAY_NAME,null));
         startActivity(i);
     }
 

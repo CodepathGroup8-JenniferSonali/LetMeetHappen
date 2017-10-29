@@ -13,6 +13,9 @@ public interface Constants {
     String EVENT_NAME = "event_name";
     String GROUP_NAME = "group_name";
     String GROUP_OBJ = "group";
+    String NEW_GROUP = "new_group";
+
+    String NEW_GROUP_TITLE = "New Group";
     String MY_GROUPS = "My Groups";
     String SHOW_TAB_INDEX = "ShowTabIndex";
     String USER_ID = "userId";

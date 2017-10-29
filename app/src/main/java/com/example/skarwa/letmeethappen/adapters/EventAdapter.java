@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
-import static com.example.skarwa.letmeethappen.R.id.imgAlert;
 import static com.example.skarwa.letmeethappen.R.id.ivProfileImage;
 import static com.example.skarwa.letmeethappen.R.id.tvDate;
 import static com.example.skarwa.letmeethappen.R.id.tvEventName;

@@ -12,6 +12,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <!-- The ActionBar displayed at the top -->
         <include
             android:id="@+id/include"

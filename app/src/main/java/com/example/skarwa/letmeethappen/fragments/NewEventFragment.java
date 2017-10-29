@@ -76,6 +76,9 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     @BindView(R.id.npMinYes)
     NumberPicker numberPicker;
 
+    @BindView(R.id.btn_invite)
+    Button btnInvite;
+
     Event event;
     Group group;
 
@@ -116,8 +119,6 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         //getDialog().setTitle(group.getName());
         event = new Event();
         ButterKnife.bind(this, view);
-        Button btn = (Button)view.findViewById(R.id.btn_send);
-        btn.setText("INVITE\n"+group.getName());
         return view;
     }
 
@@ -125,7 +126,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setTitle("Crete event for " + group.getName());
 
         //get count of group members
         int count = group.getMembers().keySet().size();
@@ -148,14 +149,6 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
             }
         });
 
-        /*List<String> list = new ArrayList<String>();
-        for (int i = 2; i <= count; i++) {
-            list.add(String.valueOf(i));
-        }ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sbMinYes.setAdapter(dataAdapter);*/
-
        etLocationValue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,8 +169,6 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
 
             }
         });
-
-
 
 
         // Show soft keyboard automatically and request focus to field
@@ -215,8 +206,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         });
 
 
-        Button btn = (Button) view.findViewById(R.id.btn_send);
-        btn.setOnClickListener(new View.OnClickListener() {
+        btnInvite.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -230,7 +220,6 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
 
                 Log.d(TAG, "Send Button Clicked");
                 dismiss();
-
 
                 sendInvite(group, etMessage.getText().toString());
             }

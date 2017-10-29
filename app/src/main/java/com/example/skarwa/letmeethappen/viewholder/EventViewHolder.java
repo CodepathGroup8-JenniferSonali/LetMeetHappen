@@ -34,8 +34,8 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tvEventName)
     public TextView tvEventName;
 
-    @BindView(R.id.imgAlert)
-    public ImageButton imgAlert;
+    //@BindView(R.id.imgAlert)
+    //public ImageButton imgAlert;
     public ProgressBar pbStatus;
     View view;
 
@@ -51,32 +51,28 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
 
         String dateOptions = event.getEventDateOptions().keySet().toString();
 
-        if (dateOptions != null) {
+        if (dateOptions != null && event.getEventFinalDate() == null) {
             String[] dates = dateOptions.replaceAll("[\\[\\]]", "").split(",");
-            tvDate.setText(dates[0].trim());
-
-            if (dates.length>1) {
-                tvDate2.setText(dates[1].trim());
-            }
-        }
-
-       /* if(event.getEventFinalDate() ==  null){
-            tvDate.setText(dateOptions);
+                tvDate.setText(dates[0].trim());
+                if (dates.length>1) {
+                    tvDate2.setVisibility(View.VISIBLE);
+                    tvDate2.setText(dates[1].trim());
+                }
         } else {
             tvDate.setText(event.getEventFinalDate().toString()); //TODO change this to confirmed date
-        }*/
+        }
 
         Glide.with(context)
                 .load(event.getHostProfileImage())
-                .placeholder(R.drawable.ic_host_placeholder)
+                .placeholder(R.drawable.ic_host_icon)
                 .into(ivProfileImage);
 
 
-        if (event.getEventStatus().equals(EventStatus.PENDING)) {
+        /*if (event.getEventStatus().equals(EventStatus.PENDING)) {
             imgAlert.setVisibility(View.VISIBLE);
 
         } else {
             imgAlert.setVisibility(View.GONE);
-        }
+        }*/
     }
 }
