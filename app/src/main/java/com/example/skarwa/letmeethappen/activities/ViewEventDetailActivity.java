@@ -15,11 +15,12 @@ import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.fragments.RespondEventInviteFragment;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.EventStatus;
-import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.parceler.Parcels;
+
+import java.util.Iterator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +55,9 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
     @BindView(R.id.tvDates)
     TextView tvDates;
 
+    @BindView(R.id.tvDates2)
+    TextView tvDates2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +86,13 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
         tvLocationVal.setText(mEvent.getLocation().getName().toString());
         tvRSVPDate.setText(mEvent.getAcceptByDate());
         tvHostName.setText(loggedInUserDisplayName);
-        String dates =  mEvent.getEventDateOptions().keySet().toString();
 
-        tvDates.setText(dates);
+        Iterator<String> itr = mEvent.getEventDateOptions().keySet().iterator();
+        tvDates.setText(itr.next());
+
+        if (itr.hasNext()) {
+            tvDates2.setText(itr.next());
+        }
 
 
        // if its the planner do not show respond button.

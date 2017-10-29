@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="6dip"
+    android:paddingLeft="22dip"
+    android:paddingTop="8dip"
+    android:text="Name"
+    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />

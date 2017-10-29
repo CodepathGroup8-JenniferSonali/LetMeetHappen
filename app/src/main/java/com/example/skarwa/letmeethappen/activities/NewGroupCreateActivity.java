@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -162,7 +161,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         multiSpinner.setItems(names, getString(R.string.for_all), this);
 
         adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, new ArrayList<String>());
+                R.layout.member_textview, new ArrayList<String>());
         lvMembers.setAdapter(adapter);
         adapter.setNotifyOnChange(true);
     }
@@ -225,8 +224,8 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
     public void onItemsSelected(boolean[] selected) {
         Log.d("DEBUG", "onContacts selected");
 
-        multiSpinner.setEnabled(false);
-        multiSpinner.setVisibility(View.INVISIBLE);
+        //multiSpinner.setEnabled(false);
+        //multiSpinner.setVisibility(View.INVISIBLE);
 
         ArrayList<String> selects = new ArrayList<>();
         members = new ArrayList<User>();

@@ -24,8 +24,8 @@
 
         <ImageView
             android:id="@+id/ivHostIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/include"
             android:layout_marginTop="22dp"
@@ -34,16 +34,19 @@
         <TextView
             android:id="@+id/tvHostName"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_alignTop="@+id/ivHostIcon"
             android:layout_toEndOf="@+id/ivHostIcon"
             android:text="host name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:paddingTop="12dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="22dp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/ivEventDateIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/ivHostIcon"
             android:src="@drawable/ic_event_dates"
@@ -52,8 +55,8 @@
 
         <ImageView
             android:id="@+id/ivLocationIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/ivEventDateIcon"
             android:src="@drawable/ic_location" />
@@ -61,21 +64,24 @@
         <TextView
             android:id="@+id/tvLocationValue"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
+            android:paddingTop="16dp"
             android:layout_below="@+id/ivEventDateIcon"
             android:layout_toEndOf="@+id/ivEventDateIcon"
             android:text="@string/locationHint"
+            android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 
         <ImageView
             android:id="@+id/ivSandClockIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/ivLocationIcon"
             android:src="@drawable/ic_sandclock_icon"
             android:text="@string/rsvp_date"
+            android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
@@ -85,6 +91,7 @@
             android:layout_alignBottom="@+id/ivSandClockIcon"
             android:layout_below="@+id/ivLocationIcon"
             android:layout_toEndOf="@+id/ivLocationIcon"
+            android:paddingTop="16dp"
             android:ems="10"
             android:inputType="date"
             android:text="Thurs, Oct 13"
@@ -94,19 +101,35 @@
         <TextView
             android:id="@+id/tvDates"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="32dp"
             android:layout_below="@+id/ivHostIcon"
             android:layout_toEndOf="@+id/ivEventDateIcon"
-            android:text="Dates" />
+            android:paddingTop="15dp"
+            android:text="Dates"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvDates2"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_below="@+id/tvDates"
+            android:layout_toEndOf="@+id/ivEventDateIcon"
+            android:paddingTop="0dp"
+            android:text="Dates"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <Button
             android:id="@+id/btnRespond"
             style="@style/BorderlessButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
             android:layout_below="@+id/ivSandClockIcon"
-            android:padding="0dp"
-            android:text="@string/rsvp" />
+            android:paddingTop="20dp"
+            android:text="@string/rsvp"
+            android:textSize="20sp" />
 
     </RelativeLayout>
 
