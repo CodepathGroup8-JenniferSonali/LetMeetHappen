@@ -9,6 +9,7 @@
     app:cardCornerRadius="8dp"
     android:padding="8dp">
 
+
     <ImageView
         android:layout_marginTop="10dp"
         android:id="@+id/ivProfileImage"
@@ -34,6 +35,17 @@
         android:layout_marginTop="50dp"
         android:layout_marginBottom="10dp"
         android:text="date"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvDate2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="50dp"
         android:textSize="14sp"
         android:textStyle="bold" />
 

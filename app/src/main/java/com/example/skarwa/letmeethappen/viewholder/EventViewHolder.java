@@ -28,6 +28,9 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tvDate)
     public TextView tvDate;
 
+    @BindView(R.id.tvDate2)
+    public TextView tvDate2;
+
     @BindView(R.id.tvEventName)
     public TextView tvEventName;
 
@@ -47,7 +50,15 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         tvEventName.setText(event.getEventName());
 
         String dateOptions = event.getEventDateOptions().keySet().toString();
-        tvDate.setText(dateOptions);
+
+        if (dateOptions != null) {
+            String[] dates = dateOptions.replaceAll("[\\[\\]]", "").split(",");
+            tvDate.setText(dates[0].trim());
+
+            if (dates.length>1) {
+                tvDate2.setText(dates[1].trim());
+            }
+        }
 
        /* if(event.getEventFinalDate() ==  null){
             tvDate.setText(dateOptions);
