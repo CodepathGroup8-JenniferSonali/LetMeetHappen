@@ -243,7 +243,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         // send invites to all group members to join
         //notify group members of the new invite
 
-        String bodyMsg = "\n\n\""+msg+"\" - "+event.getPlannerName();
+        String bodyMsg = "\n\""+msg+"\" - "+event.getPlannerName();
 
         ArrayList<String> tokens = new ArrayList<>();
         Map<String, String> tMap = group.getTokenSet();

@@ -52,6 +52,9 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         @BindView(R.id.ivProfileURL)
         public ImageView memberPic;
 
+        @BindView(R.id.tvEmail)
+        public TextView memberEmail;
+
         public GroupMemberHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -181,6 +184,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         final User user = mUsers.get(position);
 
         holder.groupMember.setText(user.getDisplayName());
+        holder.memberEmail.setText(user.getEmail());
         Glide.with(getContext()).load(user.getProfilePicUrl())
                 .placeholder(R.drawable.ic_host_placeholder)
                 .bitmapTransform(new RoundedCornersTransformation(getContext(), 30, 10))
