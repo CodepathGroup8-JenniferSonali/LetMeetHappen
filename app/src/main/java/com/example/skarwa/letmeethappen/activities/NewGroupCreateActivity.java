@@ -146,8 +146,8 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         });
 
         // [END initialize_database_ref]
-        loggedInUserId = sharedPref.getString(Constants.USER_ID,null);
-        loggedInTokenId = sharedPref.getString(Constants.TOKEN_ID,null);
+        loggedInUserId = sharedPref.getString(Constants.USER_ID, null);
+        loggedInTokenId = sharedPref.getString(Constants.TOKEN_ID, null);
         group = new Group();
 
         friends = (ArrayList<? extends Parcelable>) getIntent().getParcelableArrayListExtra(FRIENDS_OBJ);
@@ -178,36 +178,35 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
 
-        } else if (item.getItemId() == R.id.actionSave) {
-            String groupName = etGroupName.getText().toString();
+            case R.id.actionSave:
+                String groupName = etGroupName.getText().toString();
 
-            //TODO verify the group name is unique
-            group.setName(groupName);
-            group.setCreatedDate(DateUtils.formatDateToString(new Date()));
-            group.setGroupStatus(UserGroupStatus.ACTIVE.name());
-            group.addMember(loggedInUserId, true);
-            group.addToken(loggedInUserId, loggedInTokenId);
+                //TODO verify the group name is unique
+                group.setName(groupName);
+                group.setCreatedDate(DateUtils.formatDateToString(new Date()));
+                group.setGroupStatus(UserGroupStatus.ACTIVE.name());
+                group.addMember(loggedInUserId, true);
+                group.addToken(loggedInUserId, loggedInTokenId);
 
-            for (final User member : members) {
-                group.addMember(member.getId(), true);
-                if (member.getTokenId() != null) {
-                    group.addToken(member.getId(), member.getTokenId());
+                for (final User member : members) {
+                    group.addMember(member.getId(), true);
+                    if (member.getTokenId() != null) {
+                        group.addToken(member.getId(), member.getTokenId());
+                    }
                 }
-            }
 
-            if (groupName != null) {
-                saveGroup();
-                sendInvite(group);
-            }
-            onBackPressed();
-            return true;
+                if (groupName != null) {
+                    saveGroup();
+                    sendInvite(group);
+                }
+                onBackPressed();
+                return true;
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -218,6 +217,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         intent.putParcelableArrayListExtra(FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
         setResult(RESULT_OK, intent);
         finish();
+        overridePendingTransition(R.animator.slide_in_left, R.animator.slide_out_right);
     }
 
     @Override
@@ -235,20 +235,12 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
         for (int i = 0; i < selected.length; i++) {
             if (selected[i]) {
                 User user = (User) Parcels.unwrap(friends.get(i));
-
                 selects.add(names.get(i));
                 members.add(user);
             }
         }
-
         adapter.addAll(selects);
-
     }
-
-    public String getUid() {
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
-    }
-
 
     public void saveGroup() {
         DatabaseReference mGroupDatabase = mDatabase.child(GROUPS_ENDPOINT);
@@ -267,11 +259,10 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
 
         //Save group members
         for (final User user : members) {
-            user.addGroup(key,true);
+            user.addGroup(key, true);
             String userId = User.encode(user.getEmail());
-            DBUtils.updateUserGroup(userId,user,key);
+            DBUtils.updateUserGroup(userId, user, key);
         }
-        //mDatabase.updateChildren(childUpdates);
     }
 
     public void sendInvite(Group group) {

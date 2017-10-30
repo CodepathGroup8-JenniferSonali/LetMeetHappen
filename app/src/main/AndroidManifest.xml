@@ -83,7 +83,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD_k4h_fu-wo2-R4NWhQyB-41qgiWnaTCc" />
 
-        <activity android:name=".activities.MySettingsActivity"></activity>
+        <activity android:name=".activities.MySettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.skarwa.letmeethappen.activities.ViewEventsActivity" />
+        </activity>
     </application>
 
 </manifest>

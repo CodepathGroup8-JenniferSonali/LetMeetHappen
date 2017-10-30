@@ -13,6 +13,7 @@
     <color name="colorGreen">#8BC34A</color>
     <color name="colorBrown">#BCAAA4</color>
     <color name="colorGrey">#BDBDBD</color>
+    <color name="lightGrey">#e0e0e0</color>
     <color name="foregroundGrey">#42221f1f</color>
 
     <color name="button_pressed">#ff8a00</color>

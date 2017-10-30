@@ -161,11 +161,13 @@ public class ViewEventsActivity extends AppCompatActivity implements
                                 Intent i1 = new Intent(getBaseContext(), MyGroupsListActivity.class);
                                 i1.putParcelableArrayListExtra(Constants.FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
                                 startActivityForResult(i1, 1);
+                                overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left);
                                 return true;
 
                             case R.id.mySettings:
                                 Intent i2 = new Intent(getBaseContext(), MySettingsActivity.class);
                                 startActivity(i2);
+                                overridePendingTransition(R.animator.slide_in_left, R.animator.slide_out_right);
                                 return true;
 
                             default:
@@ -239,6 +241,7 @@ public class ViewEventsActivity extends AppCompatActivity implements
         Intent i = new Intent(getApplicationContext(), ViewEventDetailActivity.class);
         i.putExtra(Constants.EVENT_OBJ, Parcels.wrap(event));
         startActivity(i);
+        overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
     }
 
     public String getUid() {

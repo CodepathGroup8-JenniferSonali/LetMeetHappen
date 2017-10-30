@@ -7,6 +7,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -72,8 +74,8 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
         setSupportActionBar(toolbar);
 
         mEvent = Parcels.unwrap(getIntent().getParcelableExtra(EVENT_OBJ));
-        loggedInUserId = sharedPref.getString(USER_ID,null);
-        loggedInUserDisplayName = sharedPref.getString(USER_DISPLAY_NAME,null);
+        loggedInUserId = sharedPref.getString(USER_ID, null);
+        loggedInUserDisplayName = sharedPref.getString(USER_DISPLAY_NAME, null);
 
         ButterKnife.bind(this);
 
@@ -81,6 +83,32 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
         getSupportActionBar().setTitle(mEvent.getEventName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.animator.fade_out, R.animator.fade_in);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        menu.findItem(R.id.actionSave).setVisible(false);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return  super.onOptionsItemSelected(item);
+    }
+
 
     private void generateDetailEventView() {
         tvLocationVal.setText(mEvent.getLocation().getName().toString());
@@ -93,7 +121,6 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
         if (itr.hasNext()) {
             tvDates2.setText(itr.next());
         }
-
 
        // if its the planner do not show respond button.
         if(mEvent.getPlannerId().equals(loggedInUserId) || mEvent.getEventStatus().equals(EventStatus.SUCCESSFUL.name()) || mEvent.getEventStatus().equals(EventStatus.CONFIRMED.name())){

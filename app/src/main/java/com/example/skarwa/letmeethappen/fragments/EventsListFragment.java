@@ -89,9 +89,12 @@ public abstract class EventsListFragment extends Fragment implements Constants {
                     viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override public void onClick(View v) {
                             // handle click of view
+                            //  v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                             ((OnEventClickListener)getActivity()).onEventClick(model);
                         }
                     });
+
+
 
                     // Bind Post to ViewHolder
                     viewHolder.bindToEvent(model,getActivity());

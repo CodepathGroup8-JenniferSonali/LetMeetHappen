@@ -10,6 +10,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -18,9 +19,12 @@ import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.adapters.GroupListAdapter;
 import com.example.skarwa.letmeethappen.fragments.NewEventFragment;
 import com.example.skarwa.letmeethappen.models.Event;
+import com.example.skarwa.letmeethappen.models.Group;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -163,22 +167,22 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
         intent.putParcelableArrayListExtra(FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
         setResult(RESULT_OK, intent);
         finish();
+        overridePendingTransition(R.animator.slide_in_left, R.animator.slide_out_right);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.home:
+            case android.R.id.home:
                 onBackPressed();
                 return true;
-                //finish();
             case R.id.addGroup:
                 Intent i = new Intent(getBaseContext(), NewGroupCreateActivity.class);
                 i.putParcelableArrayListExtra(Constants.FRIENDS_OBJ, (ArrayList<? extends Parcelable>) friends);
                 //send user details to the next activity to fetch groups and events
                 startActivityForResult(i, 1);
+                overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left);
                 return true;
-            default:
         }
         return super.onOptionsItemSelected(item);
     }
@@ -188,12 +192,11 @@ public class MyGroupsListActivity extends AppCompatActivity implements NewEventF
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                Toast.makeText(this,"New Group added successfully",Toast.LENGTH_SHORT);
-                // We no longer need to add groups to nav menu .
-
+                Group newGroup = Parcels.unwrap(data.getParcelableExtra(Constants.NEW_GROUP));
+                if(newGroup.getName() != null){
+                    Log.d(TAG,"New Group added successfully : "+ newGroup.getName());
+                }
             }
-
         }
-
     }
 }
