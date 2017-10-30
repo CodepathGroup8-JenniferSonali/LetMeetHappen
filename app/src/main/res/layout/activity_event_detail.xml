@@ -109,6 +109,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textSize="16sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/tvDates2"
             android:layout_width="wrap_content"
@@ -116,10 +117,9 @@
             android:layout_below="@+id/tvDates"
             android:layout_toEndOf="@+id/ivEventDateIcon"
             android:paddingTop="0dp"
-            android:text="Dates"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnRespond"

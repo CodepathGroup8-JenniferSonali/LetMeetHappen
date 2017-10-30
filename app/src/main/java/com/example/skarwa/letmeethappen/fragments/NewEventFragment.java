@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -330,7 +329,9 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         String str = "";
 
         for (Date date : dates) {
-            event.addEventDateOptions(DateUtils.formatDateToString(date));
+            if (isRange) {
+                event.addEventDateOptions(DateUtils.formatDateToString(date));
+            }
             str += new SimpleDateFormat(Constants.DATE_PATTERN).format(date.getTime()) +"\n";
         }
         EditText et = (isRange) ? etDates : etRSVPDate;
