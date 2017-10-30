@@ -77,31 +77,6 @@
             android:textStyle="bold" />
 
 
-        <ImageView
-            android:id="@+id/ivSandClockIcon"
-            android:layout_width="@dimen/profileSize"
-            android:layout_height="@dimen/profileSize"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/ivLocationIcon"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/ic_sandclock_icon"
-            android:text="@string/rsvp_date"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvRSVPDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/ivSandClockIcon"
-            android:layout_below="@+id/ivLocationIcon"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_toEndOf="@+id/ivLocationIcon"
-            android:inputType="date"
-            android:text="Thurs, Oct 13"
-            android:textSize="@dimen/titleTextSize"
-            android:textStyle="bold" />
-
         <TextView
             android:id="@+id/tvDates"
             android:layout_width="wrap_content"
@@ -136,29 +111,27 @@
             android:textSize="@dimen/buttonTextSize"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/etAttendees"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
 
         <EditText
             android:id="@+id/etAttendees"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:clickable="false"
             android:textSize="@dimen/titleTextSize"
             android:textStyle="bold"
             android:inputType="textMultiLine"
             android:background="@null"
-            android:layout_below="@+id/tvRSVPDate"
-            android:layout_alignStart="@+id/tvRSVPDate"
+            android:layout_below="@+id/ivLocationIcon"
             android:layout_marginTop="20dp"
             android:lines="2"
             android:textColor="@color/secondary_text"
             android:maxLines="5"
             android:cursorVisible="false"
             android:scrollbars="vertical"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignStart="@+id/tvLocationValue" />
 
         <ImageView
             android:id="@+id/ivAttendee"
@@ -168,6 +141,28 @@
             android:layout_alignParentStart="true"
             android:layout_alignTop="@+id/etAttendees"
             app:srcCompat="@drawable/ic_people_icon" />
+
+        <ImageView
+            android:id="@+id/ivSandClockIcon"
+            android:layout_width="@dimen/profileSize"
+            android:layout_height="@dimen/profileSize"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ivAttendee"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_sandclock_icon"
+            android:text="@string/rsvp_date"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvRSVPDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:text="Thurs, Oct 13"
+            android:textSize="@dimen/titleTextSize"
+            android:textStyle="bold"
+            android:layout_alignTop="@+id/ivSandClockIcon"
+            android:layout_alignStart="@+id/etAttendees" />
 
 
     </RelativeLayout>

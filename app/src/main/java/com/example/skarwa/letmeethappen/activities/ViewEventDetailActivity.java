@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,9 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.skarwa.letmeethappen.R.id.tvDate;
+import static com.example.skarwa.letmeethappen.R.id.tvDate2;
+
 /**
  * Created by skarwa on 10/16/17.
  */
@@ -65,6 +69,9 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
 
     @BindView(R.id.tvLocationValue)
     TextView tvLocationVal;
+
+    @BindView(R.id.ivSandClockIcon)
+    ImageView respondByImage;
 
     @BindView(R.id.tvRSVPDate)
     TextView tvRSVPDate;
@@ -162,16 +169,25 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
 
     private void generateDetailEventView() {
         tvLocationVal.setText(mEvent.getLocation().getName().toString());
-        tvRSVPDate.setText(mEvent.getAcceptByDate());
         tvHostName.setText(mEvent.getPlannerName());
+        tvDates2.setVisibility(View.INVISIBLE);
+        tvRSVPDate.setText(mEvent.getAcceptByDate());
 
+        String dateOptions  = mEvent.getEventDateOptions().keySet().toString();
 
-        Iterator<String> itr = mEvent.getEventDateOptions().keySet().iterator();
-        tvDates.setText(itr.next());
-
-        if (itr.hasNext()) {
-            tvDates2.setVisibility(View.VISIBLE);
-            tvDates2.setText(itr.next());
+        if (dateOptions != null && mEvent.getEventFinalDate() == null) {
+            tvRSVPDate.setVisibility(View.VISIBLE);
+            respondByImage.setVisibility(View.VISIBLE);
+            String[] dates = dateOptions.replaceAll("[\\[\\]]", "").split(",");
+            tvDates.setText(dates[0].trim());
+            if (dates.length>1) {
+                tvDates2.setVisibility(View.VISIBLE);
+                tvDates2.setText(dates[1].trim());
+            }
+        } else {
+            tvRSVPDate.setVisibility(View.INVISIBLE);
+            respondByImage.setVisibility(View.INVISIBLE);
+            tvDates.setText(mEvent.getEventFinalDate().toString());
         }
 
        // if its the planner do not show respond button.

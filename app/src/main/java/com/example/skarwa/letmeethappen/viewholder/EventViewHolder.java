@@ -60,7 +60,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
                     tvDate2.setText(dates[1].trim());
                 }
         } else {
-            tvDate.setText(event.getEventFinalDate().toString()); //TODO change this to confirmed date
+            tvDate.setText(event.getEventFinalDate().toString());
         }
 
         Glide.with(context)
