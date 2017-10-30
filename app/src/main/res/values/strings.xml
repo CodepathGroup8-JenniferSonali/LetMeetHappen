@@ -46,6 +46,6 @@
     <string name="select_done">DONE</string>
     <string name="rsvp">RESPOND</string>
     <string name="next">Next...</string>
-    <string name="availability">Your available dates</string>
+    <string name="availability">Select Date</string>
 
 </resources>
