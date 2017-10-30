@@ -48,7 +48,7 @@ The following **additional** features are implemented:
 Here's a walkthrough of implemented user stories:
 
 ## Week 6 DEMO Links :
-Link to [Week 6 Demo1](https://i.imgur.com/xDnSmW7.gif).
+Link to [Week 6 Demo1](https://i.imgur.com/rabdYGm.gif).
  
 
 
