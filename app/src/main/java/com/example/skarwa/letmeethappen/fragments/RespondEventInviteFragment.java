@@ -54,16 +54,11 @@ public class RespondEventInviteFragment extends DialogFragment {
     @BindView(R.id.ivHostIcon)
     ImageView ivHostIcon;
 
-    @BindView(R.id.tvRSVPDate)
-    TextView tvRSVPDate;
-
     @BindView(R.id.tvMsg)
     TextView tvMsg;
 
-
     @BindView(R.id.btnSendUpdate)
     Button btnSendUpdate;
-
 
     @BindView(R.id.swResponse)
     Switch response;

@@ -59,7 +59,6 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     final static String ISRANGE = "IS_RANGE";
     final static String DATE_PICKER = "datePicker";
     final static int PLACE_PICKER_REQUEST = 1;
-    EditText etMessage;
 
     @BindView(R.id.etEventName)
     EditText etEventName;
@@ -78,6 +77,9 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
 
     @BindView(R.id.btn_invite)
     Button btnInvite;
+
+    @BindView(R.id.etMessage)
+    EditText etMessage;
 
     Event event;
     Group group;
@@ -115,7 +117,6 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_event, container);
 
-        etMessage = view.findViewById(R.id.etMessage);
         //getDialog().setTitle(group.getName());
         event = new Event();
         ButterKnife.bind(this, view);
@@ -126,7 +127,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getDialog().setTitle("Crete event for " + group.getName());
+        getDialog().setTitle(group.getName());
 
         //get count of group members
         int count = group.getMembers().keySet().size();
@@ -214,6 +215,11 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                 event.setAcceptByDate(etRSVPDate.getText().toString());
                 event.setEventStatus(EventStatus.PENDING.name());
                 event.setGroup(group);
+
+                String message = etMessage.getText().toString();
+                if(message != null){
+                    event.setPlannerMsgToGroup(message);
+                }
 
                 listener = (OnCreateEventClickListener) getActivity();
                 listener.onCreateEvent(event);
