@@ -22,7 +22,7 @@
     <string name="members">Members</string>
     <string name="create_invite">New Event</string>
     <string name="current_response">Your current response</string>
-    <string name="ask">Can you make it?</string>
+    <string name="ask">Coming?</string>
     <string name="positive">Yes, looking forward to it</string>
     <string name="negative">Sorry, I can\'t make it at this time.</string>
     <string name="maybe">Let me get back to you on this.</string>
@@ -46,5 +46,6 @@
     <string name="select_done">DONE</string>
     <string name="rsvp">RESPOND</string>
     <string name="next">Next...</string>
+    <string name="availability">Your available dates</string>
 
 </resources>

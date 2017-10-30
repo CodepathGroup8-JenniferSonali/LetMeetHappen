@@ -187,7 +187,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         holder.memberEmail.setText(user.getEmail());
         Glide.with(getContext()).load(user.getProfilePicUrl())
                 .placeholder(R.drawable.ic_host_placeholder)
-                .bitmapTransform(new RoundedCornersTransformation(getContext(), 30, 10))
+                .bitmapTransform(new RoundedCornersTransformation(getContext(), 15, 5))
                 .override(100, 200)
                 .into(holder.memberPic);
     }

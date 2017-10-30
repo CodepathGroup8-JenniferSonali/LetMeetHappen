@@ -10,11 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.activities.ViewEventsActivity;
 import com.example.skarwa.letmeethappen.models.Event;
@@ -30,6 +31,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.example.skarwa.letmeethappen.utils.Constants.EVENTS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.EVENT_OBJ;
@@ -49,23 +51,22 @@ public class RespondEventInviteFragment extends DialogFragment {
     Event event;
     String loggedInUserId;
 
+    @BindView(R.id.ivHostIcon)
+    ImageView ivHostIcon;
+
     @BindView(R.id.tvRSVPDate)
     TextView tvRSVPDate;
 
-    @BindView(R.id.etMessage)
-    EditText etMessage;
+    @BindView(R.id.tvMsg)
+    TextView tvMsg;
+
 
     @BindView(R.id.btnSendUpdate)
     Button btnSendUpdate;
 
-    @BindView(R.id.tvLocationValue)
-    TextView tvLocation;
 
     @BindView(R.id.swResponse)
     Switch response;
-
-    @BindView(R.id.tvHostName)
-    TextView tvHostName;
 
     @BindView(R.id.rbDateOption1)
     RadioButton rbDate1;
@@ -124,18 +125,25 @@ public class RespondEventInviteFragment extends DialogFragment {
         //getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().setTitle(event.getEventName());
 
-        tvLocation.setText(event.getLocation().getName().toString());
-        tvRSVPDate.setText(event.getAcceptByDate());
-        tvHostName.setText(event.getPlannerName());
+
+        Glide.with(getContext())
+                .load(event.getHostProfileImage())
+                .placeholder(R.drawable.ic_host_icon)
+                .bitmapTransform(new RoundedCornersTransformation(getContext(), 15, 10))
+                .into(ivHostIcon);
+
+        //tvRSVPDate.setText(event.getAcceptByDate());
 
         String[] dateArray = event.getEventDateOptions().keySet().toArray(new String[2]);
         rbDate1.setText(dateArray[0]);
+        rbDate1.setEnabled(false);
         rbDate2.setText(dateArray[1]);
+        rbDate2.setEnabled(false);
 
         if (event.getPlannerMsgToGroup() != null) {
-            etMessage.setText(event.getPlannerMsgToGroup());
+            tvMsg.setText(event.getPlannerMsgToGroup());
         } else {
-            etMessage.setText(Constants.DEFAULT_MSG);
+            tvMsg.setText(Constants.DEFAULT_MSG);
         }
         //TODO enable yes , no ,send update only when date selected
         //TODO set date on event when checked
@@ -146,6 +154,8 @@ public class RespondEventInviteFragment extends DialogFragment {
             public void onClick(View v) {
                 Log.d(TAG, "Switch selected");
                 event.addAttendedUser(loggedInUserId, response.isChecked());
+                rbDate1.setEnabled(true);
+                rbDate2.setEnabled(true);
             }
         });
 

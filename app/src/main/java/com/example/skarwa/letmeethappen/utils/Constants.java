@@ -23,7 +23,7 @@ public interface Constants {
     String TOKEN_ID = "tokenId";
     String USER_DISPLAY_NAME = "displayName";
     String  USER_DETAILS = "user_details";
-    String DEFAULT_MSG ="Lets meet soon !!";
+    String DEFAULT_MSG ="Let's meet soon !";
 
     String SIGN_GOOGLE= "Sign in with Google";
 

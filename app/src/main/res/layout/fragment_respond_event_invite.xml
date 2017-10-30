@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_margin="5dp"
-    android:layout_width="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="15dp"
+    android:padding="10dp"
+    android:layout_width="match_parent"
     android:layout_height="fill_parent">
 
     <ImageView
@@ -11,42 +13,33 @@
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/ic_host_icon"
-        android:layout_toStartOf="@+id/tvHostName" />
+        android:src="@drawable/ic_host_icon"/>
 
-    <ImageView
-        android:id="@+id/ivLocationIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/ivHostIcon"
-        android:layout_marginTop="30dp"
-        android:layout_toStartOf="@+id/tvRSVPDate"
-        android:src="@drawable/ic_location"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
-
-    <TextView
-        android:id="@+id/tvLocationValue"
+    <Switch
+        android:id="@+id/swResponse"
+        style="@style/MySwitchStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/ivLocationIcon"
-        android:layout_alignBottom="@+id/ivLocationIcon"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/ivLocationIcon"
-        android:text="location value"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:layout_below="@+id/ivHostIcon"
+        android:layout_marginTop="18dp"
+        android:layout_toEndOf="@+id/ivHostIcon"
+        android:showText="true"
+        android:text="Coming?"
+        android:textOff="No"
+        android:textOn="Yes"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="@string/ask" />
 
-
-    <ImageView
-        android:id="@+id/ivSandClockIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+    <TextView
+        android:id="@+id/tvAvailability"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/ivLocationIcon"
-        android:layout_marginTop="22dp"
-        android:layout_toStartOf="@+id/tvRSVPDate"
-        android:src="@drawable/ic_sandclock_icon"
-       />
+        android:layout_below="@+id/swResponse"
+        android:text="@string/availability"
+        android:textSize="18sp" />
+
 
     <TextView
         android:id="@+id/tvRSVPDate"
@@ -60,55 +53,30 @@
         android:layout_alignBottom="@+id/ivSandClockIcon"
         android:layout_alignParentEnd="true" />
 
-    <ImageView
-        android:id="@+id/ivEventDateIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_above="@+id/etMessage"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/ic_event_dates"
-        android:layout_toStartOf="@+id/rbGroup" />
-
     <RadioGroup
         android:id="@+id/rbGroup"
-        android:layout_below="@id/tvRSVPDate"
         android:layout_width="match_parent"
-        android:layout_toEndOf="@+id/ivSandClockIcon"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvAvailability"
+        android:layout_toEndOf="@+id/ivHostIcon">
 
         <RadioButton
             android:id="@+id/rbDateOption1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date 1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/rbDateOption2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date 2"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="16sp" />
 
     </RadioGroup>
-
-
-    <EditText
-        android:id="@+id/etMessage"
-        android:backgroundTint="@color/colorAccent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/rbGroup"
-        android:layout_marginTop="20dp"
-        android:textSize="@dimen/subheadingTextSize"
-        android:maxLines="4"
-        android:text="Message from Host"
-        android:textStyle="bold|italic" />
-
-
-
 
 
     <Button
@@ -118,31 +86,19 @@
         android:layout_height="wrap_content"
         android:text="@string/save_button_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="97dp" />
+        android:layout_marginTop="28dp"
+        android:layout_below="@+id/rbGroup"
+        android:layout_centerHorizontal="true" />
 
     <TextView
-        android:id="@+id/tvHostName"
+        android:id="@+id/tvMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/ivHostIcon"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/ivLocationIcon"
-        android:text="Host name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:layout_alignBottom="@+id/tvRSVPDate"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@+id/ivHostIcon"
+        android:text="TextView"
+        android:textSize="14sp" />
 
-    <Switch
-        android:id="@+id/swResponse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Can you make it ?  "
-        android:textOff="No"
-        android:textOn="Yes"
-        android:showText="true"
-        style="@style/MySwitchStyle"
-        android:layout_marginTop="21dp"
-        android:layout_below="@+id/etMessage"
-        android:layout_alignEnd="@+id/btnSendUpdate" />
 
 </RelativeLayout>
