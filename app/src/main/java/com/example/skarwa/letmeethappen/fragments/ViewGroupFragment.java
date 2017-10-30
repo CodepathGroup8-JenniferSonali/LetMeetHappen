@@ -96,7 +96,7 @@ public class ViewGroupFragment extends DialogFragment implements Constants {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-       // getDialog().setTitle(group.getName());
+        getDialog().setTitle(group.getName());
 
 
         //Jennifer's Code'
