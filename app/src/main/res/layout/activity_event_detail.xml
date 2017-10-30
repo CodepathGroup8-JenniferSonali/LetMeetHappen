@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="449dp">
 
         <!-- The ActionBar displayed at the top -->
         <include
@@ -58,8 +58,8 @@
             android:layout_width="@dimen/profileSize"
             android:layout_height="@dimen/profileSize"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp"
             android:layout_below="@id/ivEventDateIcon"
+            android:layout_marginTop="20dp"
             android:padding="@dimen/profileImagePadding"
             android:src="@drawable/ic_location" />
 
@@ -67,10 +67,10 @@
             android:id="@+id/tvLocationValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@id/ivLocationIcon"
             android:layout_below="@+id/ivEventDateIcon"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
-            android:layout_alignTop="@id/ivLocationIcon"
             android:layout_toEndOf="@+id/ivEventDateIcon"
             android:text="@string/locationHint"
             android:textSize="@dimen/titleTextSize"
@@ -95,9 +95,9 @@
             android:layout_alignBottom="@+id/ivSandClockIcon"
             android:layout_below="@+id/ivLocationIcon"
             android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
             android:layout_toEndOf="@+id/ivLocationIcon"
             android:inputType="date"
-            android:layout_marginTop="20dp"
             android:text="Thurs, Oct 13"
             android:textSize="@dimen/titleTextSize"
             android:textStyle="bold" />
@@ -122,6 +122,7 @@
             android:layout_marginLeft="30dp"
             android:layout_toEndOf="@+id/ivEventDateIcon"
             android:paddingTop="2dp"
+            android:visibility="invisible"
             android:text="Dates"
             android:textSize="@dimen/titleTextSize"
             android:textStyle="bold" />
@@ -131,13 +132,47 @@
             style="@style/BorderlessButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ivSandClockIcon"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="20dp"
             android:text="@string/rsvp"
-            android:textSize="@dimen/buttonTextSize" />
+            android:textSize="@dimen/buttonTextSize"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/etAttendees"
+            android:layout_centerHorizontal="true" />
+
+        <EditText
+            android:id="@+id/etAttendees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:clickable="false"
+            android:textSize="@dimen/titleTextSize"
+            android:textStyle="bold"
+            android:inputType="textMultiLine"
+            android:background="@null"
+            android:layout_below="@+id/tvRSVPDate"
+            android:layout_alignStart="@+id/tvRSVPDate"
+            android:layout_marginTop="20dp"
+            android:lines="2"
+            android:textColor="@color/secondary_text"
+            android:maxLines="5"
+            android:cursorVisible="false"
+            android:scrollbars="vertical"
+            android:layout_alignParentEnd="true" />
+
+        <ImageView
+            android:id="@+id/ivAttendee"
+            android:layout_width="@dimen/profileSize"
+            android:layout_height="@dimen/profileSize"
+            android:padding="@dimen/profileImagePadding"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/etAttendees"
+            app:srcCompat="@drawable/ic_people_icon" />
+
 
     </RelativeLayout>
+
+
 
 
 </android.support.v7.widget.CardView>

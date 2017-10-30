@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -63,11 +63,11 @@ public class RespondEventInviteFragment extends DialogFragment {
     @BindView(R.id.swResponse)
     Switch response;
 
-    @BindView(R.id.rbDateOption1)
-    RadioButton rbDate1;
+    @BindView(R.id.cbDateOption1)
+    CheckBox cbDate1;
 
-    @BindView(R.id.rbDateOption2)
-    RadioButton rbDate2;
+    @BindView(R.id.cbDateOption2)
+    CheckBox cbDate2;
 
 
     // [START declare_database_ref]
@@ -126,36 +126,34 @@ public class RespondEventInviteFragment extends DialogFragment {
                 .into(ivHostIcon);
 
         String[] dateArray = event.getEventDateOptions().keySet().toArray(new String[2]);
-        rbDate1.setText(dateArray[0]);
-        rbDate1.setEnabled(false);
-        rbDate2.setText(dateArray[1]);
-        rbDate2.setEnabled(false);
+        cbDate1.setText(dateArray[0]);
+        cbDate1.setEnabled(false);
+        if(!dateArray[1].isEmpty()){
+            cbDate2.setVisibility(View.VISIBLE);
+            cbDate2.setText(dateArray[1]);
+            cbDate2.setEnabled(false);
+        } else{
+            cbDate2.setVisibility(View.INVISIBLE);
+        }
 
         if (event.getPlannerMsgToGroup() != null) {
             tvMsg.setText(event.getPlannerMsgToGroup());
         } else {
             tvMsg.setText(Constants.DEFAULT_MSG);
         }
-        //TODO enable yes , no ,send update only when date selected
-        //TODO set date on event when checked
-
         response.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Switch selected");
-
-                if(response.isChecked()){
-                    event.addAttendedUser(loggedInUserId, response.isChecked());
+                event.addAttendedUser(loggedInUserId, response.isChecked());
+                if(response.isChecked()) {
                     if (event.getEventDateOptions().size() > 1) {
-                        rbDate1.setEnabled(true);
-                        rbDate2.setEnabled(true);
+                        cbDate1.setEnabled(true);
+                        cbDate2.setEnabled(true);
                     } else {
-                        rbDate1.setChecked(true);
+                        cbDate1.setChecked(true);
                     }
-                } else {
-                    rbDate1.setEnabled(false);
-                    rbDate2.setEnabled(false);
                 }
             }
         });
@@ -173,12 +171,17 @@ public class RespondEventInviteFragment extends DialogFragment {
 
     private void sendUpdate() {
         int attendingCount = 0;
-        if(rbDate1.isChecked()){
-            int value = event.getEventDateOptions().get(rbDate1.getText());
-            event.getEventDateOptions().put(rbDate1.getText().toString(),++value);
-        } else if(rbDate2.isChecked()){
-            int value = event.getEventDateOptions().get(rbDate2.getText());
-            event.getEventDateOptions().put(rbDate2.getText().toString(),++value);
+        boolean isAttending = response.isChecked();
+
+        if(isAttending){
+            if(cbDate1.isChecked()) {
+                int value = event.getEventDateOptions().get(cbDate1.getText());
+                event.getEventDateOptions().put(cbDate1.getText().toString(), ++value);
+            }
+            if(cbDate2.isChecked()){
+                int value = event.getEventDateOptions().get(cbDate2.getText());
+                event.getEventDateOptions().put(cbDate2.getText().toString(),++value);
+            }
         }
 
         //loop a Map
@@ -206,30 +209,20 @@ public class RespondEventInviteFragment extends DialogFragment {
             }
         }
 
-
-
-
-        //TODO update event with response
         Map<String, Boolean> groupMembers = event.getGroup().getMembers();
 
+        //update event with response
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/" + EVENTS_ENDPOINT + "/" + event.getId(), event);
 
-        //TODO update event for all the users part of the event
+        //update event for all the users part of the event
         for (String userId : groupMembers.keySet()) {
             childUpdates.put("/" + USER_EVENTS + "/" + userId + "/" + event.getId(), event);
         }
 
         mDatabase.updateChildren(childUpdates);
-
         Intent intent = new Intent(getActivity(), ViewEventsActivity.class);
         startActivity(intent);
-
-        //DatabaseReference groupMembers = mDatabase.child(GROUPS_ENDPOINT).child(event.getGroup().getId()).child("members");
-    }
-
-    private void updateEvent(String userId, boolean response) {
-
     }
 }
 

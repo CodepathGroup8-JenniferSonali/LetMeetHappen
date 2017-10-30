@@ -48,6 +48,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
 
     public void bindToEvent(Event event, Context context) {
         tvEventName.setText(event.getEventName());
+        tvDate2.setVisibility(View.INVISIBLE);
 
         String dateOptions = event.getEventDateOptions().keySet().toString();
 

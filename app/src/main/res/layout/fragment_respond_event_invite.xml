@@ -1,94 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="15dp"
-    android:padding="10dp"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:layout_margin="15dp"
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/ivHostIcon"
-        android:textSize="@dimen/subheadingTextSize"
-        android:layout_marginTop="20dp"
-        android:layout_margin="5dp"
-        android:padding="@dimen/profileImagePadding"
         android:layout_width="@dimen/profileSize"
         android:layout_height="@dimen/profileSize"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/ic_host_icon"/>
+        android:layout_margin="5dp"
+        android:layout_marginTop="20dp"
+        android:padding="@dimen/profileImagePadding"
+        android:src="@drawable/ic_host_icon"
+        android:textSize="@dimen/subheadingTextSize" />
 
     <Switch
         android:id="@+id/swResponse"
         style="@style/MySwitchStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ivHostIcon"
         android:layout_marginTop="40dp"
         android:showText="true"
         android:text="Can you join ?"
+        android:textAlignment="viewStart"
         android:textOff="No"
         android:textOn="Yes"
-        android:textAlignment="viewStart"
         android:textSize="@dimen/titleTextSize"
-        tools:text="@string/ask"
-        android:layout_below="@+id/ivHostIcon"
-        android:layout_alignParentStart="true" />
+        tools:text="@string/ask" />
 
     <TextView
         android:id="@+id/tvAvailability"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/swResponse"
         android:layout_marginTop="30dp"
         android:text="@string/availability"
-        android:textSize="@dimen/titleTextSize"
-        android:layout_alignParentEnd="true" />
+        android:textSize="@dimen/titleTextSize" />
 
-    <RadioGroup
-        android:id="@+id/rbGroup"
-        android:layout_width="match_parent"
+
+    <CheckBox
+        android:id="@+id/cbDateOption1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvAvailability"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/tvAvailability"
+        android:text="Date 1"
+        android:textSize="@dimen/subheadingTextSize" />
 
-        <RadioButton
-            android:id="@+id/rbDateOption1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date 1"
-            android:textSize="@dimen/subheadingTextSize" />
+    <CheckBox
+        android:id="@+id/cbDateOption2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date 2"
+        android:textSize="@dimen/subheadingTextSize"
+        android:layout_below="@+id/cbDateOption1"
+        android:layout_alignParentStart="true" />
 
-        <RadioButton
-            android:id="@+id/rbDateOption2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date 2"
-            android:textSize="@dimen/subheadingTextSize" />
-
-    </RadioGroup>
-    
     <Button
         android:id="@+id/btnSendUpdate"
         style="@style/BorderlessButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/save_button_text"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_below="@+id/cbDateOption2"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="21dp"
         android:padding="20dp"
-        android:layout_below="@+id/rbGroup"
-        android:layout_centerHorizontal="true" />
+        android:text="@string/save_button_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:id="@+id/tvMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text="TextView"
-        android:textSize="@dimen/headlineTextSize"
         android:layout_alignTop="@+id/ivHostIcon"
-        android:layout_toEndOf="@+id/ivHostIcon" />
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/ivHostIcon"
+        android:text="TextView"
+        android:textSize="@dimen/headlineTextSize" />
 
 </RelativeLayout>

@@ -11,18 +11,32 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.fragments.RespondEventInviteFragment;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.EventStatus;
+import com.example.skarwa.letmeethappen.models.User;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +51,8 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
     String loggedInUserId;
     String loggedInUserDisplayName;
     SharedPreferences sharedPref;
+    Map<String,String> attendeeUsers;
+    DatabaseReference mDatabase;
 
     @BindView(R.id.btnRespond)
     Button btnRespond;
@@ -59,6 +75,9 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
     @BindView(R.id.tvDates2)
     TextView tvDates2;
 
+    @BindView(R.id.etAttendees)
+    EditText etAttendees;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +89,7 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
                 USER_DETAILS, Context.MODE_PRIVATE);
 
         setSupportActionBar(toolbar);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mEvent = Parcels.unwrap(getIntent().getParcelableExtra(EVENT_OBJ));
         loggedInUserId = sharedPref.getString(USER_ID, null);
@@ -77,9 +97,42 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
 
         ButterKnife.bind(this);
 
-        generateDetailEventView();
+
         getSupportActionBar().setTitle(mEvent.getEventName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        attendeeUsers = new HashMap<String, String>();
+        for(Map.Entry<String,Boolean> entry : mEvent.getAttendedUser().entrySet()){
+            if(entry.getValue().equals(true)){
+                attendeeUsers.put(entry.getKey(),"");
+            }
+        }
+
+        mDatabase.child(USERS_ENDPOINT).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    User user = snapshot.getValue(User.class);
+                    if(attendeeUsers.containsKey(user.getId())){
+                        attendeeUsers.put(user.getId(),user.getDisplayName());
+                    }
+                }
+                if(attendeeUsers.values().size() > 0){
+                    String attendeeList = attendeeUsers.values().toString();
+                    attendeeList = attendeeList.replaceAll("\\[", "").replaceAll("\\]","");
+                    etAttendees.setText(attendeeList);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "onCancelled", databaseError.toException());
+                Toast.makeText(getApplicationContext(), "Failed to load users.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        generateDetailEventView();
     }
 
     @Override
@@ -112,10 +165,12 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
         tvRSVPDate.setText(mEvent.getAcceptByDate());
         tvHostName.setText(mEvent.getPlannerName());
 
+
         Iterator<String> itr = mEvent.getEventDateOptions().keySet().iterator();
         tvDates.setText(itr.next());
 
         if (itr.hasNext()) {
+            tvDates2.setVisibility(View.VISIBLE);
             tvDates2.setText(itr.next());
         }
 
