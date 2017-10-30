@@ -10,10 +10,11 @@ import android.widget.Toast;
 
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.EventStatus;
-import com.example.skarwa.letmeethappen.models.User;
+import com.example.skarwa.letmeethappen.models.Group;
 import com.example.skarwa.letmeethappen.network.FirebaseDatabaseClient;
-import com.example.skarwa.letmeethappen.utils.Constants;
+import com.example.skarwa.letmeethappen.utils.DBUtils;
 import com.example.skarwa.letmeethappen.utils.DateUtils;
+import com.example.skarwa.letmeethappen.utils.FCM;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,20 +23,17 @@ import com.google.firebase.database.ValueEventListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
-import static android.app.SearchManager.QUERY;
 import static android.content.ContentValues.TAG;
 import static com.example.skarwa.letmeethappen.utils.Constants.EVENTS_ENDPOINT;
-import static com.example.skarwa.letmeethappen.utils.Constants.USERS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.USER_EVENTS;
 import static com.example.skarwa.letmeethappen.utils.Constants.USER_ID;
 
@@ -87,8 +85,12 @@ public class MyEventTrackingService extends IntentService {
             } else { //equal count
                 event.setEventFinalDate(dates[0]); //defaults to first option
             }
+
+            notifyGroup(event.getGroup(), event.getEventName()+" is confirmed.");
         } else {
             event.setEventStatus(EventStatus.CANCELLED.name());
+
+            notifyGroup(event.getGroup(), event.getEventName()+" is canceled.");
         }
         childUpdates.put("/" + EVENTS_ENDPOINT + "/" + event.getId(), event);
         for (String userId : event.getGroup().getMembers().keySet()) {
@@ -137,6 +139,46 @@ public class MyEventTrackingService extends IntentService {
         });
 
     }
+
+
+    public static void notifyGroup(Group group, String msg) {
+
+        ArrayList<String> tokens = new ArrayList<>();
+        Map<String, String> tMap = group.getTokenSet();
+
+        for (String id : group.getMembers().keySet()) {
+            String tId = null;
+            if (tMap != null && tMap.containsKey(id)) {
+                tId = tMap.get(id);
+            } else {
+                // check our DB
+                if (DBUtils.dbTokens != null) {
+                    tId = DBUtils.dbTokens.get(id);
+                }
+            }
+
+            if (tId != null) {
+                tokens.add(tId);
+
+            }
+        }
+
+        try {
+            //Log.d(TAG, "TOKEN id = " + loggedInUserId);
+            if (tokens.size() > 0) {
+                for (String t : tokens) {
+                    String[] tArr = new String[2];
+                    tArr[0] = t;
+                    tArr[1] = msg;
+                    new FCM().execute(tArr);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     public void fetchEvents(String userId) {
      //   Log.d("DEBUG", " Loading Page:" + page);

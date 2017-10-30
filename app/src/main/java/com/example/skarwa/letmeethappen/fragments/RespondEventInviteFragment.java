@@ -20,6 +20,7 @@ import com.example.skarwa.letmeethappen.R;
 import com.example.skarwa.letmeethappen.activities.ViewEventsActivity;
 import com.example.skarwa.letmeethappen.models.Event;
 import com.example.skarwa.letmeethappen.models.EventStatus;
+import com.example.skarwa.letmeethappen.services.MyEventTrackingService;
 import com.example.skarwa.letmeethappen.utils.Constants;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -146,8 +147,12 @@ public class RespondEventInviteFragment extends DialogFragment {
 
                 if(response.isChecked()){
                     event.addAttendedUser(loggedInUserId, response.isChecked());
-                    rbDate1.setEnabled(true);
-                    rbDate2.setEnabled(true);
+                    if (event.getEventDateOptions().size() > 1) {
+                        rbDate1.setEnabled(true);
+                        rbDate2.setEnabled(true);
+                    } else {
+                        rbDate1.setChecked(true);
+                    }
                 } else {
                     rbDate1.setEnabled(false);
                     rbDate2.setEnabled(false);
@@ -183,14 +188,20 @@ public class RespondEventInviteFragment extends DialogFragment {
             }
             if (attendingCount >= event.getMinAcceptance()) {
                 event.setEventStatus(EventStatus.CONFIRMED.name());
+                MyEventTrackingService.notifyGroup(event.getGroup(), event.getEventName()+" is confirmed.");
                 String[] dates = event.getEventDateOptions().keySet().toArray(new String[2]);
                 Integer[] count = event.getEventDateOptions().values().toArray(new Integer[2]);
-                if(count[0] > count[1]){
+
+                if (event.getEventDateOptions().size() > 1) {
+                    if (count[0] > count[1]) {
+                        event.setEventFinalDate(dates[0]);
+                    } else if (count[0] < count[1]) {
+                        event.setEventFinalDate(dates[1]);
+                    } else { //equal count
+                        event.setEventFinalDate(dates[0]); //defaults to first option
+                    }
+                } else {
                     event.setEventFinalDate(dates[0]);
-                } else if(count[0] < count[1]) {
-                    event.setEventFinalDate(dates[1]);
-                } else { //equal count
-                    event.setEventFinalDate(dates[0]); //defaults to first option
                 }
             }
         }
