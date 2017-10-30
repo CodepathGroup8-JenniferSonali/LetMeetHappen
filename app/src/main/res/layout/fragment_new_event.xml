@@ -123,7 +123,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/send_invite"
-        style="@style/NiceButton"
+        style="@style/BorderlessButton"
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_below="@+id/etMessage"
         android:layout_alignEnd="@+id/linearLayout"

@@ -14,9 +14,10 @@
 
     <Button
         android:id="@+id/btnCreateEvent"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        style="@style/NiceButton"
+        style="@style/BorderlessButton"
         android:text="@string/create_invite" />
 
 </LinearLayout>

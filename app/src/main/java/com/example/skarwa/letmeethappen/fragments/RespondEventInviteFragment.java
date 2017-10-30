@@ -117,17 +117,13 @@ public class RespondEventInviteFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().setTitle(event.getEventName());
-
 
         Glide.with(getContext())
                 .load(event.getHostProfileImage())
                 .placeholder(R.drawable.ic_host_icon)
                 .bitmapTransform(new RoundedCornersTransformation(getContext(), 15, 10))
                 .into(ivHostIcon);
-
-        //tvRSVPDate.setText(event.getAcceptByDate());
 
         String[] dateArray = event.getEventDateOptions().keySet().toArray(new String[2]);
         rbDate1.setText(dateArray[0]);
@@ -148,9 +144,15 @@ public class RespondEventInviteFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Switch selected");
-                event.addAttendedUser(loggedInUserId, response.isChecked());
-                rbDate1.setEnabled(true);
-                rbDate2.setEnabled(true);
+
+                if(response.isChecked()){
+                    event.addAttendedUser(loggedInUserId, response.isChecked());
+                    rbDate1.setEnabled(true);
+                    rbDate2.setEnabled(true);
+                } else {
+                    rbDate1.setEnabled(false);
+                    rbDate2.setEnabled(false);
+                }
             }
         });
 

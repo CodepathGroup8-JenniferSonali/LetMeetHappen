@@ -19,7 +19,7 @@
             android:id="@+id/tvDate2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@id/tvDate"
+            android:layout_alignStart="@+id/tvEventName"
             android:layout_below="@+id/tvDate"
             android:layout_marginTop="5dp"
             android:text="date2"

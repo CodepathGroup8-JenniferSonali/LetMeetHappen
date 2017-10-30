@@ -14,14 +14,13 @@
 
     <ImageView
         android:id="@+id/ivProfileURL"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/profileSize"
+        android:layout_height="@dimen/profileSize"
+        android:padding="@dimen/profileImagePadding"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/ic_host_icon" />
-
-
 
     <LinearLayout
         android:layout_width="match_parent"

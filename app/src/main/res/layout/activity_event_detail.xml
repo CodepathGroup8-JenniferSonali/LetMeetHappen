@@ -7,8 +7,6 @@
     android:foreground="?android:attr/selectableItemBackground"
     app:cardElevation="8dp">
 
-
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -24,65 +22,71 @@
 
         <ImageView
             android:id="@+id/ivHostIcon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/profileSize"
+            android:layout_height="@dimen/profileSize"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/include"
             android:layout_marginTop="22dp"
+            android:padding="@dimen/profileImagePadding"
             android:src="@drawable/ic_host_icon" />
 
         <TextView
             android:id="@+id/tvHostName"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_alignTop="@+id/ivHostIcon"
+            android:layout_marginLeft="30dp"
             android:layout_toEndOf="@+id/ivHostIcon"
             android:text="host name"
-            android:paddingTop="12dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="22dp"
+            android:textSize="@dimen/titleTextSize"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/ivEventDateIcon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/profileSize"
+            android:layout_height="@dimen/profileSize"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/ivHostIcon"
+            android:layout_marginTop="20dp"
+            android:padding="@dimen/profileImagePadding"
             android:src="@drawable/ic_event_dates"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 
         <ImageView
             android:id="@+id/ivLocationIcon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/profileSize"
+            android:layout_height="@dimen/profileSize"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/ivEventDateIcon"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/ivEventDateIcon"
+            android:padding="@dimen/profileImagePadding"
             android:src="@drawable/ic_location" />
 
         <TextView
             android:id="@+id/tvLocationValue"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:paddingTop="16dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/ivEventDateIcon"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_alignTop="@id/ivLocationIcon"
             android:layout_toEndOf="@+id/ivEventDateIcon"
             android:text="@string/locationHint"
-            android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textSize="@dimen/titleTextSize"
+            android:textStyle="bold" />
 
 
         <ImageView
             android:id="@+id/ivSandClockIcon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/profileSize"
+            android:layout_height="@dimen/profileSize"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/ivLocationIcon"
+            android:layout_marginTop="20dp"
             android:src="@drawable/ic_sandclock_icon"
             android:text="@string/rsvp_date"
-            android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvRSVPDate"
@@ -90,91 +94,51 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/ivSandClockIcon"
             android:layout_below="@+id/ivLocationIcon"
+            android:layout_marginLeft="30dp"
             android:layout_toEndOf="@+id/ivLocationIcon"
-            android:paddingTop="16dp"
             android:ems="10"
             android:inputType="date"
+            android:layout_marginTop="20dp"
             android:text="Thurs, Oct 13"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="@dimen/titleTextSize"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvDates"
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/ivHostIcon"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
             android:layout_toEndOf="@+id/ivEventDateIcon"
-            android:paddingTop="15dp"
             android:text="Dates"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="16sp"
+            android:textSize="@dimen/titleTextSize"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvDates2"
             android:layout_width="wrap_content"
-            android:layout_height="28dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/tvDates"
+            android:layout_marginLeft="30dp"
             android:layout_toEndOf="@+id/ivEventDateIcon"
-            android:paddingTop="0dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="16sp"
+            android:paddingTop="2dp"
+            android:text="Dates"
+            android:textSize="@dimen/titleTextSize"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnRespond"
             style="@style/BorderlessButton"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/ivSandClockIcon"
-            android:paddingTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
             android:text="@string/rsvp"
-            android:textSize="20sp" />
+            android:textSize="@dimen/buttonTextSize" />
 
     </RelativeLayout>
 
 
-
 </android.support.v7.widget.CardView>
-
-    <!--  <TextView
-      android:id="@+id/tvCurrentResponse"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/current_response"
-      android:layout_marginTop="32dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentStart="true" />
-
-  <TextView
-      android:id="@+id/tvResponse"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Not yet responded"
-      android:textAlignment="center"
-      android:layout_alignBaseline="@+id/tvCurrentResponse"
-      android:layout_alignBottom="@+id/tvCurrentResponse"
-      android:layout_toEndOf="@+id/tvCurrentResponse" />
-
-<TextView
-    android:id="@+id/tvYesCount"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/nYes"
-   android:textSize="18sp"
-   android:textStyle="bold"
-   android:layout_below="@+id/tvCurrentResponse"
-   android:layout_alignParentStart="true"
-   android:layout_marginTop="18dp" />
-
-<TextView
-    android:id="@+id/tvYesVal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="2"
-    android:textAlignment="center"
-    android:layout_alignBaseline="@+id/tvYesCount"
-    android:layout_alignBottom="@+id/tvYesCount"
-    android:layout_toEndOf="@+id/tvCurrentResponse" />-->

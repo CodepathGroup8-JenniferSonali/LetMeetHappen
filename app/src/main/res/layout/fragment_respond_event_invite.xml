@@ -10,8 +10,10 @@
         android:id="@+id/ivHostIcon"
         android:textSize="@dimen/subheadingTextSize"
         android:layout_marginTop="20dp"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_margin="5dp"
+        android:padding="@dimen/profileImagePadding"
+        android:layout_width="@dimen/profileSize"
+        android:layout_height="@dimen/profileSize"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/ic_host_icon"/>
@@ -21,9 +23,9 @@
         style="@style/MySwitchStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:showText="true"
-        android:text="Coming?"
+        android:text="Can you join ?"
         android:textOff="No"
         android:textOn="Yes"
         android:textAlignment="viewStart"
@@ -38,24 +40,24 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/swResponse"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:text="@string/availability"
-        android:textSize="@dimen/titleTextSize" />
+        android:textSize="@dimen/titleTextSize"
+        android:layout_alignParentEnd="true" />
 
     <RadioGroup
         android:id="@+id/rbGroup"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvAvailability"
-        android:layout_toEndOf="@+id/ivHostIcon">
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp">
 
         <RadioButton
             android:id="@+id/rbDateOption1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date 1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textSize="@dimen/subheadingTextSize" />
 
         <RadioButton
@@ -63,19 +65,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date 2"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textSize="@dimen/subheadingTextSize" />
 
     </RadioGroup>
     
     <Button
         android:id="@+id/btnSendUpdate"
-        style="@style/NiceButton"
+        style="@style/BorderlessButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save_button_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:layout_marginTop="20dp"
+        android:padding="20dp"
         android:layout_below="@+id/rbGroup"
         android:layout_centerHorizontal="true" />
 
@@ -83,7 +85,7 @@
         android:id="@+id/tvMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="20dp"
         android:text="TextView"
         android:textSize="@dimen/headlineTextSize"
         android:layout_alignTop="@+id/ivHostIcon"
