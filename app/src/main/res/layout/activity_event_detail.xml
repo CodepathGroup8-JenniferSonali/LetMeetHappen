@@ -96,7 +96,6 @@
             android:layout_below="@+id/ivLocationIcon"
             android:layout_marginLeft="30dp"
             android:layout_toEndOf="@+id/ivLocationIcon"
-            android:ems="10"
             android:inputType="date"
             android:layout_marginTop="20dp"
             android:text="Thurs, Oct 13"

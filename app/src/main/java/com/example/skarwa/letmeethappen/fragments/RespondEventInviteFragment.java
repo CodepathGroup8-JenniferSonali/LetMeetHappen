@@ -47,7 +47,6 @@ public class RespondEventInviteFragment extends DialogFragment {
 
     private static final String TAG = "RespEventInviteFrag";
 
-    String mEventName;
     Event event;
     String loggedInUserId;
 
