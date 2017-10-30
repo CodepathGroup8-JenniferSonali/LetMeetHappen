@@ -5,7 +5,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +63,18 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     final static String ISRANGE = "IS_RANGE";
     final static String DATE_PICKER = "datePicker";
     final static int PLACE_PICKER_REQUEST = 1;
+
+    @BindView(R.id.input_layout_dates)
+    TextInputLayout inputLayoutDates;
+
+    @BindView(R.id.input_layout_eventName)
+    TextInputLayout inputLayoutEventName;
+
+    @BindView(R.id.input_layout_locationValue)
+    TextInputLayout inputLayoutLocation;
+
+    @BindView(R.id.input_layout_rsvpdate)
+    TextInputLayout inputLayoutRSVPDate;
 
     @BindView(R.id.etEventName)
     EditText etEventName;
@@ -121,6 +136,12 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         //getDialog().setTitle(group.getName());
         event = new Event();
         ButterKnife.bind(this, view);
+
+        etDates.addTextChangedListener(new MyTextWatcher(etDates));
+        etEventName.addTextChangedListener(new MyTextWatcher(etEventName));
+        etLocationValue.addTextChangedListener(new MyTextWatcher(etLocationValue));
+        etRSVPDate.addTextChangedListener(new MyTextWatcher(etRSVPDate));
+
         return view;
     }
 
@@ -231,23 +252,11 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                     dismiss();
 
                     sendInvite(group, etMessage.getText().toString());
+                } else {
+                    Toast.makeText(getActivity(),"Please fill required fields",Toast.LENGTH_SHORT);
                 }
-
-
             }
         });
-
-    }
-
-    private boolean checkValidation() {
-        boolean ret = true;
-
-        if (!Validation.hasText(etEventName)) ret = false;
-        if (!Validation.hasText(etLocationValue)) ret = false;
-        if (!Validation.hasText(etDates)) ret = false;
-        if (!Validation.hasText(etRSVPDate)) ret = false;
-
-        return ret;
     }
 
 
@@ -354,6 +363,98 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         }
         EditText et = (isRange) ? etDates : etRSVPDate;
         et.setText(str);
+    }
+
+    private boolean checkValidation() {
+        boolean ret = true;
+
+        if (!validateName()) ret = false;
+        if (!validateLocation()) ret = false;
+        if (!validateDates()) ret = false;
+        if (!validateRSVPDate()) ret = false;
+        return ret;
+    }
+
+    private boolean validateName() {
+        if (etEventName.getText().toString().trim().isEmpty()) {
+            inputLayoutEventName.setError(getString(R.string.err_msg_event_name));
+            requestFocus(inputLayoutEventName);
+            return false;
+        } else {
+            inputLayoutEventName.setErrorEnabled(false);
+        }
+        return true;
+    }
+
+    private boolean validateLocation() {
+        if (etLocationValue.getText().toString().trim().isEmpty()) {
+            inputLayoutLocation.setError(getString(R.string.err_msg_location));
+            requestFocus(inputLayoutLocation);
+            return false;
+        } else {
+            inputLayoutLocation.setErrorEnabled(false);
+        }
+        return true;
+    }
+
+    private boolean validateDates() {
+        if (etDates.getText().toString().trim().isEmpty()) {
+            inputLayoutDates.setError(getString(R.string.err_msg_date));
+            requestFocus(inputLayoutDates);
+            return false;
+        } else {
+            inputLayoutDates.setErrorEnabled(false);
+        }
+        return true;
+    }
+
+    private boolean validateRSVPDate() {
+        if (etRSVPDate.getText().toString().trim().isEmpty()) {
+            inputLayoutRSVPDate.setError(getString(R.string.err_msg_rsvp_date));
+            requestFocus(inputLayoutRSVPDate);
+            return false;
+        } else {
+            inputLayoutRSVPDate.setErrorEnabled(false);
+        }
+        return true;
+    }
+
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+           getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
+
+    private class MyTextWatcher implements TextWatcher {
+
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void afterTextChanged(Editable editable) {
+            switch (view.getId()) {
+                case R.id.etEventName:
+                    validateName();
+                    break;
+                case R.id.etRSVPDate:
+                   validateRSVPDate();
+                    break;
+                case R.id.etLocationValue:
+                    validateLocation();
+                    break;
+                case R.id.etDates:
+                    validateDates();
+                    break;
+            }
+        }
     }
 }
 

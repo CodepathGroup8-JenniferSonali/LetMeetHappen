@@ -7,12 +7,18 @@
     android:layout_margin="10dp">
 
 
-    <EditText
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_eventName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/TextLabel">
+
+        <EditText
         android:id="@+id/etEventName"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/event_name"
+        android:hint="@string/event_name_hint"
         android:textSize="@dimen/headlineTextSize"
         android:inputType="textNoSuggestions"
         android:backgroundTint="@color/colorAccent"
@@ -20,7 +26,17 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
-    <EditText
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_locationValue"
+        android:layout_width="match_parent"
+        android:theme="@style/TextLabel"
+        android:layout_below="@+id/input_layout_eventName"
+        android:layout_height="wrap_content">
+
+        <EditText
         android:id="@+id/etLocationValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,10 +49,18 @@
         android:maxLines="2"
         android:textSize="@dimen/subheadingTextSize"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/etEventName"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true" />
 
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_dates"
+        android:layout_width="match_parent"
+        android:theme="@style/TextLabel"
+        android:layout_below="@+id/input_layout_locationValue"
+        android:layout_height="wrap_content">
 
     <EditText
         android:id="@+id/etDates"
@@ -49,8 +73,16 @@
         android:textSize="@dimen/subheadingTextSize"
         android:backgroundTint="@color/colorAccent"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/etLocationValue"
         android:layout_alignParentStart="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_rsvpdate"
+        android:layout_width="match_parent"
+        android:theme="@style/TextLabel"
+        android:layout_below="@+id/input_layout_dates"
+        android:layout_height="wrap_content">
 
     <EditText
         android:id="@+id/etRSVPDate"
@@ -62,8 +94,9 @@
         android:inputType="textNoSuggestions"
         android:backgroundTint="@color/colorAccent"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/etDates"
         android:layout_alignParentStart="true" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -71,9 +104,9 @@
         android:orientation="horizontal"
         android:id="@+id/linearLayout"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/etRSVPDate"
+        android:layout_below="@+id/input_layout_rsvpdate"
         android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/etRSVPDate">
+        android:layout_alignEnd="@+id/input_layout_rsvpdate">
 
         <TextView
             android:id="@+id/tvYesCount"
@@ -125,9 +158,11 @@
         android:text="@string/send_invite"
         style="@style/NiceButton"
         android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/etMessage"
-        android:layout_alignEnd="@+id/linearLayout"
-        android:layout_margin="20dp"/>
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
