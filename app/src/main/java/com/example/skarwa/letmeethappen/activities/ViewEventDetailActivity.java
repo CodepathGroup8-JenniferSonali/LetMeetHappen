@@ -38,7 +38,6 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
     String loggedInUserDisplayName;
     SharedPreferences sharedPref;
 
-
     @BindView(R.id.btnRespond)
     Button btnRespond;
 
@@ -59,7 +58,6 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
 
     @BindView(R.id.tvDates2)
     TextView tvDates2;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +95,6 @@ public class ViewEventDetailActivity extends AppCompatActivity implements Consta
         menu.findItem(R.id.actionSave).setVisible(false);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -26,6 +26,7 @@ import com.example.skarwa.letmeethappen.utils.Constants;
 import com.example.skarwa.letmeethappen.utils.DBUtils;
 import com.example.skarwa.letmeethappen.utils.DateUtils;
 import com.example.skarwa.letmeethappen.utils.FCM;
+import com.example.skarwa.letmeethappen.utils.Validation;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -45,6 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.skarwa.letmeethappen.R.string.send;
 import static com.example.skarwa.letmeethappen.utils.Constants.GROUP_OBJ;
 
 
@@ -210,26 +212,42 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
 
             @Override
             public void onClick(View view) {
-                event.setEventName(etEventName.getText().toString());
-                event.setAcceptByDate(etRSVPDate.getText().toString());
-                event.setEventStatus(EventStatus.PENDING.name());
-                event.setGroup(group);
 
-                String message = etMessage.getText().toString();
-                if(message != null){
-                    event.setPlannerMsgToGroup(message);
+                if ( checkValidation () ){
+                    event.setEventName(etEventName.getText().toString());
+                    event.setAcceptByDate(etRSVPDate.getText().toString());
+                    event.setEventStatus(EventStatus.PENDING.name());
+                    event.setGroup(group);
+
+                    String message = etMessage.getText().toString();
+                    if(message != null){
+                        event.setPlannerMsgToGroup(message);
+                    }
+
+                    listener = (OnCreateEventClickListener) getActivity();
+                    listener.onCreateEvent(event);
+
+                    Log.d(TAG, "Send Button Clicked");
+                    dismiss();
+
+                    sendInvite(group, etMessage.getText().toString());
                 }
 
-                listener = (OnCreateEventClickListener) getActivity();
-                listener.onCreateEvent(event);
 
-                Log.d(TAG, "Send Button Clicked");
-                dismiss();
-
-                sendInvite(group, etMessage.getText().toString());
             }
         });
 
+    }
+
+    private boolean checkValidation() {
+        boolean ret = true;
+
+        if (!Validation.hasText(etEventName)) ret = false;
+        if (!Validation.hasText(etLocationValue)) ret = false;
+        if (!Validation.hasText(etDates)) ret = false;
+        if (!Validation.hasText(etRSVPDate)) ret = false;
+
+        return ret;
     }
 
 
