@@ -210,7 +210,7 @@ public class ViewEventsActivity extends AppCompatActivity implements
                     return true;
                 }
 
-            case R.id.miNotify:
+            //case R.id.miNotify:
                 //TODO : inform user of the ne notification received
             default:
                 return super.onOptionsItemSelected(item);

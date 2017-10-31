@@ -171,7 +171,7 @@ public class NewGroupCreateActivity extends AppCompatActivity implements MultiSp
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
-        menu.findItem(R.id.miNotify).setVisible(false);
+      //  menu.findItem(R.id.miNotify).setVisible(false);
         return true;
     }
 

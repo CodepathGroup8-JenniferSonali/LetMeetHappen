@@ -33,6 +33,7 @@ import java.util.Map;
 import cz.msebera.android.httpclient.Header;
 
 import static android.content.ContentValues.TAG;
+import static com.example.skarwa.letmeethappen.R.string.dates;
 import static com.example.skarwa.letmeethappen.utils.Constants.EVENTS_ENDPOINT;
 import static com.example.skarwa.letmeethappen.utils.Constants.USER_EVENTS;
 import static com.example.skarwa.letmeethappen.utils.Constants.USER_ID;
@@ -76,15 +77,21 @@ public class MyEventTrackingService extends IntentService {
             event.setEventStatus(EventStatus.SUCCESSFUL.name());
         } else if (event.getAttendedUser().keySet().size() >= minYes && event.getEventStatus()!= EventStatus.CONFIRMED.name()) {
             event.setEventStatus(EventStatus.CONFIRMED.name());
-            String[] dates = event.getEventDateOptions().keySet().toArray(new String[2]);
-            Integer[] count = event.getEventDateOptions().values().toArray(new Integer[2]);
-            if (count[0] > count[1]) {
+            if(event.getEventDateOptions().size() == 1){ //1 date
+                String[] dates = event.getEventDateOptions().keySet().toArray(new String[1]);
                 event.setEventFinalDate(dates[0]);
-            } else if (count[0] < count[1]) {
-                event.setEventFinalDate(dates[1]);
-            } else { //equal count
-                event.setEventFinalDate(dates[0]); //defaults to first option
+            } else { //2 dates
+                String[] dates = event.getEventDateOptions().keySet().toArray(new String[2]);
+                Integer[] count = event.getEventDateOptions().values().toArray(new Integer[2]);
+                if (count[0] > count[1]) {
+                    event.setEventFinalDate(dates[0]);
+                } else if (count[0] < count[1]) {
+                    event.setEventFinalDate(dates[1]);
+                } else { //equal count
+                    event.setEventFinalDate(dates[0]); //defaults to first option
+                }
             }
+
 
             notifyGroup(event.getGroup(), event.getEventName()+" is confirmed.");
         } else {

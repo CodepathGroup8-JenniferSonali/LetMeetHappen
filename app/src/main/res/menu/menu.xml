@@ -3,13 +3,13 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 tools:context="com.codepath.jennifergodinez.nytimessearch.activities.TimelineActivity">
 
-    <item
+    <!--<item
         android:id="@+id/miNotify"
         android:icon="@drawable/ic_stat_name"
         app:showAsAction="always"
         android:orderInCategory="2"
         android:title="Notifications">
-    </item>
+    </item>-->
 
     <item
         android:id="@+id/actionSave"

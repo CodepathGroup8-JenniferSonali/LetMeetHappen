@@ -63,6 +63,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     final static String ISRANGE = "IS_RANGE";
     final static String DATE_PICKER = "datePicker";
     final static int PLACE_PICKER_REQUEST = 1;
+    boolean isValidLocation = false;
 
     @BindView(R.id.input_layout_dates)
     TextInputLayout inputLayoutDates;
@@ -157,21 +158,6 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
         numberPicker.setMaxValue(count);
         numberPicker.setWrapSelectorWheel(true);
 
-
-        //Set a value change listener for NumberPicker
-        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-
-                int getMin = newVal;
-                if (getMin != 0) {
-                    event.setMinAcceptance(getMin);
-                } else {
-                    event.setMinAcceptance(2);   //default to 2 for now
-                }
-            }
-        });
-
        etLocationValue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -239,6 +225,9 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                     event.setAcceptByDate(etRSVPDate.getText().toString());
                     event.setEventStatus(EventStatus.PENDING.name());
                     event.setGroup(group);
+
+                    int valueSelected = numberPicker.getValue();
+                    event.setMinAcceptance(valueSelected);
 
                     String message = etMessage.getText().toString();
                     if(message != null){
@@ -318,12 +307,14 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
                 Place place = PlacePicker.getPlace(getContext(),data);
                 LatLng latlng =  place.getLatLng();
 
+
                 Location selectedLocation = new Location();
                 selectedLocation.setName(place.getName().toString());
 
                 selectedLocation.setLatitude(latlng.latitude);
                 selectedLocation.setLongitude(latlng.longitude);
 
+                isValidLocation = true;
                 event.setLocation(selectedLocation);
                 etLocationValue.setText(place.getName().toString());
 
@@ -387,7 +378,7 @@ public class NewEventFragment extends DialogFragment implements SelectDatesFragm
     }
 
     private boolean validateLocation() {
-        if (etLocationValue.getText().toString().trim().isEmpty()) {
+        if (etLocationValue.getText().toString().trim().isEmpty() || !isValidLocation) {
             inputLayoutLocation.setError(getString(R.string.err_msg_location));
             requestFocus(inputLayoutLocation);
             return false;
