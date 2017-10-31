@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
@@ -73,9 +74,20 @@ public class MyEventTrackingService extends IntentService {
 
         Map<String, Object> childUpdates = new HashMap<>();
 
+        int attendingCount = 0;
+        for(Map.Entry<String,Boolean> entry : event.getAttendedUser().entrySet()){
+            /**
+             *   we need to explicitly check for members responded with 'yes'.
+             *   There could be members with no present as well.
+             */
+            if(entry.getValue().equals(true)){
+               attendingCount++;
+            }
+        }
+
         if (event.getEventStatus().equals(EventStatus.CONFIRMED.name())) {  //mark event as SUCCESS -> Becomes a PAST event
             event.setEventStatus(EventStatus.SUCCESSFUL.name());
-        } else if (event.getAttendedUser().keySet().size() >= minYes && event.getEventStatus()!= EventStatus.CONFIRMED.name()) {
+        } else if (attendingCount >= minYes && event.getEventStatus()!= EventStatus.CONFIRMED.name()) {
             event.setEventStatus(EventStatus.CONFIRMED.name());
             if(event.getEventDateOptions().size() == 1){ //1 date
                 String[] dates = event.getEventDateOptions().keySet().toArray(new String[1]);
@@ -130,7 +142,9 @@ public class MyEventTrackingService extends IntentService {
                     Event event = snapshot.getValue(Event.class);
 
                     Date acceptByDate = DateUtils.parseDatefromString(event.getAcceptByDate());
-                    if (acceptByDate != null && acceptByDate.before(today) && event.getEventStatus()!= EventStatus.SUCCESSFUL.name()) {
+                    if (acceptByDate != null && acceptByDate.before(today) &&
+                            event.getEventStatus()!= EventStatus.SUCCESSFUL.name() &&
+                            event.getEventStatus()!= EventStatus.CANCELLED.name() ) {
                         updateEvent(event);
                         Log.d(TAG, "Deadline for event " + event + " approached !!");
                     }
