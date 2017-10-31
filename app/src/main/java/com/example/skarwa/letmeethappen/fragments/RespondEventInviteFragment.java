@@ -171,8 +171,8 @@ public class RespondEventInviteFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "Send Update clicked");
-                if(!cbDate1.isChecked() && !cbDate2.isChecked()){
-                    Toast.makeText(getActivity(),"Please select one date",Toast.LENGTH_SHORT).show();
+                if(response.isChecked() && !cbDate1.isChecked() && !cbDate2.isChecked()){
+                    Toast.makeText(getActivity(),"Select atleast one date",Toast.LENGTH_SHORT).show();
                 } else {
                     sendUpdate();
                 }
