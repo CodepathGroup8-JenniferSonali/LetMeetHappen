@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.skarwa.letmeethappen.R;
@@ -125,15 +126,22 @@ public class RespondEventInviteFragment extends DialogFragment {
                 .bitmapTransform(new RoundedCornersTransformation(getContext(), 15, 10))
                 .into(ivHostIcon);
 
-        String[] dateArray = event.getEventDateOptions().keySet().toArray(new String[2]);
-        cbDate1.setText(dateArray[0]);
-        cbDate1.setEnabled(false);
-        if(!dateArray[1].isEmpty()){
-            cbDate2.setVisibility(View.VISIBLE);
-            cbDate2.setText(dateArray[1]);
-            cbDate2.setEnabled(false);
-        } else{
+        if(event.getEventDateOptions().size() == 1){ //size is 1
+            String[] dates = event.getEventDateOptions().keySet().toArray(new String[1]);
+            cbDate1.setText(dates[0]);
+            cbDate1.setEnabled(false);
             cbDate2.setVisibility(View.INVISIBLE);
+        } else { //size is 2
+            String[] dateArray = event.getEventDateOptions().keySet().toArray(new String[2]);
+            cbDate1.setText(dateArray[0]);
+            cbDate1.setEnabled(false);
+            if(!dateArray[1].isEmpty()){
+                cbDate2.setVisibility(View.VISIBLE);
+                cbDate2.setText(dateArray[1]);
+                cbDate2.setEnabled(false);
+            } else{
+                cbDate2.setVisibility(View.INVISIBLE);
+            }
         }
 
         if (event.getPlannerMsgToGroup() != null) {
@@ -163,7 +171,11 @@ public class RespondEventInviteFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "Send Update clicked");
-                sendUpdate();
+                if(!cbDate1.isChecked() && !cbDate2.isChecked()){
+                    Toast.makeText(getActivity(),"Please select one date",Toast.LENGTH_SHORT).show();
+                } else {
+                    sendUpdate();
+                }
             }
         });
     }
